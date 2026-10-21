@@ -1,0 +1,21 @@
+[project]
+name = "muweb"
+version = "0.1.0"
+description = "Landing de un server privado de MU Online (Season 6)"
+requires-python = ">=3.11"
+readme = "README.md"
+
+# Las dependencias de runtime están en requirements.txt (pip) para no obligar
+# a usar poetry. Acá solo la metadata del proyecto y la config de las tools.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

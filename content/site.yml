@@ -1,0 +1,96 @@
+# ===========================================================================
+#  Contenido principal del sitio.
+#  Editá este archivo y recargá la página: no hay que tocar código.
+#  Todo lo marcado con "EDITAR" es un valor de ejemplo.
+# ===========================================================================
+
+# EDITAR: nombre del server
+name: "MU Argentum"
+
+# EDITAR: bajada corta, se usa en el subtítulo del navegador
+tagline: "Server privado de MU Online — Season 6 Episode 3"
+
+seo:
+  title: "MU Argentum | Server privado de MU Online — Season 6 Episode 3"
+  description: >-
+    Server privado de MU Online Season 6 Episode 3. Rates altos, eventos semanales,
+    comunidad activa y cliente 1.02.00 listo para descargar.
+  keywords: "mu online, mu online privado, season 6, episode 3, mu online server, descend"
+
+server:
+  season: "Season 6"
+  episode: "Episode 3"
+  # Versión del cliente (WebZen 1.02.00)
+  client_version: "1.02.00"
+  # EDITAR: host al que se conecta el cliente (Connect Server)
+  connect_host: "181.45.236.68"
+  connect_port: 44405
+  # EDITAR: invite de Discord
+  discord_url: "https://discord.gg/tu-servidor"
+  # Texto del chip de estado. En la v0 es estático: no se sondea el server.
+  status_label: "Online"
+
+hero:
+  badge: "Season 6 — Episode 3"
+  title: "MU Argentum"
+  subtitle: >-
+    Server privado con rates altos, eventos semanales y comunidad activa.
+    Nostalgia de MU con contenido nuevo cada mes.
+  primary:
+    label: "Descargar cliente"
+    href: "/descargas"
+  secondary:
+    label: "Crear cuenta"
+    href: "/registro"
+
+# Chips de rates: se muestran en el hero y en la sección de rates
+rates:
+  - label: "Experiencia"
+    value: "1000x"
+  - label: "Drop"
+    value: "50%"
+  - label: "Nivel máximo"
+    value: "400"
+  - label: "Master level"
+    value: "200"
+
+features:
+  - icon: "sword"
+    title: "Combate de Season 6"
+    text: "Mobs rebalanceados, boss de mundo y sets de equipo completos con drop mejorado."
+  - icon: "shield"
+    title: "Sin ventaja comprada"
+    text: "Todo el contenido es jugable. Las recompensas de la tienda son estéticas y opcionales."
+  - icon: "scroll"
+    title: "Eventos semanales"
+    text: "Doble EXP los fines de semana, invasiones, boss rush y drop premium por tiempo limitado."
+  - icon: "crown"
+    title: "Ranking y guilds"
+    text: "Top de personajes, guilds y rankings con recompensas al cierre de cada temporada."
+
+steps:
+  - title: "Descargá el cliente"
+    text: "Bajá el pack completo (1.02.00), descomprimilo en una carpeta y no muevas los archivos."
+  - title: "Creá tu cuenta"
+    text: "Registrate en el formulario del sitio. Tu cuenta queda lista para entrar al juego."
+  - title: "Entrá al mundo"
+    text: "Abrí el launcher, elegí el sub-servidor y a jugar. Nadie te va a pedir donate para jugar."
+
+community:
+  title: "Entrá a la comunidad"
+  text: >-
+    Discord con los anuncios, eventos y soporte. También se coordinan las partidas
+    en grupo y se comparten capturas de los mejores personajes.
+  cta_label: "Unirme al Discord"
+
+footer:
+  note: "MU Argentum no está afiliado a Webzen. Proyecto fan sin fines de lucro."
+  links:
+    - label: "Noticias"
+      href: "/noticias"
+    - label: "Descargas"
+      href: "/descargas"
+    - label: "Preguntas frecuentes"
+      href: "/faq"
+    - label: "Reglas"
+      href: "/reglas"

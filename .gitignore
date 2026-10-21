@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Entorno
+.env
+.env.local
+
+# Herramientas locales (binario de Tailwind, Caddy): se descargan con scripts/
+tools/
+
+# Archivos pesados del cliente (se suben aparte, no al repo)
+downloads/*
+!downloads/.gitkeep
+!downloads/README.md
+
+# Sistema
+.DS_Store
+*.log

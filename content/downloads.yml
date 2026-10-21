@@ -1,0 +1,59 @@
+# ===========================================================================
+#  Descargas disponibles.
+#
+#  available: false  ->  el botón queda deshabilitado con el texto "Próximamente".
+#  Para publicarlo:
+#    1. Subí el archivo a la carpeta downloads/ (no se versiona, es pesado)
+#    2. Poné file: "cliente-s6.zip" y available: true
+#    3. Recargá la página
+#  El hash sha256 se muestra en la página para que el jugador verifique la descarga.
+# ===========================================================================
+
+items:
+  - id: cliente
+    name: "Cliente completo"
+    kind: "Pack del juego"
+    version: "1.02.00"
+    size: "≈ 620 MB"
+    file: null
+    available: false
+    sha256: null
+    note: >-
+      Incluye el juego completo, el launcher y el ServerInfo apuntando al server.
+      Descomprimí en una carpeta y no muevas los archivos después.
+
+  - id: parche
+    name: "Parche de actualización"
+    kind: "Actualización"
+    version: "1.02.00 → 1.02.00 S6E3"
+    size: "≈ 180 MB"
+    file: null
+    available: false
+    sha256: null
+    note: "Solo para quien ya tiene el cliente base instalado."
+
+  - id: launcher
+    name: "Launcher standalone"
+    kind: "Acceso rápido"
+    version: "1.02.00"
+    size: "≈ 2 MB"
+    file: null
+    available: false
+    sha256: null
+    note: "Permite cambiar de sub-servidor y ver el estado sin abrir el juego."
+
+requirements:
+  - "Windows 7, 10 u 11 (32 y 64 bits)"
+  - "DirectX 9.0c instalado"
+  - "2 GB de RAM como mínimo"
+  - "Espacio libre: 3 GB en disco"
+
+instructions:
+  - title: "Descomprimir"
+    text: "El pack viene en un .zip. Extráelo completo en C:\\MU o en el Disco D, sin que el antivirus lo bloquee."
+  - title: "Ejecutar el launcher"
+    text: "Entrá a la carpeta y corré el launcher. La primera vez puede pedir permisos de administrador."
+  - title: "Elegir sub-servidor"
+    text: "El launcher ya tiene cargada la lista de sub-servidores. Elegí cualquiera: todos tienen el mismo contenido."
+  - title: "Ingresar"
+    text: "Escribí tu cuenta y contraseña (las que creaste en el sitio) y listo."

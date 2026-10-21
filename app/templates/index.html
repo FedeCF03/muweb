@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon %}
+{% from "partials/news_card.html" import news_card %}
+{% from "partials/download_card.html" import download_card %}
+
+{% block content %}
+  {# ------------------------------------------------------------------ #}
+  {# Hero                                                            #}
+  {# ------------------------------------------------------------------ #}
+  <section class="relative overflow-hidden border-b border-edge/60">
+    <div class="absolute inset-0 bg-grid opacity-70"></div>
+    <div class="absolute -top-48 left-1/2 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-gold/10 blur-[130px]"></div>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-obsidian"></div>
+
+    <div class="relative mx-auto grid max-w-6xl items-center gap-14 px-5 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-28">
+      <div>
+        <span class="chip">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/70"></span>
+          {{ site.server.status_label }}
+          <span class="text-faint">·</span>
+          {{ site.hero.badge }}
+        </span>
+
+        <h1 class="mt-7 text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">
+          <span class="text-gold-gradient">{{ site.hero.title }}</span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+          {{ site.hero.subtitle }}
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href="{{ site.hero.primary.href }}" class="btn btn-primary">
+            {{ icon('download', 'h-4 w-4') }} {{ site.hero.primary.label }}
+          </a>
+          <a href="{{ site.hero.secondary.href }}" class="btn btn-secondary">
+            {{ icon('spark', 'h-4 w-4') }} {{ site.hero.secondary.label }}
+          </a>
+        </div>
+
+        <dl class="mt-12 grid max-w-lg grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
+          {% for rate in site.rates %}
+            <div>
+              <dt class="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-faint">{{ rate.label }}</dt>
+              <dd class="mt-1 font-display text-2xl text-gold">{{ rate.value }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </div>
+
+      {# Ficha del server #}
+      <div class="panel relative p-7">
+        <div class="absolute inset-x-7 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
+        <h2 class="font-display text-xl text-mist">Ficha del server</h2>
+        <p class="mt-1 text-xs uppercase tracking-[0.2em] text-faint">Todos los datos para empezar</p>
+
+        <dl class="mt-7 divide-y divide-edge-soft">
+          <div class="flex items-center justify-between gap-4 py-3">
+            <dt class="text-sm text-muted">Servidor</dt>
+            <dd class="flex items-center gap-2 text-sm font-medium text-mist">
+              <span id="connect-host">{{ site.server.connect_host }}</span>
+              <span class="text-faint">:{{ site.server.connect_port }}</span>
+              <button
+                type="button"
+                class="rounded border border-edge p-1.5 text-faint transition-colors hover:border-gold-dim hover:text-gold"
+                data-copy="{{ site.server.connect_host }}"
+                aria-label="Copiar la dirección del servidor"
+              >
+                {{ icon('scroll', 'h-3.5 w-3.5') }}
+              </button>
+            </dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3">
+            <dt class="text-sm text-muted">Versión</dt>
+            <dd class="text-sm font-medium text-mist">{{ site.server.season }} {{ site.server.episode }}</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3">
+            <dt class="text-sm text-muted">Cliente</dt>
+            <dd class="text-sm font-medium text-mist">WebZen {{ site.server.client_version }}</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3">
+            <dt class="text-sm text-muted">Sub-servidores</dt>
+            <dd class="text-sm font-medium text-mist">6 canales</dd>
+          </div>
+          <div class="flex items-center justify-between gap-4 py-3">
+            <dt class="text-sm text-muted">Idioma</dt>
+            <dd class="text-sm font-medium text-mist">Español</dd>
+          </div>
+        </dl>
+
+        <a href="{{ site.server.discord_url }}" class="btn btn-secondary mt-7 w-full" target="_blank" rel="noopener">
+          {{ icon('discord', 'h-4 w-4') }} Soporte en Discord
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Rates                                                            #}
+  {# ------------------------------------------------------------------ #}
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <div class="reveal text-center">
+      <span class="eyebrow">Rates del server</span>
+      <h2 class="mt-5 text-3xl sm:text-4xl">Subí de nivel sin esperar semanas</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-muted">
+        Rates pensados para que progreses rápido al principio y no te aburras en la semana tres.
+        Los eventos los suben todavía más.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {% for rate in site.rates %}
+        <div class="panel panel-hover reveal p-6 text-center">
+          <p class="font-display text-4xl text-gold">{{ rate.value }}</p>
+          <p class="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{{ rate.label }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Features                                                         #}
+  {# ------------------------------------------------------------------ #}
+  <section class="border-y border-edge/60 bg-surface/30">
+    <div class="mx-auto max-w-6xl px-5 py-20">
+      <div class="reveal max-w-2xl">
+        <span class="eyebrow">Qué te encontrás</span>
+        <h2 class="mt-5 text-3xl sm:text-4xl">Un server de Season 6, cuidado al detalle</h2>
+      </div>
+
+      <div class="mt-12 grid gap-5 sm:grid-cols-2">
+        {% for feature in site.features %}
+          <div class="panel panel-hover reveal flex gap-5 p-7">
+            <span class="shrink-0 rounded-lg border border-gold-dim/40 bg-gold/10 p-3 text-gold">
+              {{ icon(feature.icon, 'h-6 w-6') }}
+            </span>
+            <div>
+              <h3 class="text-lg text-mist">{{ feature.title }}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{{ feature.text }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Noticias                                                         #}
+  {# ------------------------------------------------------------------ #}
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <div class="flex flex-wrap items-end justify-between gap-6 reveal">
+      <div>
+        <span class="eyebrow">Noticias</span>
+        <h2 class="mt-5 text-3xl sm:text-4xl">Últimas novedades</h2>
+      </div>
+      <a href="{{ url_for('public.news_list') }}" class="btn btn-secondary">
+        Ver todas {{ icon('arrow', 'h-4 w-4') }}
+      </a>
+    </div>
+
+    {% if news %}
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {% for item in news %}
+          <div class="reveal">{{ news_card(item, compact=true) }}</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="mt-10 text-muted">Todavía no hay noticias publicadas.</p>
+    {% endif %}
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Descargas                                                        #}
+  {# ------------------------------------------------------------------ #}
+  <section class="border-y border-edge/60 bg-surface/30">
+    <div class="mx-auto max-w-6xl px-5 py-20">
+      <div class="flex flex-wrap items-end justify-between gap-6 reveal">
+        <div>
+          <span class="eyebrow">Descargas</span>
+          <h2 class="mt-5 text-3xl sm:text-4xl">Cliente listo para jugar</h2>
+          <p class="mt-4 max-w-2xl text-muted">
+            WebZen {{ site.server.client_version }} con el ServerInfo ya configurado para este server.
+          </p>
+        </div>
+        <a href="{{ url_for('public.downloads') }}" class="btn btn-secondary">
+          Instrucciones {{ icon('arrow', 'h-4 w-4') }}
+        </a>
+      </div>
+
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {% for item in downloads['items'] %}
+          <div class="reveal">{{ download_card(item) }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Cómo empezar                                                     #}
+  {# ------------------------------------------------------------------ #}
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <div class="reveal text-center">
+      <span class="eyebrow">Cómo empezar</span>
+      <h2 class="mt-5 text-3xl sm:text-4xl">Tres pasos y estás adentro</h2>
+    </div>
+
+    <ol class="mt-14 grid gap-6 md:grid-cols-3">
+      {% for step in site.steps %}
+        <li class="panel reveal relative p-7">
+          <span class="font-display text-5xl text-gold/20">
+            {{ "%02d" % loop.index }}
+          </span>
+          <h3 class="mt-4 text-lg text-mist">{{ step.title }}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{{ step.text }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Preguntas frecuentes                                             #}
+  {# ------------------------------------------------------------------ #}
+  <section class="border-y border-edge/60 bg-surface/30">
+    <div class="mx-auto max-w-6xl px-5 py-20">
+      <div class="reveal max-w-2xl">
+        <span class="eyebrow">Preguntas frecuentes</span>
+        <h2 class="mt-5 text-3xl sm:text-4xl">Lo que todos preguntan</h2>
+      </div>
+
+      <div class="mt-10 space-y-3">
+        {% for item in faq_preview %}
+          <details class="panel group px-6 py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-mist marker:hidden">
+              <span class="font-medium">{{ item.question }}</span>
+              <span class="shrink-0 text-gold transition-transform duration-200 group-open:rotate-90">
+                {{ icon('chevron', 'h-4 w-4') }}
+              </span>
+            </summary>
+            <p class="mt-4 text-sm leading-relaxed text-muted">{{ item.answer }}</p>
+          </details>
+        {% endfor %}
+      </div>
+
+      <a href="{{ url_for('public.faq') }}" class="btn btn-secondary mt-8 reveal">
+        Ver todas las preguntas {{ icon('arrow', 'h-4 w-4') }}
+      </a>
+    </div>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Comunidad                                                        #}
+  {# ------------------------------------------------------------------ #}
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <div class="panel reveal relative overflow-hidden p-10 text-center sm:p-16">
+      <div class="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-gold/10 blur-3xl"></div>
+      <div class="relative">
+        <h2 class="text-3xl sm:text-4xl">{{ site.community.title }}</h2>
+        <p class="mx-auto mt-5 max-w-2xl text-muted">{{ site.community.text }}</p>
+        <a href="{{ site.server.discord_url }}" class="btn btn-primary mt-9" target="_blank" rel="noopener">
+          {{ icon('discord', 'h-4 w-4') }} {{ site.community.cta_label }}
+        </a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

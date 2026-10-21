@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon %}
+
+{% block title %}Preguntas frecuentes · {{ site.name }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto max-w-3xl px-5 py-16">
+    <span class="eyebrow">FAQ</span>
+    <h1 class="mt-5 text-4xl sm:text-5xl">Preguntas frecuentes</h1>
+    <p class="mt-4 text-muted">Lo que suelen preguntarnos los jugadores nuevos.</p>
+
+    <div class="mt-12 space-y-3">
+      {% for item in faq %}
+        <details class="panel group px-6 py-5 reveal">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-mist marker:hidden">
+            <span class="font-medium">{{ item.question }}</span>
+            <span class="shrink-0 text-gold transition-transform duration-200 group-open:rotate-90">
+              {{ icon('chevron', 'h-4 w-4') }}
+            </span>
+          </summary>
+          <p class="mt-4 text-sm leading-relaxed text-muted">{{ item.answer }}</p>
+        </details>
+      {% endfor %}
+    </div>
+
+    <div class="panel reveal mt-10 flex flex-wrap items-center justify-between gap-4 p-7">
+      <div>
+        <h2 class="text-lg text-mist">¿Falta tu pregunta?</h2>
+        <p class="mt-1 text-sm text-muted">Escribinos al Discord y la sumamos a esta página.</p>
+      </div>
+      <a href="{{ site.server.discord_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+        {{ icon('discord', 'h-4 w-4') }} Preguntar
+      </a>
+    </div>
+  </section>
+{% endblock %}

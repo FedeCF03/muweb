@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# Caddy: sirve la landing y los archivos de descarga del cliente.
+#
+# - /            -> la app Flask (contenedor "web")
+# - /downloads/* -> archivos pesados servidos desde disco, con rangos HTTP
+#                   (descarga reanudable) y sin pasar por Flask
+#
+# Versión actual: solo LAN en el puerto 80. Cuando tengas dominio, comentá
+# el bloque ":80" y usá el bloque del dominio (abajo).
+# ---------------------------------------------------------------------------
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	encode zstd gzip
+
+	# Archivos de descarga (cliente .zip, patches, etc.)
+	handle /downloads/* {
+		# quita el prefijo /downloads para buscar el archivo en /srv/downloads
+		uri strip_prefix /downloads
+		root * /srv/downloads
+		file_server
+	}
+
+	# Todo lo demás lo sirve Flask
+	handle {
+		reverse_proxy web:8000
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cuando tengas dominio (y apuntes el DNS a esta máquina), reemplazá el bloque
+# de arriba por este y sacá la línea 'auto_https off' de la sección global.
+#
+# mu.ejemplo.com {
+# 	encode zstd gzip
+#
+# 	handle /downloads/* {
+# 		uri strip_prefix /downloads
+# 		root * /srv/downloads
+# 		file_server
+# 	}
+#
+# 	handle {
+# 		reverse_proxy web:8000
+# 	}
+#
+# 	log {
+# 		output stdout
+# 		format console
+# 	}
+# }
+# ---------------------------------------------------------------------------

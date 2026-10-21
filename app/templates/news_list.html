@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "partials/news_card.html" import news_card %}
+
+{% block title %}Noticias · {{ site.name }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto max-w-6xl px-5 py-16">
+    <span class="eyebrow">Noticias</span>
+    <h1 class="mt-5 text-4xl sm:text-5xl">Todas las novedades</h1>
+    <p class="mt-4 max-w-2xl text-muted">
+      Anuncios, eventos y actualizaciones del server.
+    </p>
+
+    {% if news %}
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in news %}
+          <div class="reveal">{{ news_card(item) }}</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="mt-12 text-muted">Todavía no hay noticias publicadas.</p>
+    {% endif %}
+  </section>
+{% endblock %}

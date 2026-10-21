@@ -1,0 +1,36 @@
+# ===========================================================================
+#  Preguntas frecuentes. Editá lo que quieras: se ordenan por el orden de la
+#  lista y se muestran como acordeón en /faq
+# ===========================================================================
+
+items:
+  - question: "¿Es gratis entrar al server?"
+    answer: >-
+      Sí. El server es gratuito y todo el contenido es jugable sin comprar nada.
+      Las recompensas opcionales de la tienda son estéticas y no dan ventaja en combate.
+
+  - question: "¿Qué cliente necesito?"
+    answer: >-
+      El cliente original WebZen versión 1.02.00. Lo bajás completo desde la sección
+      Descargas; no hace falta instalar nada más.
+
+  - question: "¿Puedo jugar desde una netbook?"
+    answer: >-
+      Se puede, aunque la PC tiene que ir justa. Para la experiencia completa se
+      recomienda una PC con 2 GB de RAM o más y DirectX 9.0c instalado.
+
+  - question: "¿Hay reset de personaje?"
+    answer: >-
+      Hay un sistema de reset por personaje con nivel máximo alcanzado, disponible
+      desde el panel del juego. El costo del reset y los límites por semana se
+      detallan en las reglas.
+
+  - question: "¿Cómo reporto un bug o un hacker?"
+    answer: >-
+      En el canal de soporte del Discord. Escribí el nombre de la cuenta, el mapa,
+      la hora aproximada y una captura. Los reportes de hackers se atienden con prioridad.
+
+  - question: "¿Puedo jugar con el mismo personaje desde otra PC?"
+    answer: >-
+      Sí, el juego no bloquea por IP. Recordá cerrar la sesión del juego antes de
+      abrirlo en otra máquina, porque la cuenta queda online.

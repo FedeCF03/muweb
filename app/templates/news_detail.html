@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon %}
+
+{% block title %}{{ item.title }} · {{ site.name }}{% endblock %}
+{% block description %}{{ item.excerpt }}{% endblock %}
+
+{% block content %}
+  <article class="mx-auto max-w-3xl px-5 py-16">
+    <a href="{{ url_for('public.news_list') }}" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold-dim transition-colors hover:text-gold">
+      <span class="rotate-180">{{ icon('chevron', 'h-4 w-4') }}</span> Volver a noticias
+    </a>
+
+    <header class="mt-8 border-b border-edge/60 pb-8">
+      <div class="flex flex-wrap items-center gap-3">
+        {% if item.tag %}<span class="chip !py-1 !text-[0.65rem] !text-gold">{{ item.tag }}</span>{% endif %}
+        <time class="text-xs text-faint" datetime="{{ item.iso_date }}">{{ item.date | date_es }}</time>
+      </div>
+      <h1 class="mt-5 text-3xl leading-tight sm:text-4xl">{{ item.title }}</h1>
+      {% if item.excerpt %}
+        <p class="mt-4 text-base leading-relaxed text-muted">{{ item.excerpt }}</p>
+      {% endif %}
+    </header>
+
+    <div class="prose-mu mt-10">{{ item.html | safe }}</div>
+
+    <div class="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-edge/60 pt-8">
+      <a href="{{ url_for('public.news_list') }}" class="btn btn-secondary">
+        <span class="rotate-180">{{ icon('chevron', 'h-4 w-4') }}</span> Todas las noticias
+      </a>
+      <a href="{{ site.server.discord_url }}" class="btn btn-primary" target="_blank" rel="noopener">
+        {{ icon('discord', 'h-4 w-4') }} Discuss en Discord
+      </a>
+    </div>
+  </article>
+{% endblock %}

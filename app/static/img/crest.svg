@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 72" role="img" aria-label="Escudo">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2d795" />
+      <stop offset="55%" stop-color="#d6b25e" />
+      <stop offset="100%" stop-color="#8c7238" />
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#182233" />
+      <stop offset="100%" stop-color="#0b111c" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M32 2 60 11v27c0 16.5-11.6 29.4-28 33C15.6 67.4 4 54.5 4 38V11L32 2Z"
+    fill="url(#steel)"
+    stroke="url(#gold)"
+    stroke-width="2.5"
+  />
+  <path
+    d="M32 9.5 53 16v21.5c0 12.4-8.6 22.2-21 25.6C19.6 59.7 11 49.9 11 37.5V16l21-6.5Z"
+    fill="none"
+    stroke="#8c7238"
+    stroke-width="1"
+    opacity="0.65"
+  />
+  <path
+    d="M20 46V22l12 14 12-14v24"
+    fill="none"
+    stroke="url(#gold)"
+    stroke-width="3.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="32" cy="55" r="2.2" fill="url(#gold)" />
+</svg>

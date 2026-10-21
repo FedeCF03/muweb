@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon %}
+
+{% block title %}Crear cuenta · {{ site.name }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto max-w-3xl px-5 py-16">
+    <span class="eyebrow">Registro</span>
+    <h1 class="mt-5 text-4xl sm:text-5xl">Creá tu cuenta</h1>
+    <p class="mt-4 max-w-2xl text-muted">
+      Tu cuenta de MU Online se crea acá y después la usás para entrar al juego.
+    </p>
+
+    {% if error %}
+      <div class="panel mt-8 flex items-start gap-3 border-ember/50 p-5 text-sm text-ember-bright">
+        <span class="mt-0.5 shrink-0">{{ icon('spark', 'h-4 w-4') }}</span>
+        <p>{{ error }}</p>
+      </div>
+    {% endif %}
+
+    <form class="panel mt-8 p-7 sm:p-9" method="post" action="{{ url_for('public.register_post') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+          <label for="username" class="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+            Usuario
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            minlength="4"
+            maxlength="10"
+            placeholder="4 a 10 caracteres alfanuméricos"
+            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist placeholder:text-faint focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            disabled
+          />
+        </div>
+
+        <div>
+          <label for="password" class="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+            Contraseña
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            minlength="6"
+            maxlength="10"
+            placeholder="Mínimo 6 caracteres"
+            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist placeholder:text-faint focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            disabled
+          />
+        </div>
+
+        <div>
+          <label for="password2" class="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+            Repetir contraseña
+          </label>
+          <input
+            id="password2"
+            name="password2"
+            type="password"
+            autocomplete="new-password"
+            minlength="6"
+            maxlength="10"
+            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            disabled
+          />
+        </div>
+
+        <div class="sm:col-span-2">
+          <label for="email" class="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+            Email <span class="normal-case tracking-normal text-faint">(opcional)</span>
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="Para avisos de eventos y recuperacion de cuenta"
+            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist placeholder:text-faint focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            disabled
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-8 w-full" disabled aria-disabled="true">
+        Crear cuenta
+      </button>
+
+      <p class="mt-4 text-center text-xs text-faint">
+        El registro por web todavía no está habilitado. Por ahora podés crear la cuenta
+        desde el panel del server o escribirnos al Discord.
+      </p>
+    </form>
+
+    <div class="panel mt-6 flex flex-wrap items-center justify-between gap-4 p-7">
+      <div>
+        <h2 class="text-lg text-mist">¿Preferís hacerlo por otro lado?</h2>
+        <p class="mt-1 text-sm text-muted">Te lo hacemos igual de simple.</p>
+      </div>
+      <a href="{{ site.server.discord_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+        {{ icon('discord', 'h-4 w-4') }} Pedir cuenta por Discord
+      </a>
+    </div>
+  </section>
+{% endblock %}

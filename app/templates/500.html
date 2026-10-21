@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Error del servidor · {{ site.name }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto max-w-2xl px-5 py-24 text-center">
+    <p class="font-display text-6xl text-ember/40">500</p>
+    <h1 class="mt-6 text-3xl sm:text-4xl">Algo salió mal de nuestro lado</h1>
+    <p class="mt-4 text-muted">
+      Ya lo estamos mirando. Probá de nuevo en un momento.
+    </p>
+    <a href="{{ url_for('public.index') }}" class="btn btn-primary mt-9">Volver al inicio</a>
+  </section>
+{% endblock %}

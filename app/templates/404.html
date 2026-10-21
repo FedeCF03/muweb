@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon %}
+
+{% block title %}Página no encontrada · {{ site.name }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto max-w-2xl px-5 py-24 text-center">
+    <p class="font-display text-6xl text-gold/30">404</p>
+    <h1 class="mt-6 text-3xl sm:text-4xl">Esta página no existe</h1>
+    <p class="mt-4 text-muted">
+      Puede que el link esté viejo o que la página haya cambiado de dirección.
+    </p>
+    <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+      <a href="{{ url_for('public.index') }}" class="btn btn-primary">
+        {{ icon('arrow', 'h-4 w-4 rotate-180') }} Volver al inicio
+      </a>
+      <a href="{{ url_for('public.downloads') }}" class="btn btn-secondary">Ir a las descargas</a>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,9 @@
+# Dependencias de runtime
+Flask>=3.1,<4
+Flask-WTF>=1.2,<2
+Werkzeug>=3.1,<4
+gunicorn>=23,<24
+PyYAML>=6.0,<7
+Markdown>=3.7,<4
+nh3>=0.2.18
+python-dotenv>=1.0,<2

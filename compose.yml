@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# Landing de MU Online.
+#
+#   docker compose up -d --build     levanta web + caddy
+#   docker compose logs -f web       logs de la app
+#   docker compose down              para todo (no borra nada importante)
+#
+# En LAN: http://<IP-DE-LA-PC>/
+# ---------------------------------------------------------------------------
+name: muweb
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PORT: 8000
+      CONTENT_DIR: /app/content
+      DOWNLOADS_DIR: /app/downloads
+    volumes:
+      # El contenido se edita en el host y se refleja sin rebuild
+      - ./content:/app/content:ro
+      - ./downloads:/app/downloads:ro
+    networks:
+      - muweb
+      # Para la v1 (conectar con la base de OpenMU) hay que estar en la red
+      # del server. Ver docs/v1-db.md.
+      # - openmu
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      # Solo LAN. Cuando haya dominio, sacar el 80 y agregar el 443.
+      - "80:80"
+      # - "443:443"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      # Archivos pesados del cliente: los sirve Caddy, no Flask
+      - ./downloads:/srv/downloads:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - muweb
+    depends_on:
+      - web
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  muweb:
+    name: muweb
+  # Red del server de juego (para la v1):
+  # openmu:
+  #   name: openmu_openmu
+  #   external: true

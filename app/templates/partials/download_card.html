@@ -1,0 +1,43 @@
+{# Tarjeta de descarga. Uso: {{ download_card(item) }} #}
+{% from "partials/icon.html" import icon %}
+
+{% macro download_card(item) -%}
+  <div class="panel panel-hover flex h-full flex-col p-6">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-gold-dim">{{ item.kind }}</p>
+        <h3 class="mt-2 text-lg text-mist">{{ item.name }}</h3>
+        <p class="mt-1 text-xs text-faint">
+          {{ item.version }}{% if item.size %} · {{ item.size }}{% endif %}
+        </p>
+      </div>
+      <span class="rounded-lg border border-edge bg-surface-2/60 p-3 text-gold">
+        {{ icon('download', 'h-5 w-5') }}
+      </span>
+    </div>
+
+    {% if item.note %}
+      <p class="mt-4 text-sm leading-relaxed text-muted">{{ item.note }}</p>
+    {% endif %}
+
+    <div class="mt-auto pt-6">
+      {% if item.available and item.file %}
+        <a class="btn btn-primary w-full" href="/downloads/{{ item.file }}" download>
+          {{ icon('download', 'h-4 w-4') }} Descargar
+        </a>
+        {% if item.sha256 %}
+          <p class="mt-3 break-all text-[0.65rem] leading-relaxed text-faint">
+            SHA256: <span class="font-medium text-muted">{{ item.sha256 }}</span>
+          </p>
+        {% endif %}
+      {% else %}
+        <button class="btn btn-secondary w-full" type="button" disabled aria-disabled="true">
+          {{ icon('clock', 'h-4 w-4') }} Próximamente
+        </button>
+        <p class="mt-3 text-[0.65rem] leading-relaxed text-faint">
+          Estamos preparando el archivo. Te avisamos por Discord cuando esté listo.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{%- endmacro %}

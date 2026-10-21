@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon %}
+
+{% block title %}Reglas · {{ site.name }}{% endblock %}
+
+{% block content %}
+  <section class="mx-auto max-w-3xl px-5 py-16">
+    <span class="eyebrow">Reglas</span>
+    <h1 class="mt-5 text-4xl sm:text-5xl">Reglas del server</h1>
+    <p class="mt-4 text-muted">
+      Leerlas antes de jugar. Son pocas y se aplican siempre.
+    </p>
+
+    <div class="prose-mu mt-12">{{ body | safe }}</div>
+
+    <div class="panel reveal mt-12 flex flex-wrap items-center justify-between gap-4 p-7">
+      <div>
+        <h2 class="text-lg text-mist">¿Tenés un reclamo?</h2>
+        <p class="mt-1 text-sm text-muted">Los tickets se atienden por Discord, de lunes a viernes.</p>
+      </div>
+      <a href="{{ site.server.discord_url }}" class="btn btn-primary" target="_blank" rel="noopener">
+        {{ icon('discord', 'h-4 w-4') }} Abrir ticket
+      </a>
+    </div>
+  </section>
+{% endblock %}
