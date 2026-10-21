@@ -60,6 +60,21 @@ make dev       # http://127.0.0.1:8000 con recarga automática
 make test      # tests
 ```
 
+## Producción sin Docker (systemd)
+
+Si en la máquina no hay Docker, la landing se puede servir con Gunicorn +
+Caddy instalados en el host. Hay una unidad lista en `deploy/muweb.service`:
+
+```bash
+sudo mkdir -p /opt/muweb && sudo cp -r . /opt/muweb
+sudo chown -R muweb:muweb /opt/muweb
+sudo cp deploy/muweb.service /etc/systemd/system/
+sudo systemctl daemon-reload && sudo systemctl enable --now muweb
+```
+
+Caddy (en el host) se configura con `docker/Caddyfile`, adaptando las rutas de
+`/srv/downloads` a `/opt/muweb/downloads`.
+
 ## Editar el contenido
 
 Todo el texto de la web sale de `content/`. No hace falta tocar plantillas
