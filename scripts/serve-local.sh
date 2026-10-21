@@ -60,7 +60,7 @@ start() {
     echo "==> Levantando Gunicorn en 127.0.0.1:${WEB_PORT}"
     (
       cd "${ROOT}"
-      nohup "${VENV}/bin/gunicorn" \
+      setsid nohup "${VENV}/bin/gunicorn" \
         --bind "127.0.0.1:${WEB_PORT}" \
         --workers "${GUNICORN_WORKERS:-3}" \
         --threads 4 \
@@ -93,7 +93,7 @@ start() {
       HTTP_PORT="${HTTP_PORT}" \
       WEB_UPSTREAM="127.0.0.1:${WEB_PORT}" \
       DOWNLOADS_DIR="${ROOT}/downloads" \
-      nohup "${CADDY_BIN}" run --config "${ROOT}/docker/Caddyfile" --adapter caddyfile \
+      setsid nohup "${CADDY_BIN}" run --config "${ROOT}/docker/Caddyfile" --adapter caddyfile \
         > "${RUN_DIR}/caddy.log" 2>&1 &
       echo $! > "${RUN_DIR}/caddy.pid"
     )
@@ -113,11 +113,13 @@ stop() {
     local pid
     pid="$(pid_of "${RUN_DIR}/${name}.pid")"
     if [ -n "${pid}" ] && kill -0 "${pid}" 2>/dev/null; then
-      kill "${pid}" 2>/dev/null || true
+      # mata el grupo de procesos entero (el master y sus workers)
+      kill -TERM -- "-${pid}" 2>/dev/null || kill -TERM "${pid}" 2>/dev/null || true
       echo "==> Parado ${name} (pid ${pid})"
     fi
     rm -f "${RUN_DIR}/${name}.pid"
   done
+  sleep 1
 }
 
 status() {
