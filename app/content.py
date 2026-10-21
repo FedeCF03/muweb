@@ -12,8 +12,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from datetime import date
-
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -118,6 +117,33 @@ class NewsItem:
     def iso_date(self) -> str:
         return self.date.isoformat()
 
+
+@dataclass(frozen=True)
+class ClassInfo:
+    """Una clase del juego, para las tarjetas de la sección de clases."""
+
+    key: str
+    name: str
+    role: str
+    icon: str
+    accent: str
+    description: str
+    stats: dict[str, int]
+    requirement: str | None
+
+
+@dataclass(frozen=True)
+class EventItem:
+    """Un evento recurrente de la agenda semanal."""
+
+    name: str
+    day: str
+    day_index: int
+    time: str
+    hour: int
+    minute: int
+    duration: str
+
 # --- Contenido ----------------------------------------------------------------
 
 def content_dir() -> Path:
@@ -143,6 +169,124 @@ def load_faq() -> list[dict[str, str]]:
     path = content_dir() / "faq.yml"
     data = _cached(path, lambda: _read_yaml(path))
     return list(data.get("items", []))
+
+
+def load_classes() -> list[ClassInfo]:
+    """Clases del juego, para las tarjetas de la sección de clases."""
+    path = content_dir() / "classes.yml"
+    data = _cached(path, lambda: _read_yaml(path))
+    items: list[ClassInfo] = []
+    for raw in data.get("classes", []):
+        stats = {str(k): int(v) for k, v in (raw.get("stats") or {}).items()}
+        items.append(
+            ClassInfo(
+                key=str(raw.get("key", "")),
+                name=str(raw.get("name", "")),
+                role=str(raw.get("role", "")),
+                icon=str(raw.get("icon", "spark")),
+                accent=str(raw.get("accent", "#d6b25e")),
+                description=str(raw.get("description", "")),
+                stats=stats,
+                requirement=str(raw["requirement"]) if raw.get("requirement") else None,
+            )
+        )
+    return items
+
+
+def load_gallery() -> dict[str, Any]:
+    """Galería de mapas (nota + tarjetas)."""
+    path = content_dir() / "gallery.yml"
+    return _cached(path, lambda: _read_yaml(path))
+
+
+WEEKDAYS_ES = {
+    "lunes": 0,
+    "martes": 1,
+    "miercoles": 2,
+    "miércoles": 2,
+    "jueves": 3,
+    "viernes": 4,
+    "sabado": 5,
+    "sábado": 5,
+    "domingo": 6,
+}
+
+
+def _parse_time(value: Any) -> tuple[int, int]:
+    """"21:30" -> (21, 30). Tolerante a formatos raros."""
+    text = str(value or "0:0")
+    hours, _, minutes = text.partition(":")
+    try:
+        return int(hours), int(minutes or 0)
+    except ValueError:
+        return 0, 0
+
+
+def _events_raw() -> dict[str, Any]:
+    """Archivo completo de la agenda (nota de zona horaria + eventos)."""
+    path = content_dir() / "events.yml"
+    return _cached(path, lambda: _read_yaml(path))
+
+
+def load_events_note() -> str:
+    """Nota sobre la zona horaria de la agenda."""
+    return str(_events_raw().get("timezone_note", ""))
+
+
+def load_events() -> list[EventItem]:
+    """Agenda de eventos recurrentes, ordenada por día y hora."""
+    data = _events_raw()
+    items: list[EventItem] = []
+    for raw in data.get("events", []):
+        day = str(raw.get("day", ""))
+        day_index = WEEKDAYS_ES.get(day.strip().lower())
+        if day_index is None:
+            continue
+        hour, minute = _parse_time(raw.get("time"))
+        items.append(
+            EventItem(
+                name=str(raw.get("name", "")),
+                day=day,
+                day_index=day_index,
+                time=str(raw.get("time", "")),
+                hour=hour,
+                minute=minute,
+                duration=str(raw.get("duration", "")),
+            )
+        )
+    items.sort(key=lambda ev: (ev.day_index, ev.hour, ev.minute))
+    return items
+
+
+def next_event(now: datetime | None = None) -> EventItem | None:
+    """El evento más cercano en el tiempo a partir de ``now``."""
+    now = now or datetime.now()
+    if not now.tzinfo:
+        now = now.astimezone()
+
+    def starts_at(event: EventItem) -> datetime:
+        candidate = now.replace(hour=event.hour, minute=event.minute, second=0, microsecond=0)
+        days_ahead = (event.day_index - now.weekday()) % 7
+        candidate += timedelta(days=days_ahead)
+        if candidate <= now:
+            candidate += timedelta(days=7)
+        return candidate
+
+    events = load_events()
+    return min(events, key=starts_at) if events else None
+
+
+def event_starts_at(event: EventItem, now: datetime | None = None) -> datetime:
+    """Fecha y hora de la próxima edición de un evento (para el countdown)."""
+    now = now or datetime.now()
+    if not now.tzinfo:
+        now = now.astimezone()
+    candidate = now.replace(hour=event.hour, minute=event.minute, second=0, microsecond=0)
+    days_ahead = (event.day_index - now.weekday()) % 7
+    candidate += timedelta(days=days_ahead)
+    if candidate <= now:
+        candidate += timedelta(days=7)
+    return candidate
 
 def load_page(name: str) -> tuple[str, str]:
     """Página en Markdown. Devuelve (markdown crudo, html)."""
@@ -194,6 +338,9 @@ def content_summary() -> dict[str, Any]:
         "site": site.get("name", "?"),
         "noticias": len(load_news()),
         "descargas": len(load_downloads().get("items", [])),
+        "clases": len(load_classes()),
+        "galeria": len(load_gallery().get("items", [])),
+        "eventos": len(load_events()),
         "faq": len(load_faq()),
         "paginas": [p.stem for p in sorted(content_dir().glob("*.md"))],
     }

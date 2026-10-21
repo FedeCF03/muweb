@@ -1,0 +1,43 @@
+# ===========================================================================
+#  Agenda de eventos recurrentes.
+#
+#  day:   Lunes, Martes, Miércoles, Jueves, Viernes, Sábado o Domingo
+#  time:  hora de inicio (formato 24 h, hora local del server)
+#  duration: cuánto dura ("1 h", "Todo el día", etc.)
+#
+#  El próximo evento se calcula solo: la web muestra el más cercano con
+#  cuenta regresiva y marca el día de hoy en la grilla.
+# ===========================================================================
+
+timezone_note: "Los horarios son de Argentina (UTC-3)."
+
+events:
+  - day: "Lunes"
+    time: "21:00"
+    name: "Invasión de dragonidos en Lorencia"
+    duration: "1 h"
+
+  - day: "Miércoles"
+    time: "21:30"
+    name: "Boss rush de Kundun en Devias"
+    duration: "45 min"
+
+  - day: "Viernes"
+    time: "22:00"
+    name: "Boss rush de la Lost Tower"
+    duration: "1 h"
+
+  - day: "Sábado"
+    time: "00:00"
+    name: "Doble EXP en todos los sub-servidores"
+    duration: "Todo el día"
+
+  - day: "Domingo"
+    time: "00:00"
+    name: "Doble EXP en todos los sub-servidores"
+    duration: "Todo el día"
+
+  - day: "Domingo"
+    time: "21:00"
+    name: "Cierre de temporada y reparto de premios"
+    duration: "30 min"

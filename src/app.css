@@ -241,6 +241,124 @@
     transform: none;
   }
 
+  /* --- Arte generado de la galería -------------------------------------- */
+  .art {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .art::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("/static/img/noise.svg");
+    opacity: 0.3;
+  }
+
+  .art::after {
+    content: attr(data-glyph);
+    position: absolute;
+    right: 4%;
+    bottom: -14%;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 9rem;
+    line-height: 1;
+    color: rgb(232 237 245 / 0.07);
+    pointer-events: none;
+  }
+
+  .art-plains {
+    background:
+      radial-gradient(140% 90% at 25% 0%, #2a3a55 0%, transparent 55%),
+      linear-gradient(180deg, #0e1a2c 0%, #0a1322 60%, #060b14 100%);
+  }
+
+  .art-forest {
+    background:
+      radial-gradient(140% 90% at 70% 0%, #1f3a2e 0%, transparent 55%),
+      linear-gradient(180deg, #0c1a16 0%, #091310 60%, #050a09 100%);
+  }
+
+  .art-frost {
+    background:
+      radial-gradient(140% 90% at 30% 0%, #2b415f 0%, transparent 55%),
+      linear-gradient(180deg, #0f1c30 0%, #0b1626 60%, #060c16 100%);
+  }
+
+  .art-cave {
+    background:
+      radial-gradient(140% 90% at 60% 0%, #3a2a24 0%, transparent 55%),
+      linear-gradient(180deg, #160f0e 0%, #100b0a 60%, #070505 100%);
+  }
+
+  .art-tower {
+    background:
+      radial-gradient(150% 100% at 50% 0%, #32224d 0%, transparent 55%),
+      linear-gradient(180deg, #150f24 0%, #0e0a1a 60%, #070511 100%);
+  }
+
+  .art-sky {
+    background:
+      radial-gradient(140% 90% at 50% 100%, #2c3a60 0%, transparent 60%),
+      linear-gradient(180deg, #101a35 0%, #0d1528 55%, #070c18 100%);
+  }
+
+  /* --- Lightbox de la galería ------------------------------------------- */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: rgb(6 8 15 / 0.92);
+    backdrop-filter: blur(6px);
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox-panel {
+    width: min(56rem, 100%);
+  }
+
+  /* --- Brasas del hero --------------------------------------------------- */
+  .ember {
+    position: absolute;
+    bottom: -6px;
+    left: var(--x, 50%);
+    width: var(--size, 3px);
+    height: var(--size, 3px);
+    border-radius: 999px;
+    background-color: var(--color-gold);
+    box-shadow: 0 0 10px 2px rgb(214 178 94 / 0.4);
+    opacity: 0;
+    animation: ember-rise var(--dur, 12s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    will-change: transform, opacity;
+  }
+
+  @keyframes ember-rise {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.8);
+      opacity: 0;
+    }
+    8% {
+      opacity: 0.9;
+    }
+    70% {
+      opacity: 0.45;
+    }
+    100% {
+      transform: translate3d(var(--drift, 24px), -30rem, 0) scale(1.15);
+      opacity: 0;
+    }
+  }
+
   /* --- Contenido markdown ------------------------------------------------ */
   .prose-mu {
     color: var(--color-muted);
@@ -310,16 +428,15 @@
     scroll-behavior: auto;
   }
 
-  .reveal {
+  .reveal,
+  .js .reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
 
-  .js .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .ember {
+    display: none;
   }
 
   *,

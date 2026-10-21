@@ -1,0 +1,49 @@
+# ===========================================================================
+#  Galería de mapas.
+#
+#  Por ahora cada tarjeta es un "arte" generado con la paleta del mapa.
+#  Cuando haya capturas reales:
+#    1. Guardá la imagen en app/static/img/gallery/ (ej: lorencia.jpg)
+#    2. En este YAML poné  image: "gallery/lorencia.jpg"
+#  La tarjeta pasa a mostrar la foto sola, sin tocar la plantilla.
+# ===========================================================================
+
+# Nota que se muestra arriba de la grilla
+note: "Estamos armando la galería con capturas reales del server. Mientras tanto, los mapas que vas a recorrer."
+
+items:
+  - map: "Lorencia"
+    level: "Nivel 1+"
+    tag: "Ciudad de inicio"
+    palette: "plains"
+    image: null
+
+  - map: "Noria"
+    level: "Nivel 10+"
+    tag: "Hogar de las elfas"
+    palette: "forest"
+    image: null
+
+  - map: "Devias"
+    level: "Nivel 15+"
+    tag: "Nieve y guilds"
+    palette: "frost"
+    image: null
+
+  - map: "Dungeon"
+    level: "Nivel 30+"
+    tag: "Primeras partidas"
+    palette: "cave"
+    image: null
+
+  - map: "Lost Tower"
+    level: "Nivel 80+"
+    tag: "La torre del server"
+    palette: "tower"
+    image: null
+
+  - map: "Icarus"
+    level: "Nivel 180+"
+    tag: "El endgame del aire"
+    palette: "sky"
+    image: null

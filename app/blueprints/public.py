@@ -2,9 +2,24 @@
 
 from __future__ import annotations
 
-from flask import Blueprint, current_app, render_template, request, url_for
+from datetime import datetime
 
-from ..content import get_news, load_downloads, load_faq, load_news, load_page, load_site
+from flask import Blueprint, current_app, render_template, request
+
+from ..content import (
+    event_starts_at,
+    get_news,
+    load_classes,
+    load_downloads,
+    load_events,
+    load_events_note,
+    load_faq,
+    load_gallery,
+    load_news,
+    load_page,
+    load_site,
+    next_event,
+)
 
 bp = Blueprint("public", __name__)
 
@@ -12,12 +27,20 @@ bp = Blueprint("public", __name__)
 @bp.get("/")
 def index():
     """Landing principal."""
+    upcoming = next_event()
     return render_template(
         "index.html",
         title=None,
         news=load_news()[:3],
         downloads=load_downloads(),
         faq_preview=load_faq()[:4],
+        classes=load_classes(),
+        gallery=load_gallery(),
+        events=load_events(),
+        events_note=load_events_note(),
+        next_event=upcoming,
+        next_event_at=event_starts_at(upcoming) if upcoming else None,
+        today_index=datetime.now().astimezone().weekday(),
     )
 
 

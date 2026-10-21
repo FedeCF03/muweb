@@ -1,0 +1,51 @@
+{# Arte de fondo del hero: silueta de montañas, niebla dorada y brasas. #}
+<div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  {# niebla dorada baja #}
+  <div class="absolute -bottom-16 left-1/2 h-56 w-[42rem] -translate-x-1/2 rounded-full bg-gold/5 blur-3xl"></div>
+
+  {# silueta de las sierras #}
+  <div class="absolute inset-x-0 bottom-0 h-44 sm:h-60">
+    <svg class="h-full w-full" viewBox="0 0 1440 260" preserveAspectRatio="none" fill="none">
+      <defs>
+        <linearGradient id="ridge-far" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#121d31" />
+          <stop offset="1" stop-color="#0b111c" />
+        </linearGradient>
+        <linearGradient id="ridge-near" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0e1626" />
+          <stop offset="1" stop-color="#070b13" />
+        </linearGradient>
+        <linearGradient id="ridge-rim" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#d6b25e" stop-opacity="0" />
+          <stop offset="0.45" stop-color="#d6b25e" stop-opacity="0.35" />
+          <stop offset="1" stop-color="#d6b25e" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      <path
+        d="M0 200 L90 140 L180 185 L300 118 L420 180 L560 148 L700 190 L820 128 L960 175 L1080 142 L1200 185 L1320 150 L1440 195 V260 H0 Z"
+        fill="url(#ridge-far)"
+        opacity="0.8"
+      />
+      <path
+        d="M0 235 L120 193 L240 225 L360 183 L500 220 L640 198 L780 230 L920 193 L1060 225 L1200 203 L1340 230 L1440 213 V260 H0 Z"
+        fill="url(#ridge-near)"
+      />
+      <path
+        d="M0 235 L120 193 L240 225 L360 183 L500 220 L640 198 L780 230 L920 193 L1060 225 L1200 203 L1340 230 L1440 213"
+        stroke="url(#ridge-rim)"
+        stroke-width="1.5"
+      />
+    </svg>
+  </div>
+
+  {# brasas que suben del valle #}
+  <div class="absolute inset-0">
+    {% for i in range(18) %}
+      <span
+        class="ember"
+        style="--x: {{ (i * 53 + 7) % 100 }}%; --dur: {{ 9 + (i % 6) * 2 }}s; --delay: {{ (i * 1.37) | round(1) }}s; --drift: {{ ((i % 7) - 3) * 16 }}px; --size: {{ 2 + (i % 3) }}px;"
+      ></span>
+    {% endfor %}
+  </div>
+</div>

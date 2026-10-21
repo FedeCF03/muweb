@@ -1,0 +1,73 @@
+# ===========================================================================
+#  Clases del juego (Season 6).
+#  Cada tarjeta muestra: icono, rol, tres barras (0 a 100) y una descripción.
+#  requirement: texto opcional para las clases que se desbloquean con nivel.
+# ===========================================================================
+
+classes:
+  - key: dk
+    name: "Dark Knight"
+    role: "Melé, frente a frente"
+    icon: "sword"
+    accent: "#c25450"
+    description: >-
+      Pega fuerte y aguanta todo. La clase más directa para arrancar y la que
+      abre los grupos en mazmorras.
+    stats:
+      Daño: 70
+      Resistencia: 90
+      Dificultad: 40
+
+  - key: dw
+    name: "Dark Wizard"
+    role: "Daño mágico en área"
+    icon: "staff"
+    accent: "#7c8ff0"
+    description: >-
+      Barre mapas enteros con Energy. Es frágil: la clave está en posicionar
+      antes de tirar la skill.
+    stats:
+      Daño: 90
+      Resistencia: 35
+      Dificultad: 70
+
+  - key: elf
+    name: "Fairy Elf"
+    role: "Soporte o dps a distancia"
+    icon: "bow"
+    accent: "#5ec98f"
+    description: >-
+      Dos caminos en una clase: curar y bufear al grupo (Energy) o picar de
+      lejos con agilidad (Agility).
+    stats:
+      Daño: 75
+      Resistencia: 50
+      Dificultad: 55
+
+  - key: mg
+    name: "Magic Gladiator"
+    role: "Híbrido melé y magia"
+    icon: "blades"
+    accent: "#e0a04a"
+    requirement: "Se desbloquea con un personaje en nivel 220"
+    description: >-
+      Mezcla fuerza y energía en el mismo personaje. Pega en melé y a la vez
+      tira hechizos de área.
+    stats:
+      Daño: 85
+      Resistencia: 65
+      Dificultad: 65
+
+  - key: dl
+    name: "Dark Lord"
+    role: "Comandante de guild"
+    icon: "crown"
+    accent: "#d6b25e"
+    requirement: "Se desbloquea con un personaje en nivel 250"
+    description: >-
+      Lidera las guerras de guild, convoca a su mascota y manda caballería al
+      frente de la batalla.
+    stats:
+      Daño: 80
+      Resistencia: 70
+      Dificultad: 60

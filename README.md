@@ -103,7 +103,18 @@ ni reiniciar nada: el cache se invalida solo cuando cambia el archivo.
 | Descargas, requisitos, instrucciones de instalación | `content/downloads.yml` |
 | Preguntas frecuentes | `content/faq.yml` |
 | Reglas del server | `content/rules.md` |
+| Clases (icono, color, stats) | `content/classes.yml` |
+| Galería de mapas | `content/gallery.yml` |
+| Agenda de eventos y cuenta regresiva | `content/events.yml` |
 | Noticias | `content/news/AAAA-MM-DD-slug.md` |
+
+**Galería:** cada tarjeta de `content/gallery.yml` puede tener `image: "gallery/lorencia.jpg"`.
+Sin imagen, se muestra un arte generado con la paleta del mapa; con imagen, la
+foto directamente (guardala en `app/static/img/gallery/`).
+
+**Eventos:** el próximo evento se calcula solo a partir de `content/events.yml`
+(día + hora) y la cuenta regresiva corre en el navegador. La grilla marca el
+día de hoy automáticamente.
 
 Una noticia es un `.md` con front matter:
 
