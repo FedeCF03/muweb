@@ -51,6 +51,23 @@ docker compose logs -f web   # logs
 docker compose down          # parar
 ```
 
+## Arranque sin Docker (Gunicorn + Caddy en la máquina)
+
+Docker no hace falta: hay un script que levanta lo mismo en local.
+
+```bash
+./scripts/serve-local.sh start     # levanta gunicorn + caddy
+./scripts/serve-local.sh status    # puertos + healthcheck
+./scripts/serve-local.sh logs      # logs en vivo
+./scripts/serve-local.sh stop      # para todo
+```
+
+Queda en `http://<IP-DE-LA-PC>/` (puerto 80). Para escuchar en un puerto alto
+sin permisos, usar `HTTP_PORT=8080 ./scripts/serve-local.sh start`.
+
+El script aplica `cap_net_bind_service` al binario de Caddy (con sudo) para
+poder usar el puerto 80 sin ser root.
+
 ## Arranque sin Docker (desarrollo)
 
 ```bash

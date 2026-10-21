@@ -24,3 +24,6 @@ downloads/*
 
 # Archivos del harness de opencode (no son del proyecto)
 .opencode/
+
+# Logs y pids del servidor local
+.run/

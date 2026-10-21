@@ -5,6 +5,11 @@
 # - /downloads/* -> archivos pesados servidos desde disco, con rangos HTTP
 #                   (descarga reanudable) y sin pasar por Flask
 #
+# Variables de entorno (con valor por defecto):
+#   HTTP_PORT       puerto donde escucha Caddy           (80)
+#   WEB_UPSTREAM    app Flask a la que hace proxy       (web:8000)
+#   DOWNLOADS_DIR   carpeta con los archivos de descarga (/srv/downloads)
+#
 # Versión actual: solo LAN en el puerto 80. Cuando tengas dominio, comentá
 # el bloque ":80" y usá el bloque del dominio (abajo).
 # ---------------------------------------------------------------------------
@@ -13,20 +18,23 @@
 	auto_https off
 }
 
-:80 {
+:{$HTTP_PORT:80} {
 	encode zstd gzip
 
 	# Archivos de descarga (cliente .zip, patches, etc.)
 	handle /downloads/* {
-		# quita el prefijo /downloads para buscar el archivo en /srv/downloads
+		# quita el prefijo /downloads para buscar el archivo en DOWNLOADS_DIR
 		uri strip_prefix /downloads
-		root * /srv/downloads
+		root * {$DOWNLOADS_DIR:/srv/downloads}
 		file_server
 	}
 
 	# Todo lo demás lo sirve Flask
 	handle {
-		reverse_proxy web:8000
+		reverse_proxy {$WEB_UPSTREAM:web:8000} {
+			# no revela el server interno
+			header_down Server ""
+		}
 	}
 
 	log {
@@ -44,12 +52,12 @@
 #
 # 	handle /downloads/* {
 # 		uri strip_prefix /downloads
-# 		root * /srv/downloads
+# 		root * {$DOWNLOADS_DIR:/srv/downloads}
 # 		file_server
 # 	}
 #
 # 	handle {
-# 		reverse_proxy web:8000
+# 		reverse_proxy {$WEB_UPSTREAM:web:8000}
 # 	}
 #
 # 	log {
