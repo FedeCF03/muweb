@@ -1,0 +1,18 @@
+# Contexto de build: solo lo necesario para la imagen
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+tools
+tests
+docs
+scripts
+src
+.env
+.env.*
+*.log
+Makefile
+README.md
