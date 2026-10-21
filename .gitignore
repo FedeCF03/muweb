@@ -21,3 +21,6 @@ downloads/*
 # Sistema
 .DS_Store
 *.log
+
+# Archivos del harness de opencode (no son del proyecto)
+.opencode/

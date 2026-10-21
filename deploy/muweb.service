@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+# Alternativa a Docker: servir la landing con systemd + Gunicorn + Caddy.
+#
+#   sudo cp deploy/muweb.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now muweb
+#
+# Si usás Caddy instalado en el host, en lugar del de Docker:
+#   sudo cp docker/Caddyfile /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+# ---------------------------------------------------------------------------
+
+[Unit]
+Description=muweb - landing de MU Online (Flask/Gunicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=muweb
+Group=muweb
+WorkingDirectory=/opt/muweb
+Environment="PATH=/opt/muweb/.venv/bin"
+EnvironmentFile=/opt/muweb/.env
+ExecStart=/opt/muweb/.venv/bin/gunicorn \
+    --bind 127.0.0.1:8000 \
+    --workers 3 \
+    --threads 4 \
+    --timeout 60 \
+    --access-logfile - \
+    --error-logfile - \
+    "app:create_app()"
+Restart=always
+RestartSec=5
+
+# Endurecimiento básico
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/muweb/downloads
+
+[Install]
+WantedBy=multi-user.target
