@@ -1,7 +1,7 @@
 # Plan de integración con base de datos (v1)
 #
 # Estado actual: la v0 es 100% estática. El contenido vive en YAML/Markdown
-# dentro de content/ y la capa app/content.py es la única que lee esos
+# dentro de content/ y los repositorios de app/repositories/files son los únicos que leen esos
 # archivos. Esta nota deja diagramado el camino a la v1 sin tocar plantillas.
 #
 # ---------------------------------------------------------------------------
@@ -61,13 +61,14 @@
 # ---------------------------------------------------------------------------
 #
 # 1) Dependencias: SQLAlchemy 2, psycopg[binary], Flask-Migrate, Flask-Login.
-# 2) app/content.py: las funciones load_site/load_news/load_downloads/load_faq/
-#    load_page pasan a leer de la base. Se mantienen los mismos nombres y los
-#    mismos tipos de retorno (dataclasses) para no tocar ni una plantilla.
+# 2) Ya hecho: app/repositories/postgres implementa los mismos contratos que
+#    el backend de archivos (app/repositories/base.py) y devuelve los mismos
+#    modelos. Se activa con CONTENT_BACKEND=db; el esquema está en db/schema.sql.
 # 3) Se agrega el repositorio de OpenMU (app/services/openmu.py) con las
 #    consultas de lectura: top de personajes, guilds, etc.
-# 4) El registro web (app/blueprints/public.py::register_post) deja de
-#    devolver 503 y llama a OpenMU. Ver la seccion 5.
+# 4) El registro web (app/controllers/account.py) ya valida con
+#    app/services/accounts.py y llama a OpenMuAccountRepository. Falta solo
+#    el INSERT verificado (sección 5) y encender OPENMU_WRITES_VERIFIED=1.
 #
 # ---------------------------------------------------------------------------
 # 5. Crear cuentas en OpenMU (lo más delicado)

@@ -1,18 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MU">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f2d795" />
-      <stop offset="100%" stop-color="#b38f3f" />
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="#0b111c" />
-  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="url(#g)" stroke-width="2" />
-  <path
-    d="M16 46V18l16 18 16-18v28"
-    fill="none"
-    stroke="url(#g)"
-    stroke-width="4"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="96" fill="#16181b" stroke="#2a2e33" stroke-width="4"/>
+  <circle cx="100" cy="100" r="80" fill="#0f1114"/>
+  <g fill="#7cff9e">
+    <path d="M96 104 C80 86 54 76 22 78 C40 84 54 90 62 97 C48 95 34 97 24 103 C42 103 56 106 66 110 C56 113 46 119 40 127 C60 121 80 113 96 108 Z"/>
+    <path d="M104 104 C120 86 146 76 178 78 C160 84 146 90 138 97 C152 95 166 97 176 103 C158 103 144 106 134 110 C144 113 154 119 160 127 C140 121 120 113 104 108 Z"/>
+    <circle cx="100" cy="106" r="5"/>
+  </g>
+  <g stroke="#f2f5f5" stroke-width="5" stroke-linecap="round">
+    <path d="M100 26v14M100 160v14M26 100h14M160 100h14"/>
+  </g>
 </svg>

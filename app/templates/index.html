@@ -1,394 +1,231 @@
 {% extends "base.html" %}
 {% from "partials/icon.html" import icon %}
 {% from "partials/news_card.html" import news_card %}
-{% from "partials/download_card.html" import download_card %}
-{% from "partials/class_card.html" import class_card %}
 {% from "partials/gallery_tile.html" import gallery_tile %}
 
 {% block content %}
   {# ------------------------------------------------------------------ #}
-  {# Hero                                                            #}
+  {# Bienvenida: qué es el server, rates y próximo evento               #}
   {# ------------------------------------------------------------------ #}
-  <section class="relative overflow-hidden border-b border-edge/60">
-    <div class="absolute inset-0 bg-grid opacity-70"></div>
-    <div class="absolute -top-48 left-1/2 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-gold/10 blur-[130px]"></div>
-    {% include "partials/hero_art.html" %}
-    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-obsidian"></div>
+  <section aria-labelledby="bienvenida" class="relative">
+    <img
+      src="{{ url_for('static', filename='img/renders/elfa.webp') }}"
+      alt="" width="450" height="560" loading="eager"
+      class="pointer-events-none absolute -top-10 right-[-1.5rem] hidden h-[23rem] w-auto drop-shadow-[0_10px_18px_rgb(43_29_14/0.45)] md:block"
+    />
+    <div class="relative md:max-w-[62%]">
+      <h2 id="bienvenida" class="text-[clamp(1.6rem,3.2vw,2.3rem)] text-ink">Bienvenido de vuelta a MU</h2>
+      <p class="mt-3 text-base leading-relaxed text-muted">{{ site.hero.subtitle }}</p>
 
-    <div class="relative mx-auto grid max-w-6xl items-center gap-14 px-5 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-28">
-      <div>
-        <span class="chip">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/70"></span>
-          {{ site.server.status_label }}
-          <span class="text-faint">·</span>
-          {{ site.hero.badge }}
-        </span>
-
-        <h1 class="mt-7 text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">
-          <span class="text-gold-gradient">{{ site.hero.title }}</span>
-        </h1>
-
-        <p class="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-          {{ site.hero.subtitle }}
-        </p>
-
-        <div class="mt-9 flex flex-wrap items-center gap-3">
-          <a href="{{ site.hero.primary.href }}" class="btn btn-primary">
-            {{ icon('download', 'h-4 w-4') }} {{ site.hero.primary.label }}
-          </a>
-          <a href="{{ site.hero.secondary.href }}" class="btn btn-secondary">
-            {{ icon('spark', 'h-4 w-4') }} {{ site.hero.secondary.label }}
-          </a>
+      <dl class="mt-6 grid max-w-md gap-y-2 text-sm">
+        {% for rate in site.rates %}
+          <div class="flex items-baseline gap-2">
+            <dt class="font-display font-bold text-ink">{{ rate.label }}</dt>
+            <span class="flex-1 border-b border-dotted border-gold-deep/70" aria-hidden="true"></span>
+            <dd class="font-display text-lg font-bold tabular-nums text-lacre">{{ rate.value }}</dd>
+          </div>
+        {% endfor %}
+        <div class="flex items-baseline gap-2">
+          <dt class="font-display font-bold text-ink">Cliente</dt>
+          <span class="flex-1 border-b border-dotted border-gold-deep/70" aria-hidden="true"></span>
+          <dd class="font-display font-bold text-lacre">WebZen {{ site.server.client_version }}</dd>
         </div>
+      </dl>
 
-        <dl class="mt-12 grid max-w-lg grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
-          {% for rate in site.rates %}
-            <div>
-              <dt class="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-faint">{{ rate.label }}</dt>
-              <dd class="mt-1 font-display text-2xl text-gold">{{ rate.value }}</dd>
-            </div>
-          {% endfor %}
-        </dl>
-      </div>
-
-      {# Ficha del server #}
-      <div class="panel relative p-7">
-        <div class="absolute inset-x-7 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent"></div>
-        <h2 class="font-display text-xl text-mist">Ficha del server</h2>
-        <p class="mt-1 text-xs uppercase tracking-[0.2em] text-faint">Todos los datos para empezar</p>
-
-        <dl class="mt-7 divide-y divide-edge-soft">
-          <div class="flex items-center justify-between gap-4 py-3">
-            <dt class="text-sm text-muted">Servidor</dt>
-            <dd class="flex items-center gap-2 text-sm font-medium text-mist">
-              <span id="connect-host">{{ site.server.connect_host }}</span>
-              <span class="text-faint">:{{ site.server.connect_port }}</span>
-              <button
-                type="button"
-                class="rounded border border-edge p-1.5 text-faint transition-colors hover:border-gold-dim hover:text-gold"
-                data-copy="{{ site.server.connect_host }}"
-                aria-label="Copiar la dirección del servidor"
-              >
-                {{ icon('scroll', 'h-3.5 w-3.5') }}
-              </button>
-            </dd>
-          </div>
-          <div class="flex items-center justify-between gap-4 py-3">
-            <dt class="text-sm text-muted">Versión</dt>
-            <dd class="text-sm font-medium text-mist">{{ site.server.season }} {{ site.server.episode }}</dd>
-          </div>
-          <div class="flex items-center justify-between gap-4 py-3">
-            <dt class="text-sm text-muted">Cliente</dt>
-            <dd class="text-sm font-medium text-mist">WebZen {{ site.server.client_version }}</dd>
-          </div>
-          <div class="flex items-center justify-between gap-4 py-3">
-            <dt class="text-sm text-muted">Sub-servidores</dt>
-            <dd class="text-sm font-medium text-mist">6 canales</dd>
-          </div>
-          <div class="flex items-center justify-between gap-4 py-3">
-            <dt class="text-sm text-muted">Idioma</dt>
-            <dd class="text-sm font-medium text-mist">Español</dd>
-          </div>
-        </dl>
-
-        <a href="{{ site.server.discord_url }}" class="btn btn-secondary mt-7 w-full" target="_blank" rel="noopener">
-          {{ icon('discord', 'h-4 w-4') }} Soporte en Discord
+      {# En celular las columnas laterales quedan abajo: la acción va acá #}
+      <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:hidden">
+        <a href="{{ site.hero.primary.href }}" class="btn btn-primary !min-h-12">
+          {{ icon('download', 'h-5 w-5') }} {{ site.hero.primary.label }}
         </a>
+        <a href="{{ site.hero.secondary.href }}" class="btn btn-secondary !min-h-12">{{ site.hero.secondary.label }}</a>
       </div>
     </div>
-  </section>
 
-  {# ------------------------------------------------------------------ #}
-  {# Rates                                                            #}
-  {# ------------------------------------------------------------------ #}
-  <section class="mx-auto max-w-6xl px-5 py-20">
-    <div class="reveal text-center">
-      <span class="eyebrow">Rates del server</span>
-      <h2 class="mt-5 text-3xl sm:text-4xl">Subí de nivel sin esperar semanas</h2>
-      <p class="mx-auto mt-4 max-w-2xl text-muted">
-        Rates pensados para que progreses rápido al principio y no te aburras en la semana tres.
-        Los eventos los suben todavía más.
-      </p>
-    </div>
-
-    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      {% for rate in site.rates %}
-        <div class="panel panel-hover reveal p-6 text-center">
-          <p class="font-display text-4xl text-gold">{{ rate.value }}</p>
-          <p class="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{{ rate.label }}</p>
+    {% if next_event %}
+      <div class="relative mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-y-2 border-double border-gold-deep/70 bg-parchment-deep/40 px-5 py-4">
+        <div>
+          <h3 class="font-display text-lg font-bold text-ink">{{ next_event.name }}</h3>
+          <p class="text-sm text-muted">Próximo evento · {{ next_event.day }} {{ next_event.time }} · dura {{ next_event.duration }}</p>
         </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  {# ------------------------------------------------------------------ #}
-  {# Features                                                         #}
-  {# ------------------------------------------------------------------ #}
-  <section class="border-y border-edge/60 bg-surface/30">
-    <div class="mx-auto max-w-6xl px-5 py-20">
-      <div class="reveal max-w-2xl">
-        <span class="eyebrow">Qué te encontrás</span>
-        <h2 class="mt-5 text-3xl sm:text-4xl">Un server de Season 6, cuidado al detalle</h2>
-      </div>
-
-      <div class="mt-12 grid gap-5 sm:grid-cols-2">
-        {% for feature in site.features %}
-          <div class="panel panel-hover reveal flex gap-5 p-7">
-            <span class="shrink-0 rounded-lg border border-gold-dim/40 bg-gold/10 p-3 text-gold">
-              {{ icon(feature.icon, 'h-6 w-6') }}
-            </span>
-            <div>
-              <h3 class="text-lg text-mist">{{ feature.title }}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted">{{ feature.text }}</p>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  {# ------------------------------------------------------------------ #}
-  {# Clases                                                          #}
-  {# ------------------------------------------------------------------ #}
-  <section id="clases" class="border-y border-edge/60 bg-surface/30">
-    <div class="mx-auto max-w-6xl px-5 py-20">
-      <div class="reveal max-w-2xl">
-        <span class="eyebrow">Clases</span>
-        <h2 class="mt-5 text-3xl sm:text-4xl">Elegí tu camino</h2>
-        <p class="mt-4 text-muted">
-          Las cinco clases de Season 6, cada una con su rol. Si es tu primera
-          vez en MU, arrancá con Dark Knight o Fairy Elf.
+        <p class="text-right">
+          <span class="block text-xs font-semibold uppercase tracking-[0.14em] text-faint">Empieza en</span>
+          <span class="font-display text-2xl font-bold tabular-nums text-lacre" data-countdown="{{ next_event_at.isoformat() }}">--:--:--</span>
         </p>
       </div>
-
-      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {% for item in classes %}
-          {{ class_card(item) }}
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  {# ------------------------------------------------------------------ #}
-  {# Galería                                                         #}
-  {# ------------------------------------------------------------------ #}
-  <section id="galeria" class="mx-auto max-w-6xl px-5 py-20">
-    <div class="flex flex-wrap items-end justify-between gap-6 reveal">
-      <div>
-        <span class="eyebrow">Galería</span>
-        <h2 class="mt-5 text-3xl sm:text-4xl">Los mapas que vas a recorrer</h2>
-      </div>
-      <p class="max-w-md text-sm leading-relaxed text-muted">{{ gallery.note }}</p>
-    </div>
-
-    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {% for item in gallery['items'] %}
-        <div class="reveal">{{ gallery_tile(item) }}</div>
-      {% endfor %}
-    </div>
-  </section>
-
-  {# ------------------------------------------------------------------ #}
-  {# Agenda semanal                                                  #}
-  {# ------------------------------------------------------------------ #}
-  <section id="eventos" class="border-y border-edge/60 bg-surface/30">
-    <div class="mx-auto max-w-6xl px-5 py-20">
-      <div class="reveal text-center">
-        <span class="eyebrow">Agenda semanal</span>
-        <h2 class="mt-5 text-3xl sm:text-4xl">Siempre hay algo para hacer</h2>
-        <p class="mx-auto mt-4 max-w-2xl text-muted">
-          Eventos que se repiten todas las semanas. La cuenta regresiva se
-          actualiza sola. {{ events_note }}
-        </p>
-      </div>
-
-      {% if next_event %}
-        <div class="panel reveal mt-12 flex flex-wrap items-center justify-between gap-6 p-7">
-          <div>
-            <p class="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-gold">Próximo evento</p>
-            <h3 class="mt-3 font-display text-2xl text-mist">{{ next_event.name }}</h3>
-            <p class="mt-2 text-sm text-muted">
-              {{ next_event.day }} a las {{ next_event.time }} · dura {{ next_event.duration }}
-            </p>
-          </div>
-          <div class="text-right">
-            <p class="text-[0.65rem] uppercase tracking-[0.22em] text-faint">Empieza en</p>
-            <p
-              class="mt-2 font-display text-4xl tabular-nums text-gold"
-              data-countdown="{{ next_event_at.isoformat() }}"
-            >
-              --:--:--
-            </p>
-          </div>
-        </div>
-      {% endif %}
-
-      <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-7">
-        {% set days = [
-          ("Lunes", 0), ("Martes", 1), ("Miércoles", 2), ("Jueves", 3),
-          ("Viernes", 4), ("Sábado", 5), ("Domingo", 6),
-        ] %}
-        {% for day_name, day_index in days %}
-          {% set day_events = events | selectattr("day_index", "equalto", day_index) | list %}
-          {% set is_today = day_index == today_index %}
-          <div
-            class="panel reveal p-4 {% if is_today %}!border-gold/40{% endif %}"
-            {% if is_today %}aria-current="date"{% endif %}
-          >
-            <p class="text-[0.65rem] font-bold uppercase tracking-[0.18em] {% if is_today %}text-gold{% else %}text-faint{% endif %}">
-              {{ day_name }}{% if is_today %} · hoy{% endif %}
-            </p>
-            {% for ev in day_events %}
-              <div class="mt-3 border-l-2 border-gold-dim/50 pl-3">
-                <p class="text-sm font-medium leading-snug text-mist">{{ ev.name }}</p>
-                <p class="mt-1 text-[0.7rem] text-faint">{{ ev.time }} · {{ ev.duration }}</p>
-              </div>
-            {% else %}
-              <p class="mt-3 text-[0.7rem] text-faint/70">Sin eventos</p>
-            {% endfor %}
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  {# ------------------------------------------------------------------ #}
-  {# Noticias                                                         #}
-  {# ------------------------------------------------------------------ #}
-  <section class="mx-auto max-w-6xl px-5 py-20">
-    <div class="flex flex-wrap items-end justify-between gap-6 reveal">
-      <div>
-        <span class="eyebrow">Noticias</span>
-        <h2 class="mt-5 text-3xl sm:text-4xl">Últimas novedades</h2>
-      </div>
-      <a href="{{ url_for('public.news_list') }}" class="btn btn-secondary">
-        Ver todas {{ icon('arrow', 'h-4 w-4') }}
-      </a>
-    </div>
-
-    {% if news %}
-      <div class="mt-12 grid gap-5 md:grid-cols-3">
-        {% for item in news %}
-          <div class="reveal">{{ news_card(item, compact=true) }}</div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <p class="mt-10 text-muted">Todavía no hay noticias publicadas.</p>
     {% endif %}
   </section>
 
   {# ------------------------------------------------------------------ #}
-  {# Descargas                                                        #}
+  {# Novedades                                                          #}
   {# ------------------------------------------------------------------ #}
-  <section class="border-y border-edge/60 bg-surface/30">
-    <div class="mx-auto max-w-6xl px-5 py-20">
-      <div class="flex flex-wrap items-end justify-between gap-6 reveal">
+  <section class="mt-12" aria-labelledby="novedades">
+    <h2 id="novedades" class="scroll-title text-2xl">Novedades</h2>
+    {% if news %}
+      <ul class="mt-3 divide-y divide-edge-soft">
+        {% for item in news %}
+          <li>{{ news_card(item) }}</li>
+        {% endfor %}
+      </ul>
+      <p class="mt-3 text-right">
+        <a href="{{ url_for('news.list') }}" class="text-sm font-semibold">Ver todas las noticias</a>
+      </p>
+    {% else %}
+      <p class="mt-4 text-muted">Todavía no hay noticias publicadas.</p>
+    {% endif %}
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Lo que trae el server                                              #}
+  {# ------------------------------------------------------------------ #}
+  <section class="mt-12" aria-labelledby="server">
+    <h2 id="server" class="scroll-title text-2xl">Lo que trae el server</h2>
+    <dl class="mt-4 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+      {% for feature in site.features %}
         <div>
-          <span class="eyebrow">Descargas</span>
-          <h2 class="mt-5 text-3xl sm:text-4xl">Cliente listo para jugar</h2>
-          <p class="mt-4 max-w-2xl text-muted">
-            WebZen {{ site.server.client_version }} con el ServerInfo ya configurado para este server.
-          </p>
+          <dt class="flex items-center gap-2.5 font-display font-bold text-ink">
+            <span class="h-2 w-2 rotate-45 bg-lacre" aria-hidden="true"></span>
+            {{ feature.title }}
+          </dt>
+          <dd class="mt-1.5 text-sm leading-relaxed text-muted">{{ feature.text }}</dd>
         </div>
-        <a href="{{ url_for('public.downloads') }}" class="btn btn-secondary">
-          Instrucciones {{ icon('arrow', 'h-4 w-4') }}
-        </a>
+      {% endfor %}
+    </dl>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Clases                                                             #}
+  {# ------------------------------------------------------------------ #}
+  <section id="clases" class="mt-12" aria-labelledby="clases-titulo">
+    <h2 id="clases-titulo" class="scroll-title text-2xl">Elegí tu clase</h2>
+    <p class="mt-3 text-sm text-muted">Si es tu primera vez en MU, arrancá con Dark Knight o Fairy Elf.</p>
+
+    <div class="mt-4">
+      {% for item in classes %}
+        <input type="radio" name="clase" id="clase-{{ item.key }}" class="class-input sr-only" {% if loop.first %}checked{% endif %} />
+      {% endfor %}
+
+      <div class="class-tabs grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5" role="presentation">
+        {% for item in classes %}
+          <label for="clase-{{ item.key }}" class="class-tab">{{ item.name }}</label>
+        {% endfor %}
       </div>
 
-      <div class="mt-12 grid gap-5 md:grid-cols-3">
-        {% for item in downloads['items'] %}
-          <div class="reveal">{{ download_card(item) }}</div>
+      <div class="class-panes mt-3">
+        {% for item in classes %}
+          <article class="class-pane panel gap-6 p-5 sm:grid-cols-[1fr_13rem] sm:p-6">
+            <div>
+              <h3 class="flex items-center gap-3 text-xl text-ink">
+                <span class="text-lacre">{{ icon(item.icon, 'h-6 w-6') }}</span>{{ item.name }}
+              </h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted">
+                <span class="font-semibold text-ink">{{ item.role }}.</span> {{ item.description }}
+              </p>
+              {% if item.requirement %}
+                <p class="mt-3 text-sm font-semibold text-lacre">{{ item.requirement }}</p>
+              {% endif %}
+            </div>
+            <dl class="flex flex-col justify-center gap-3">
+              {% for label, value in item.stats.items() %}
+                <div>
+                  <div class="flex justify-between text-xs font-semibold uppercase tracking-[0.1em]">
+                    <dt class="text-muted">{{ label }}</dt>
+                    <dd class="tabular-nums text-ink">{{ value }}</dd>
+                  </div>
+                  <span class="stat-bar mt-1 block" aria-hidden="true"><span style="width: {{ value }}%"></span></span>
+                </div>
+              {% endfor %}
+            </dl>
+          </article>
         {% endfor %}
       </div>
     </div>
   </section>
 
   {# ------------------------------------------------------------------ #}
-  {# Cómo empezar                                                     #}
+  {# Agenda semanal                                                     #}
   {# ------------------------------------------------------------------ #}
-  <section class="mx-auto max-w-6xl px-5 py-20">
-    <div class="reveal text-center">
-      <span class="eyebrow">Cómo empezar</span>
-      <h2 class="mt-5 text-3xl sm:text-4xl">Tres pasos y estás adentro</h2>
-    </div>
+  <section id="agenda" class="mt-12" aria-labelledby="agenda-titulo">
+    <h2 id="agenda-titulo" class="scroll-title text-2xl">Agenda semanal</h2>
+    <p class="mt-3 text-sm text-muted">Eventos que se repiten todas las semanas. {{ events_note }}</p>
 
-    <ol class="mt-14 grid gap-6 md:grid-cols-3">
-      {% for step in site.steps %}
-        <li class="panel reveal relative p-7">
-          <span class="font-display text-5xl text-gold/20">
-            {{ "%02d" % loop.index }}
+    {% set days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
+    <table class="mt-4 w-full border-collapse text-sm">
+      <thead class="sr-only">
+        <tr><th scope="col">Día</th><th scope="col">Eventos</th></tr>
+      </thead>
+      <tbody>
+        {% for day_name in days %}
+          {% set day_index = loop.index0 %}
+          {% set day_events = events | selectattr("day_index", "equalto", day_index) | list %}
+          {% set is_today = day_index == today_index %}
+          <tr class="border-b border-edge-soft align-top {% if is_today %}bg-parchment-deep/50{% endif %}" {% if is_today %}aria-current="date"{% endif %}>
+            <th scope="row" class="w-28 py-2.5 pr-3 pl-2 text-left font-display font-bold {% if is_today %}text-lacre{% else %}text-ink{% endif %} sm:w-32">
+              {{ day_name }}{% if is_today %}<span class="block text-[0.7rem] font-semibold uppercase tracking-[0.12em]">Hoy</span>{% endif %}
+            </th>
+            <td class="py-2.5">
+              {% for ev in day_events %}
+                <p class="flex flex-wrap gap-x-3">
+                  <span class="w-11 font-semibold tabular-nums text-ink">{{ ev.time }}</span>
+                  <span class="text-ink">{{ ev.name }}</span>
+                  <span class="text-faint">{{ ev.duration }}</span>
+                </p>
+              {% else %}
+                <span class="text-faint">Sin eventos</span>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Mapas                                                              #}
+  {# ------------------------------------------------------------------ #}
+  <section id="mapas" class="mt-12" aria-labelledby="mapas-titulo">
+    <h2 id="mapas-titulo" class="scroll-title text-2xl">Mapas por nivel</h2>
+    <p class="mt-3 text-sm text-muted">{{ gallery.note }}</p>
+    <ol class="mt-4 grid gap-x-8 sm:grid-cols-2">
+      {% for item in gallery.items %}
+        <li class="flex items-center gap-4 border-b border-edge-soft py-3">
+          <span class="readout w-24 shrink-0 px-2 py-1 text-center text-xs">{{ item.level }}</span>
+          <span class="min-w-0">
+            <span class="block font-display font-bold text-ink">{{ item.map }}</span>
+            <span class="block text-xs text-muted">{{ item.tag }}</span>
           </span>
-          <h3 class="mt-4 text-lg text-mist">{{ step.title }}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-muted">{{ step.text }}</p>
+          {% if item.image %}<span class="ml-auto w-28 shrink-0">{{ gallery_tile(item) }}</span>{% endif %}
         </li>
       {% endfor %}
     </ol>
   </section>
 
   {# ------------------------------------------------------------------ #}
-  {# Preguntas frecuentes                                             #}
+  {# Preguntas frecuentes                                               #}
   {# ------------------------------------------------------------------ #}
-  <section class="border-y border-edge/60 bg-surface/30">
-    <div class="mx-auto max-w-6xl px-5 py-20">
-      <div class="reveal max-w-2xl">
-        <span class="eyebrow">Preguntas frecuentes</span>
-        <h2 class="mt-5 text-3xl sm:text-4xl">Lo que todos preguntan</h2>
-      </div>
-
-      <div class="mt-10 space-y-3">
-        {% for item in faq_preview %}
-          <details class="panel group px-6 py-5">
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-mist marker:hidden">
-              <span class="font-medium">{{ item.question }}</span>
-              <span class="shrink-0 text-gold transition-transform duration-200 group-open:rotate-90">
-                {{ icon('chevron', 'h-4 w-4') }}
-              </span>
-            </summary>
-            <p class="mt-4 text-sm leading-relaxed text-muted">{{ item.answer }}</p>
-          </details>
-        {% endfor %}
-      </div>
-
-      <a href="{{ url_for('public.faq') }}" class="btn btn-secondary mt-8 reveal">
-        Ver todas las preguntas {{ icon('arrow', 'h-4 w-4') }}
-      </a>
+  <section class="mt-12" aria-labelledby="faq-titulo">
+    <h2 id="faq-titulo" class="scroll-title text-2xl">Lo que todos preguntan</h2>
+    <div class="mt-3 divide-y divide-edge-soft">
+      {% for item in faq_preview %}
+        <details class="group py-3.5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink marker:hidden">
+            {{ item.question }}
+            <span class="shrink-0 text-lacre transition-transform duration-200 group-open:rotate-90">{{ icon('chevron', 'h-4 w-4') }}</span>
+          </summary>
+          <p class="mt-2 max-w-[62ch] text-sm leading-relaxed text-muted">{{ item.answer }}</p>
+        </details>
+      {% endfor %}
     </div>
+    <p class="mt-3 text-right"><a href="{{ url_for('pages.faq') }}" class="text-sm font-semibold">Ver todas las preguntas</a></p>
   </section>
 
-  {# ------------------------------------------------------------------ #}
-  {# Comunidad                                                        #}
-  {# ------------------------------------------------------------------ #}
-  <section class="mx-auto max-w-6xl px-5 py-20">
-    <div class="panel reveal relative overflow-hidden p-10 text-center sm:p-16">
-      <div class="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-gold/10 blur-3xl"></div>
-      <div class="relative">
-        <h2 class="text-3xl sm:text-4xl">{{ site.community.title }}</h2>
-        <p class="mx-auto mt-5 max-w-2xl text-muted">{{ site.community.text }}</p>
-        <a href="{{ site.server.discord_url }}" class="btn btn-primary mt-9" target="_blank" rel="noopener">
-          {{ icon('discord', 'h-4 w-4') }} {{ site.community.cta_label }}
-        </a>
-      </div>
-    </div>
-  </section>
-  {# ------------------------------------------------------------------ #}
-  {# Lightbox de la galería                                            #}
-  {# ------------------------------------------------------------------ #}
-  <div
-    id="lightbox"
-    class="lightbox"
-    hidden
-    role="dialog"
-    aria-modal="true"
-    aria-label="Vista ampliada"
-  >
-    <div class="lightbox-panel panel p-4">
+  {# Lightbox de la galería (se usa cuando haya capturas reales) #}
+  <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Vista ampliada">
+    <div class="lightbox-panel box p-4">
       <div class="flex items-center justify-between gap-4 px-1 pb-4">
-        <p class="font-display text-lg text-mist" data-lightbox-title>Galería</p>
-        <button type="button" class="btn btn-secondary !px-3 !py-2 !text-xs" data-lightbox-close>
-          Cerrar (Esc)
-        </button>
+        <p class="font-display font-bold text-gold-hi" data-lightbox-title>Galería</p>
+        <button type="button" class="btn btn-secondary !min-h-0 !px-3 !py-2 !text-[0.72rem]" data-lightbox-close>Cerrar (Esc)</button>
       </div>
-      <div class="overflow-hidden rounded-lg" data-lightbox-content></div>
+      <div class="overflow-hidden rounded" data-lightbox-content></div>
     </div>
   </div>
 {% endblock %}

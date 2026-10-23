@@ -4,21 +4,28 @@
 {% block title %}Crear cuenta · {{ site.name }}{% endblock %}
 
 {% block content %}
-  <section class="mx-auto max-w-3xl px-5 py-16">
-    <span class="eyebrow">Registro</span>
-    <h1 class="mt-5 text-4xl sm:text-5xl">Creá tu cuenta</h1>
+  <section>
+
+    <h1 class="text-4xl sm:text-5xl">Creá tu cuenta</h1>
     <p class="mt-4 max-w-2xl text-muted">
       Tu cuenta de MU Online se crea acá y después la usás para entrar al juego.
     </p>
 
+    {% if created %}
+      <div class="panel mt-8 flex items-start gap-3 border-radium-dim p-5 text-sm text-radium" role="status">
+        <span class="lamp lamp-on mt-1.5" aria-hidden="true"></span>
+        <p>Listo: la cuenta <strong>{{ created }}</strong> ya está creada. Descargá el cliente y entrá al juego.</p>
+      </div>
+    {% endif %}
+
     {% if error %}
-      <div class="panel mt-8 flex items-start gap-3 border-ember/50 p-5 text-sm text-ember-bright">
+      <div class="panel mt-8 flex items-start gap-3 border-warn/50 p-5 text-sm text-warn-bright" role="alert">
         <span class="mt-0.5 shrink-0">{{ icon('spark', 'h-4 w-4') }}</span>
         <p>{{ error }}</p>
       </div>
     {% endif %}
 
-    <form class="panel mt-8 p-7 sm:p-9" method="post" action="{{ url_for('public.register_post') }}">
+    <form class="panel mt-8 p-7 sm:p-9" method="post" action="{{ url_for('account.register_post') }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
       <div class="grid gap-6 sm:grid-cols-2">
@@ -31,12 +38,15 @@
             name="username"
             type="text"
             autocomplete="username"
+            value="{{ (values or {}).get('username', '') }}"
+            required
             minlength="4"
             maxlength="10"
             placeholder="4 a 10 caracteres alfanuméricos"
-            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist placeholder:text-faint focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled
+            class="field mt-2"
+            {% if not enabled %}disabled{% endif %}
           />
+          {% if field_errors and field_errors.username %}<p class="mt-2 text-sm text-warn-bright" id="username-error">{{ field_errors.username }}</p>{% endif %}
         </div>
 
         <div>
@@ -51,9 +61,10 @@
             minlength="6"
             maxlength="10"
             placeholder="Mínimo 6 caracteres"
-            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist placeholder:text-faint focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled
+            class="field mt-2"
+            {% if not enabled %}disabled{% endif %}
           />
+          {% if field_errors and field_errors.password %}<p class="mt-2 text-sm text-warn-bright" id="password-error">{{ field_errors.password }}</p>{% endif %}
         </div>
 
         <div>
@@ -67,9 +78,10 @@
             autocomplete="new-password"
             minlength="6"
             maxlength="10"
-            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled
+            class="field mt-2"
+            {% if not enabled %}disabled{% endif %}
           />
+          {% if field_errors and field_errors.password2 %}<p class="mt-2 text-sm text-warn-bright" id="password2-error">{{ field_errors.password2 }}</p>{% endif %}
         </div>
 
         <div class="sm:col-span-2">
@@ -81,26 +93,31 @@
             name="email"
             type="email"
             autocomplete="email"
+            value="{{ (values or {}).get('email', '') }}"
             placeholder="Para avisos de eventos y recuperacion de cuenta"
-            class="mt-2 w-full rounded-md border border-edge bg-surface-2/50 px-4 py-3 text-sm text-mist placeholder:text-faint focus:border-gold-dim focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled
+            class="field mt-2"
+            {% if not enabled %}disabled{% endif %}
           />
+          {% if field_errors and field_errors.email %}<p class="mt-2 text-sm text-warn-bright" id="email-error">{{ field_errors.email }}</p>{% endif %}
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-8 w-full" disabled aria-disabled="true">
-        Crear cuenta
-      </button>
-
-      <p class="mt-4 text-center text-xs text-faint">
-        El registro por web todavía no está habilitado. Por ahora podés crear la cuenta
-        desde el panel del server o escribirnos al Discord.
-      </p>
+      {% if enabled %}
+        <button type="submit" class="btn btn-primary mt-8 w-full">Crear cuenta</button>
+      {% else %}
+        <button type="submit" class="btn btn-primary mt-8 w-full" disabled aria-disabled="true">
+          Crear cuenta
+        </button>
+        <p class="mt-4 text-center text-xs text-faint">
+          El registro por web todavía no está habilitado. Por ahora podés crear la cuenta
+          desde el panel del server o escribirnos al Discord.
+        </p>
+      {% endif %}
     </form>
 
     <div class="panel mt-6 flex flex-wrap items-center justify-between gap-4 p-7">
       <div>
-        <h2 class="text-lg text-mist">¿Preferís hacerlo por otro lado?</h2>
+        <h2 class="text-lg text-lum">¿Preferís hacerlo por otro lado?</h2>
         <p class="mt-1 text-sm text-muted">Te lo hacemos igual de simple.</p>
       </div>
       <a href="{{ site.server.discord_url }}" class="btn btn-secondary" target="_blank" rel="noopener">

@@ -1,28 +1,17 @@
-{# Tarjeta de noticia. Uso: {{ news_card(item) }} #}
+{# Noticia como entrada de la bitácora del server. Uso: {{ news_card(item) }} #}
 {% from "partials/icon.html" import icon %}
 
 {% macro news_card(item, compact=false) -%}
-  <a
-    href="{{ url_for('public.news_detail', slug=item.slug) }}"
-    class="panel panel-hover group flex h-full flex-col p-6 no-underline"
-  >
-    <div class="flex items-center gap-3">
-      {% if item.tag %}
-        <span class="chip !py-1 !text-[0.65rem] !text-gold">{{ item.tag }}</span>
-      {% endif %}
-      <time class="text-xs text-faint" datetime="{{ item.iso_date }}">{{ item.date | date_es }}</time>
-    </div>
-
-    <h3 class="mt-4 text-lg leading-snug text-mist transition-colors group-hover:text-gold">
+  <a href="{{ url_for('news.detail', slug=item.slug) }}" class="group block py-4 no-underline">
+    <span class="flex items-start justify-between gap-4 font-display text-base font-bold leading-snug text-lum transition-colors group-hover:text-radium">
       {{ item.title }}
-    </h3>
-
-    {% if not compact %}
-      <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-muted">{{ item.excerpt }}</p>
-    {% endif %}
-
-    <span class="mt-auto flex items-center gap-2 pt-6 text-xs font-semibold uppercase tracking-[0.16em] text-gold-dim transition-colors group-hover:text-gold">
-      Leer más {{ icon('arrow', 'h-4 w-4') }}
+      <span class="mt-0.5 shrink-0 text-faint transition-colors group-hover:text-radium">{{ icon('arrow', 'h-4 w-4') }}</span>
     </span>
+    <span class="mt-1 block text-sm text-faint">
+      <time datetime="{{ item.iso_date }}">{{ item.date | date_es }}</time>{% if item.tag %} · {{ item.tag }}{% endif %}
+    </span>
+    {% if not compact %}
+      <span class="mt-2 line-clamp-2 block max-w-[62ch] text-sm leading-relaxed text-muted">{{ item.excerpt }}</span>
+    {% endif %}
   </a>
 {%- endmacro %}

@@ -2,22 +2,19 @@
 
 from __future__ import annotations
 
-import pytest
-
-from app import create_app
-
-
-@pytest.fixture()
-def client():
-    app = create_app({"TESTING": True, "SECRET_KEY": "test"})
-    with app.test_client() as test_client:
-        yield test_client
-
 
 def test_home_returns_200(client):
     resp = client.get("/")
     assert resp.status_code == 200
-    assert b"MU Argentum" in resp.data
+    assert b"OpenMuArg" in resp.data
+
+
+def test_server_address_not_in_pages(client, monkeypatch):
+    monkeypatch.setenv("CONNECT_HOST", "203.0.113.77")
+    for path in ("/", "/descargas", "/faq", "/reglas", "/noticias", "/registro"):
+        html = client.get(path).text
+        assert "203.0.113.77" not in html, path
+        assert "44405" not in html, path
 
 
 def test_healthz(client):

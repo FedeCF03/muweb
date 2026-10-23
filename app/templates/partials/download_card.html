@@ -1,40 +1,64 @@
-{# Tarjeta de descarga. Uso: {{ download_card(item) }} #}
+{# Descargas. Uso: {{ download_card(item) }} (página de descargas)
+   o {{ download_row(item) }} (fila compacta en la home). #}
 {% from "partials/icon.html" import icon %}
 
-{% macro download_card(item) -%}
-  <div class="panel panel-hover flex h-full flex-col p-6">
-    <div class="flex items-start justify-between gap-4">
-      <div>
-        <p class="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-gold-dim">{{ item.kind }}</p>
-        <h3 class="mt-2 text-lg text-mist">{{ item.name }}</h3>
-        <p class="mt-1 text-xs text-faint">
-          {{ item.version }}{% if item.size %} · {{ item.size }}{% endif %}
-        </p>
-      </div>
-      <span class="rounded-lg border border-edge bg-surface-2/60 p-3 text-gold">
-        {{ icon('download', 'h-5 w-5') }}
-      </span>
+{% macro download_status(item) -%}
+  {% if item.available and item.file %}
+    <span class="flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-radium">
+      <span class="lamp lamp-on" aria-hidden="true"></span> Disponible
+    </span>
+  {% else %}
+    <span class="flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-faint">
+      <span class="lamp" aria-hidden="true"></span> Próximamente
+    </span>
+  {% endif %}
+{%- endmacro %}
+
+{% macro download_row(item) -%}
+  <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-edge-soft px-5 py-4 last:border-0">
+    <div class="min-w-0">
+      <p class="text-sm font-bold text-lum">{{ item.name }}</p>
+      <p class="mt-1 text-sm tabular-nums text-faint">{{ item.version }}{% if item.size %} · {{ item.size }}{% endif %}</p>
     </div>
+    {% if item.available and item.file %}
+      <a class="btn btn-secondary !min-h-0 !px-3 !py-2 !text-[0.7rem]" href="/downloads/{{ item.file }}" download>
+        {{ icon('download', 'h-4 w-4') }} Descargar
+      </a>
+    {% else %}
+      {{ download_status(item) }}
+    {% endif %}
+  </div>
+{%- endmacro %}
+
+{% macro download_card(item) -%}
+  <div class="panel flex h-full flex-col p-7">
+    <div class="flex items-start justify-between gap-4">
+      <h2 class="text-xl text-lum">{{ item.name }}</h2>
+      {{ download_status(item) }}
+    </div>
+    <p class="mt-2 text-sm tabular-nums text-faint">
+      {{ item.kind }} · {{ item.version }}{% if item.size %} · {{ item.size }}{% endif %}
+    </p>
 
     {% if item.note %}
       <p class="mt-4 text-sm leading-relaxed text-muted">{{ item.note }}</p>
     {% endif %}
 
-    <div class="mt-auto pt-6">
+    <div class="mt-auto pt-7">
       {% if item.available and item.file %}
         <a class="btn btn-primary w-full" href="/downloads/{{ item.file }}" download>
           {{ icon('download', 'h-4 w-4') }} Descargar
         </a>
         {% if item.sha256 %}
-          <p class="mt-3 break-all text-[0.65rem] leading-relaxed text-faint">
-            SHA256: <span class="font-medium text-muted">{{ item.sha256 }}</span>
+          <p class="mt-3 break-all text-xs tabular-nums leading-relaxed text-faint">
+            SHA256 <span class="text-muted">{{ item.sha256 }}</span>
           </p>
         {% endif %}
       {% else %}
         <button class="btn btn-secondary w-full" type="button" disabled aria-disabled="true">
           {{ icon('clock', 'h-4 w-4') }} Próximamente
         </button>
-        <p class="mt-3 text-[0.65rem] leading-relaxed text-faint">
+        <p class="mt-3 text-xs leading-relaxed text-faint">
           Estamos preparando el archivo. Te avisamos por Discord cuando esté listo.
         </p>
       {% endif %}

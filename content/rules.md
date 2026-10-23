@@ -1,40 +1,72 @@
-# ===========================================================================
-#  Reglas del server. Se renderiza en /reglas
-#  Markdown simple: títulos, listas, **negrita**.
-# ===========================================================================
+<!--
+  Reglas del server. Se renderizan en /reglas.
+  Markdown simple: títulos (##), listas, **negrita**.
+  Al cambiar algo, actualizá la fecha de la primera línea.
+-->
 
-# Reglas generales
+*Última actualización: 23 de octubre de 2026.*
 
-- **Un solo personaje por cuenta.** No se permite jugar con dos personajes
-  a la vez desde la misma cuenta.
-- **Prohibido el uso de hacks, bots, speedhacks y memorie editors.** Un reporte
-  confirmado implica baneo permanente de la cuenta y de las cuentas asociadas.
-- **Prohibido el trading de objetos y cuentas por dinero real.** El mercado
-  entre jugadores es libre, pero fuera del juego no.
-- **Las cuentas inactivas se limpian.** Una cuenta sin conexión por más de 60
-  días se considera abandonada y puede ser eliminada.
-- **El staff no puede pedirte una contraseña.** Nadie del equipo te va a pedir
-  la contraseña de tu cuenta, ni por Discord ni dentro del juego.
+## 1. Conducta general
 
-# Conducta en el chat
+- **Respeto ante todo.** No se permite insultar, provocar ni faltarle el respeto
+  a otros jugadores ni al staff.
+- **Nada de toxicidad.** Los comentarios negativos o agresivos contra la
+  comunidad o el server pueden terminar en ban, incluso permanente.
+- **Las conversaciones privadas son privadas.** Publicar chats privados sin el
+  permiso de todos los involucrados es ban permanente inmediato.
+- **El staff nunca te va a pedir tu contraseña**, ni por Discord ni dentro del
+  juego. Si alguien te la pide, reportalo.
 
-- No se permite spam, publicidad de otros servidores ni folateo.
-- El chat del juego es en español; el de Discord es el canal de soporte y la
-  comunidad. Evitá mezclar idiomas en el chat del juego.
-- Los debates con el staff se resuelven por ticket, no por chat.
+## 2. Prohibiciones graves
 
-# Conducta en el juego
+- **Hacks, bots, speedhacks y editores de memoria.** Un reporte confirmado es
+  ban permanente de la cuenta y de las cuentas asociadas.
+- **Comercio con dinero real.** El intercambio entre jugadores dentro del juego
+  es libre; vender o comprar objetos o cuentas por dinero real, no.
+- **Abuso de cuentas alternativas.** No se permite usar otras cuentas para
+  sacar recompensas duplicadas en eventos.
+- **Un personaje conectado por cuenta.** No se juega con dos personajes a la
+  vez desde la misma cuenta.
 
-- No se permite farmear en eventos con recompensa duplicada usando cuentas
-  alternativas en el mismo servidor.
-- El uso de la tienda es opcional y no modifica el balance del juego.
-- Si un evento tiene reglas propias, se anuncian en el Discord y tienen
-  prioridad sobre estas.
+## 3. Chat
 
-# Cuentas y soporte
+- Sin spam, sin flood y sin publicidad de otros servers.
+- El chat del juego es en español. El soporte y la comunidad están en Discord.
+- Las discusiones con el staff se resuelven por ticket, no en el chat.
 
-- El soporte se atiende por Discord en horario de atención publicado en el
-  canal de anuncios.
-- Los baneos se pueden apelar una sola vez, en un plazo de 7 días.
-- Los resets de personaje siguen el procedimiento publicado en las reglas del
-  panel del juego.
+## 4. Tickets de soporte
+
+Los tickets se abren en Discord y se usan **solo para**:
+
+- Bugs y errores del juego.
+- Problemas para entrar al server.
+- Problemas con tu cuenta.
+
+**No se atienden** por ticket:
+
+- Quejas por drops o por el gameplay.
+- Consultas sobre horarios o eventos (están en la agenda y en Discord).
+- Decisiones de la administración.
+- Cuentas compartidas.
+- Dudas básicas de juego.
+
+Usar mal los tickets o hacer spam con ellos se sanciona, y puede terminar en
+ban del Discord.
+
+## 5. Sanciones
+
+- Pueden ser temporales o permanentes y se aplican sin aviso previo, según la
+  gravedad de la falta.
+- Las faltas graves o repetidas pueden pasar directo a ban permanente.
+- Un ban se puede apelar una sola vez, dentro de los 7 días, por ticket.
+
+## 6. Importante
+
+- La administración tiene la última palabra en sanciones y conflictos.
+- El respeto y el buen ambiente están por encima de todo.
+- No conocer las reglas no te exime de cumplirlas: leerlas es responsabilidad
+  de cada jugador.
+- Si un evento tiene reglas propias, se anuncian en Discord y tienen prioridad
+  sobre estas.
+
+Al jugar en el server aceptás este reglamento completo.

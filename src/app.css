@@ -1,5 +1,7 @@
 /* ---------------------------------------------------------------------------
-   muweb - sistema de diseño
+   muweb - sistema de diseño: "portal clásico"
+   Marco de oro viejo tallado, cajas de cuero oscuro a los costados y una
+   columna central de pergamino. Así se leían los servers de MU en el ciber.
    Fuente: src/app.css  ->  app/static/css/app.css (compilado con Tailwind v4)
    Build:  ./scripts/build-css.sh
    --------------------------------------------------------------------------- */
@@ -10,46 +12,63 @@
 @source "../app/templates";
 
 @theme {
-  /* Superficies */
-  --color-obsidian: #06080f;
-  --color-surface: #0b111c;
-  --color-surface-2: #121b2a;
-  --color-edge: #1d2a3c;
-  --color-edge-soft: #16202e;
+  /* Fondo y cajas oscuras (cuero, piedra) */
+  --color-panel: #0c0907;
+  --color-panel-deep: #070504;
+  --color-panel-night: #050403;
+  --color-face: #17110b;
+  --color-glass: #0a0705;
+  --color-plate: #221910;
+  --color-plate-hi: #3a2a17;
+  --color-edge: #6b4a1f;
+  --color-edge-soft: #2e2212;
 
-  /* Acentos */
-  --color-gold: #d6b25e;
-  --color-gold-bright: #f2d795;
-  --color-gold-dim: #8c7238;
-  --color-ember: #b03a2e;
-  --color-ember-bright: #e0574a;
+  /* Texto sobre oscuro */
+  --color-lum: #efe4cc;
+  --color-muted: #bdac8b;
+  --color-faint: #958466;
 
-  /* Texto */
-  --color-mist: #e8edf5;
-  --color-muted: #8a97a8;
-  --color-faint: #5d6a7b;
+  /* Acento: oro (en el pergamino pasa a rojo lacre) */
+  --color-radium: #e2b85a;
+  --color-radium-dim: #a8843d;
 
-  /* Tipografía */
-  --font-display: "Cinzel", ui-serif, Georgia, "Times New Roman", serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Oro del marco y del botón principal */
+  --color-gold: #c9a14a;
+  --color-gold-hi: #f0d488;
+  --color-gold-deep: #7a5a22;
+  --color-amber: #d4a640;
+  --color-amber-bright: #f0d488;
 
-  /* Radios y sombras */
-  --radius-panel: 0.75rem;
-  --radius-control: 0.375rem;
+  /* Pergamino */
+  --color-parchment: #e9dcbc;
+  --color-parchment-deep: #d8c497;
+  --color-ink: #2b1d0e;
+  --color-lacre: #8c1d12;
 
-  --shadow-panel: 0 1px 0 0 rgb(214 178 94 / 0.06) inset, 0 18px 40px -24px rgb(0 0 0 / 0.9);
-  --shadow-glow: 0 0 0 1px rgb(214 178 94 / 0.25), 0 12px 40px -16px rgb(214 178 94 / 0.35);
+  /* Errores */
+  --color-warn: #c8321f;
+  --color-warn-bright: #e5533f;
+
+  --font-display: "Cinzel", ui-serif, Georgia, serif;
+  --font-body: "Alegreya Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --radius-panel: 0.375rem;
+  --radius-control: 0.25rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 4rem;
+    background-color: var(--color-panel-night);
   }
 
   body {
-    background-color: var(--color-obsidian);
-    color: var(--color-mist);
+    background-color: var(--color-panel);
+    color: var(--color-lum);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -60,48 +79,348 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  p,
+  dd,
+  li {
+    text-wrap: pretty;
   }
 
   ::selection {
     background-color: var(--color-gold);
-    color: var(--color-obsidian);
+    color: var(--color-panel-deep);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-gold-hi);
     outline-offset: 3px;
   }
 
-  /* Scrollbar discreto */
+  input,
+  textarea {
+    caret-color: var(--color-gold);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-edge) transparent;
+    scrollbar-color: var(--color-gold-deep) var(--color-panel-deep);
   }
 }
 
 @layer components {
-  /* --- Superficies ------------------------------------------------------ */
+  /* --- Cabecera con arte ------------------------------------------------ */
+  .masthead {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--color-panel-deep);
+    background-image:
+      radial-gradient(60% 90% at 22% 100%, rgb(140 29 18 / 0.45), transparent 70%),
+      radial-gradient(55% 90% at 80% 100%, rgb(36 64 140 / 0.45), transparent 70%),
+      radial-gradient(40% 60% at 50% 30%, rgb(201 161 74 / 0.12), transparent 75%);
+  }
+
+  .masthead::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 45%;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent, var(--color-panel-deep));
+    pointer-events: none;
+  }
+
+  .masthead-art {
+    position: absolute;
+    bottom: -2%;
+    z-index: 0;
+    height: 112%;
+    width: auto;
+    max-width: none;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+  }
+
+  /* Logo tallado: oro sólido, bisel con sombras (sin texto degradado) */
+  .logo-carved {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-gold-hi);
+    letter-spacing: 0.06em;
+    text-shadow:
+      0 1px 0 #fff3c4,
+      0 -1px 0 #5a3d12,
+      0 2px 0 #8a6424,
+      0 3px 0 #5a3d12,
+      0 8px 18px rgb(0 0 0 / 0.85);
+  }
+
+  /* --- Barra de navegación de bronce ----------------------------------- */
+  .navbar {
+    position: relative;
+    background-color: #1c140b;
+    border-top: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+    box-shadow:
+      0 -3px 0 0 #2a1d0e,
+      0 3px 0 0 #2a1d0e,
+      0 -4px 0 0 var(--color-gold-deep),
+      0 4px 0 0 var(--color-gold-deep),
+      0 10px 20px -6px rgb(0 0 0 / 0.9);
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out-expo);
+  }
+
+  .nav-link:hover {
+    color: var(--color-gold-hi);
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--color-gold-hi);
+    box-shadow: inset 0 -2px 0 0 var(--color-gold);
+  }
+
+  /* --- Caja con marco dorado (columnas laterales) ---------------------- */
+  .box {
+    position: relative;
+    background-color: var(--color-face);
+    border: 1px solid var(--color-gold-deep);
+    border-radius: var(--radius-panel);
+    box-shadow:
+      0 0 0 1px #000,
+      inset 0 0 0 1px rgb(240 212 136 / 0.08),
+      0 12px 24px -14px rgb(0 0 0 / 0.95);
+  }
+
+  /* Esquinas de filigrana dorada (app/static/img/corner-*.svg) */
+  .box::before,
+  .parchment::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    z-index: 2;
+    pointer-events: none;
+    background-image:
+      url("/static/img/corner-tl.svg"),
+      url("/static/img/corner-tr.svg"),
+      url("/static/img/corner-bl.svg"),
+      url("/static/img/corner-br.svg");
+    background-size: 28px 28px;
+    background-repeat: no-repeat;
+    background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  }
+
+  .parchment::before {
+    inset: -9px;
+    background-size: 44px 44px;
+  }
+
+  .box-body {
+    padding: 1rem 1.1rem 1.15rem;
+  }
+
+  /* Título con alas doradas a los costados */
+  .wing-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.7rem 0.5rem 0.55rem;
+    border-bottom: 1px solid var(--color-gold-deep);
+    background-color: #120d08;
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-gold-hi);
+    text-align: center;
+  }
+
+  .wing-title svg {
+    width: 1.5rem;
+    height: auto;
+    flex-shrink: 0;
+    fill: var(--color-gold);
+  }
+
+  /* Título de sección dentro del pergamino */
+  .scroll-title {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .scroll-title::before,
+  .scroll-title::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background-color: var(--color-gold-deep);
+    opacity: 0.6;
+  }
+
+  /* --- Pergamino: re-mapea los tokens para que todo sea legible -------- */
+  .parchment {
+    --color-lum: #2b1d0e;
+    --color-muted: #574330;
+    --color-faint: #6b553a;
+    --color-radium: #8c1d12;
+    --color-radium-dim: #7a4a1c;
+    --color-face: #e2d3ad;
+    --color-plate: #d9c79c;
+    --color-plate-hi: #c4ad7c;
+    --color-edge: #a98c57;
+    --color-edge-soft: #cdb88a;
+    --color-glass: #f3ead2;
+    --color-panel-deep: #d6c294;
+    --color-panel: #e9dcbc;
+    position: relative;
+    isolation: isolate;
+    color: var(--color-ink);
+    background-color: var(--color-parchment);
+    border: 1px solid var(--color-gold-deep);
+    border-radius: var(--radius-panel);
+    box-shadow:
+      0 0 0 1px #000,
+      0 0 0 4px #1c140b,
+      0 0 0 5px var(--color-gold-deep),
+      inset 0 0 60px 0 rgb(122 82 30 / 0.35),
+      inset 0 0 0 1px rgb(255 248 225 / 0.6);
+  }
+
+  .parchment::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image: url("/static/img/noise.svg");
+    mix-blend-mode: multiply;
+  }
+
+  .parchment a:not(.btn) {
+    color: var(--color-lacre);
+  }
+
+  /* --- Superficies genéricas (subpáginas) ------------------------------ */
   .panel {
-    background-color: color-mix(in oklab, var(--color-surface) 88%, transparent);
+    background-color: var(--color-face);
     border: 1px solid var(--color-edge);
     border-radius: var(--radius-panel);
-    box-shadow: var(--shadow-panel);
-    backdrop-filter: blur(6px);
+    box-shadow: inset 0 1px 0 0 rgb(255 248 225 / 0.25);
+  }
+
+  /* Dentro del pergamino un panel no es una tarjeta: es un tramo separado
+     por un filete, como en un libro. */
+  .parchment .panel {
+    background-color: transparent;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .panel-hover {
-    transition:
-      border-color 0.25s ease,
-      transform 0.25s ease,
-      box-shadow 0.25s ease;
+    transition: border-color 0.25s var(--ease-out-expo);
   }
 
   .panel-hover:hover {
-    border-color: color-mix(in oklab, var(--color-gold) 40%, var(--color-edge));
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
+    border-color: var(--color-radium);
+  }
+
+  .placard {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 100%;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-radium);
+    text-align: center;
+  }
+
+  .readout {
+    border: 1px solid var(--color-edge);
+    border-radius: 3px;
+    background-color: var(--color-glass);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--color-radium);
+  }
+
+  .lamp {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background-color: var(--color-plate-hi);
+  }
+
+  .lamp-on {
+    background-color: #5fd37a;
+    box-shadow: 0 0 6px 1px rgb(95 211 122 / 0.55);
+  }
+
+  .lamp-warn {
+    background-color: var(--color-warn);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--color-edge);
+    border-radius: 2px;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    border-bottom: 1px solid var(--color-edge);
+    padding-bottom: 0.9rem;
   }
 
   /* --- Botones ---------------------------------------------------------- */
@@ -109,200 +428,158 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.55rem;
+    min-height: 2.75rem;
     border-radius: var(--radius-control);
-    padding: 0.7rem 1.35rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    padding: 0.65rem 1.25rem;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+    text-decoration: none;
     white-space: nowrap;
     transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      color 0.2s ease,
-      transform 0.15s ease;
+      background-color 0.2s var(--ease-out-expo),
+      border-color 0.2s var(--ease-out-expo),
+      color 0.2s var(--ease-out-expo),
+      transform 0.12s var(--ease-out-expo);
   }
 
   .btn:active {
     transform: translateY(1px);
   }
 
+  /* Botón de oro tallado: la acción principal */
   .btn-primary {
-    background-image: linear-gradient(180deg, var(--color-gold-bright), var(--color-gold));
-    color: var(--color-obsidian);
-    border: 1px solid var(--color-gold-bright);
-    box-shadow: 0 10px 30px -14px rgb(214 178 94 / 0.8);
+    background-color: var(--color-amber);
+    background-image: linear-gradient(180deg, #f6dc92 0%, #d4a640 46%, #b4862c 54%, #e2bc62 100%);
+    color: #241606;
+    border: 1px solid #3a2608;
+    border-bottom: 3px solid #8a6424;
+    box-shadow:
+      0 0 0 1px var(--color-gold-deep),
+      0 6px 14px -6px rgb(0 0 0 / 0.9);
+    text-shadow: 0 1px 0 rgb(255 240 190 / 0.6);
   }
 
   .btn-primary:hover {
-    background-image: linear-gradient(180deg, #f8e4b0, var(--color-gold-bright));
+    background-image: linear-gradient(180deg, #fbe7ae 0%, #e0b452 46%, #c29236 54%, #eccb78 100%);
   }
 
   .btn-secondary {
-    background-color: color-mix(in oklab, var(--color-surface-2) 80%, transparent);
-    color: var(--color-mist);
+    background-color: transparent;
+    color: var(--color-lum);
     border: 1px solid var(--color-edge);
   }
 
   .btn-secondary:hover {
-    border-color: var(--color-gold-dim);
-    color: var(--color-gold-bright);
+    border-color: var(--color-radium);
+    color: var(--color-radium);
   }
 
   .btn[disabled],
   .btn[aria-disabled="true"] {
-    opacity: 0.45;
+    opacity: 0.5;
     pointer-events: none;
   }
 
-  /* --- Etiquetas y detalles --------------------------------------------- */
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    border-radius: 999px;
+  /* --- Formularios ------------------------------------------------------ */
+  .field {
+    width: 100%;
     border: 1px solid var(--color-edge);
-    background-color: color-mix(in oklab, var(--color-surface-2) 70%, transparent);
-    padding: 0.3rem 0.8rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    border-radius: var(--radius-control);
+    background-color: var(--color-glass);
+    padding: 0.6rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-lum);
   }
 
-  .eyebrow {
-    display: inline-flex;
+  .field::placeholder {
+    color: var(--color-faint);
+  }
+
+  .field:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* --- Selector de clase (radio + CSS, funciona sin JS) ---------------- */
+  .class-pane {
+    display: none;
+  }
+
+  .class-input:nth-of-type(1):checked ~ .class-panes .class-pane:nth-child(1),
+  .class-input:nth-of-type(2):checked ~ .class-panes .class-pane:nth-child(2),
+  .class-input:nth-of-type(3):checked ~ .class-panes .class-pane:nth-child(3),
+  .class-input:nth-of-type(4):checked ~ .class-panes .class-pane:nth-child(4),
+  .class-input:nth-of-type(5):checked ~ .class-panes .class-pane:nth-child(5),
+  .class-input:nth-of-type(6):checked ~ .class-panes .class-pane:nth-child(6) {
+    display: grid;
+  }
+
+  .class-tab {
+    display: flex;
+    cursor: pointer;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 0.72rem;
+    justify-content: center;
+    border: 1px solid var(--color-edge);
+    border-radius: var(--radius-control);
+    padding: 0.55rem 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--color-gold);
-  }
-
-  .eyebrow::before,
-  .eyebrow::after {
-    content: "";
-    height: 1px;
-    width: 2rem;
-    background: linear-gradient(90deg, transparent, var(--color-gold-dim));
-  }
-
-  .eyebrow::after {
-    background: linear-gradient(90deg, var(--color-gold-dim), transparent);
-  }
-
-  .text-gold-gradient {
-    background-image: linear-gradient(120deg, var(--color-gold-bright), var(--color-gold) 45%, var(--color-gold-dim));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* --- Fondos ------------------------------------------------------------ */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgb(214 178 94 / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(214 178 94 / 0.045) 1px, transparent 1px);
-    background-size: 64px 64px;
-  }
-
-  .grain {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.35;
-    background-image: url("/static/img/noise.svg");
-    background-repeat: repeat;
-  }
-
-  /* --- Revelado al hacer scroll ---------------------------------------- */
-  /* Solo se oculta si hay JS: sin JS el contenido se ve siempre. */
-  .js .reveal {
-    opacity: 0;
-    transform: translateY(14px);
+    letter-spacing: 0.06em;
+    text-align: center;
+    color: var(--color-muted);
     transition:
-      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      border-color 0.2s var(--ease-out-expo),
+      color 0.2s var(--ease-out-expo),
+      background-color 0.2s var(--ease-out-expo);
   }
 
-  .js .reveal.is-visible {
-    opacity: 1;
-    transform: none;
+  .class-tab:hover {
+    color: var(--color-lum);
   }
 
-  /* --- Arte generado de la galería -------------------------------------- */
+  .class-input:nth-of-type(1):checked ~ .class-tabs .class-tab:nth-child(1),
+  .class-input:nth-of-type(2):checked ~ .class-tabs .class-tab:nth-child(2),
+  .class-input:nth-of-type(3):checked ~ .class-tabs .class-tab:nth-child(3),
+  .class-input:nth-of-type(4):checked ~ .class-tabs .class-tab:nth-child(4),
+  .class-input:nth-of-type(5):checked ~ .class-tabs .class-tab:nth-child(5),
+  .class-input:nth-of-type(6):checked ~ .class-tabs .class-tab:nth-child(6) {
+    border-color: var(--color-lacre);
+    background-color: rgb(140 29 18 / 0.08);
+    color: var(--color-lacre);
+  }
+
+  .class-input:focus-visible ~ .class-tabs {
+    outline: 2px solid var(--color-lacre);
+    outline-offset: 4px;
+    border-radius: var(--radius-control);
+  }
+
+  /* Barra de atributo */
+  .stat-bar {
+    height: 0.5rem;
+    border: 1px solid var(--color-edge);
+    border-radius: 999px;
+    background-color: var(--color-glass);
+    overflow: hidden;
+  }
+
+  .stat-bar > span {
+    display: block;
+    height: 100%;
+    background-color: var(--color-lacre);
+  }
+
+  /* --- Arte generado de la galería (placeholder) ----------------------- */
   .art {
     position: absolute;
     inset: 0;
     overflow: hidden;
-  }
-
-  .art::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("/static/img/noise.svg");
-    opacity: 0.3;
-  }
-
-  .art::after {
-    content: attr(data-glyph);
-    position: absolute;
-    right: 4%;
-    bottom: -14%;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 9rem;
-    line-height: 1;
-    color: rgb(232 237 245 / 0.07);
-    pointer-events: none;
-  }
-
-  .art-plains {
-    background:
-      radial-gradient(140% 90% at 25% 0%, #2a3a55 0%, transparent 55%),
-      linear-gradient(180deg, #0e1a2c 0%, #0a1322 60%, #060b14 100%);
-  }
-
-  .art-forest {
-    background:
-      radial-gradient(140% 90% at 70% 0%, #1f3a2e 0%, transparent 55%),
-      linear-gradient(180deg, #0c1a16 0%, #091310 60%, #050a09 100%);
-  }
-
-  .art-frost {
-    background:
-      radial-gradient(140% 90% at 30% 0%, #2b415f 0%, transparent 55%),
-      linear-gradient(180deg, #0f1c30 0%, #0b1626 60%, #060c16 100%);
-  }
-
-  .art-cave {
-    background:
-      radial-gradient(140% 90% at 60% 0%, #3a2a24 0%, transparent 55%),
-      linear-gradient(180deg, #160f0e 0%, #100b0a 60%, #070505 100%);
-  }
-
-  .art-tower {
-    background:
-      radial-gradient(150% 100% at 50% 0%, #32224d 0%, transparent 55%),
-      linear-gradient(180deg, #150f24 0%, #0e0a1a 60%, #070511 100%);
-  }
-
-  .art-sky {
-    background:
-      radial-gradient(140% 90% at 50% 100%, #2c3a60 0%, transparent 60%),
-      linear-gradient(180deg, #101a35 0%, #0d1528 55%, #070c18 100%);
+    background: linear-gradient(180deg, #2a2016, #120d08);
   }
 
   /* --- Lightbox de la galería ------------------------------------------- */
@@ -314,8 +591,7 @@
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background-color: rgb(6 8 15 / 0.92);
-    backdrop-filter: blur(6px);
+    background-color: rgb(5 4 3 / 0.94);
   }
 
   .lightbox[hidden] {
@@ -326,55 +602,23 @@
     width: min(56rem, 100%);
   }
 
-  /* --- Brasas del hero --------------------------------------------------- */
-  .ember {
-    position: absolute;
-    bottom: -6px;
-    left: var(--x, 50%);
-    width: var(--size, 3px);
-    height: var(--size, 3px);
-    border-radius: 999px;
-    background-color: var(--color-gold);
-    box-shadow: 0 0 10px 2px rgb(214 178 94 / 0.4);
-    opacity: 0;
-    animation: ember-rise var(--dur, 12s) linear infinite;
-    animation-delay: var(--delay, 0s);
-    will-change: transform, opacity;
-  }
-
-  @keyframes ember-rise {
-    0% {
-      transform: translate3d(0, 0, 0) scale(0.8);
-      opacity: 0;
-    }
-    8% {
-      opacity: 0.9;
-    }
-    70% {
-      opacity: 0.45;
-    }
-    100% {
-      transform: translate3d(var(--drift, 24px), -30rem, 0) scale(1.15);
-      opacity: 0;
-    }
-  }
-
   /* --- Contenido markdown ------------------------------------------------ */
   .prose-mu {
+    max-width: 68ch;
     color: var(--color-muted);
     line-height: 1.75;
   }
 
   .prose-mu h2 {
-    color: var(--color-mist);
-    font-size: 1.35rem;
-    margin: 2rem 0 0.75rem;
+    color: var(--color-lum);
+    font-size: 1.2rem;
+    margin: 2.25rem 0 0.75rem;
   }
 
   .prose-mu h3 {
-    color: var(--color-mist);
-    font-size: 1.1rem;
-    margin: 1.5rem 0 0.5rem;
+    color: var(--color-lum);
+    font-size: 1rem;
+    margin: 1.75rem 0 0.5rem;
   }
 
   .prose-mu p {
@@ -390,35 +634,35 @@
   .prose-mu ul li {
     position: relative;
     padding-left: 1.25rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.45rem;
   }
 
   .prose-mu ul li::before {
     content: "";
     position: absolute;
-    left: 0;
-    top: 0.65em;
+    left: 0.15rem;
+    top: 0.6em;
     width: 0.4rem;
     height: 0.4rem;
     transform: rotate(45deg);
-    background-color: var(--color-gold-dim);
+    background-color: var(--color-radium);
   }
 
   .prose-mu a {
-    color: var(--color-gold);
+    color: var(--color-radium);
     text-decoration: underline;
-    text-underline-offset: 3px;
   }
 
   .prose-mu strong {
-    color: var(--color-mist);
+    color: var(--color-lum);
   }
 
   .prose-mu code {
-    background-color: var(--color-surface-2);
+    background-color: var(--color-glass);
     border: 1px solid var(--color-edge);
     border-radius: 0.25rem;
     padding: 0.1rem 0.35rem;
+    font-family: var(--font-mono);
     font-size: 0.85em;
   }
 }
@@ -428,15 +672,8 @@
     scroll-behavior: auto;
   }
 
-  .reveal,
-  .js .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .ember {
-    display: none;
+  .masthead-art {
+    transform: none !important;
   }
 
   *,

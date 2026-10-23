@@ -37,9 +37,20 @@ class Config:
     FEATURE_REGISTRATION = flag("FEATURE_REGISTRATION", False)
     FEATURE_STATUS = flag("FEATURE_STATUS", False)
 
+    # --- Backend de datos ---
+    # "files": YAML/Markdown en content/ (v0).
+    # "db": noticias, descargas, páginas y ajustes desde Postgres (v1); lo que
+    #       todavía no tiene tabla (clases, agenda, galería, FAQ) sigue en archivos.
+    CONTENT_BACKEND = os.environ.get("CONTENT_BACKEND", "files").strip().lower()
+
     # --- v1: base de datos (ver docs/v1-db.md) ---
     DATABASE_URL = os.environ.get("DATABASE_URL")
     OPENMU_DATABASE_URL = os.environ.get("OPENMU_DATABASE_URL")
+    # Solo después de verificar el INSERT en "Account" contra OpenMU (docs/v1-db.md §5)
+    OPENMU_WRITES_VERIFIED = flag("OPENMU_WRITES_VERIFIED", False)
+
+    # --- Estado en vivo del server (FEATURE_STATUS=1) ---
+    CONNECT_PORT = int(os.environ.get("CONNECT_PORT", "44405"))
 
     # --- Seguridad del formulario (para la v1) ---
     WTF_CSRF_TIME_LIMIT = 3600

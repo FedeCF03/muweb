@@ -1,83 +1,70 @@
-"""Tests de las secciones nuevas: clases, galería y agenda de eventos."""
+"""Tests de clases, galería, agenda y del tablero de la home."""
 
 from __future__ import annotations
 
 from datetime import datetime
 
-import pytest
-
-from app import create_app
-from app.content import (
-    event_starts_at,
-    load_classes,
-    load_events,
-    load_events_note,
-    load_gallery,
-    next_event,
-)
+from app.services import schedule
 
 
-@pytest.fixture()
-def app():
-    return create_app({"TESTING": True, "SECRET_KEY": "test"})
-
-
-def test_classes_structure(app):
-    classes = load_classes()
+def test_classes_structure(svc):
+    classes = svc.classes.list()
     assert len(classes) == 5
     for item in classes:
         assert item.name
         assert item.icon
         assert 0 <= len(item.stats) <= 3
-        for label, value in item.stats.items():
+        for value in item.stats.values():
             assert 0 <= value <= 100, f"{item.name}: stat fuera de rango"
         assert item.accent.startswith("#")
 
 
-def test_locked_classes_have_requirement(app):
-    by_key = {item.key: item for item in load_classes()}
+def test_locked_classes_have_requirement(svc):
+    by_key = {item.key: item for item in svc.classes.list()}
     assert by_key["mg"].requirement
     assert by_key["dl"].requirement
     assert by_key["dk"].requirement is None
 
 
-def test_gallery_items(app):
-    gallery = load_gallery()
-    assert gallery["note"]
-    items = gallery["items"]
-    assert len(items) >= 6
-    for item in items:
-        assert item["map"]
-        assert item["palette"]
-        # image: null o una ruta de static
-        assert item["image"] is None or "/" not in str(item["image"])
+def test_gallery_items(svc):
+    gallery = svc.gallery.get()
+    assert gallery.note
+    assert len(gallery.items) >= 6
+    for item in gallery.items:
+        assert item.map
+        assert item.palette
+        # image: None o un nombre de archivo dentro de static/img/gallery
+        assert item.image is None or "/" not in item.image
 
 
-def test_events_sorted_by_day_and_time(app):
-    events = load_events()
+def test_events_sorted_by_day_and_time(svc):
+    events = svc.events.list()
     assert events, "la agenda no puede estar vacía"
     order = [(ev.day_index, ev.hour, ev.minute) for ev in events]
     assert order == sorted(order)
 
 
-def test_next_event_is_in_the_future(app):
+def test_next_event_is_in_the_future(svc):
     now = datetime.now().astimezone()
-    upcoming = next_event(now)
+    upcoming = schedule.next_event(svc.events.list(), now)
     assert upcoming is not None
-    starts = event_starts_at(upcoming, now)
+    starts = schedule.event_starts_at(upcoming, now)
     assert starts > now
-    # no más de 7 días de acá
     assert (starts - now).days <= 7
 
 
-def test_next_event_wraps_around_week(app):
+def test_next_event_wraps_around_week(svc):
     # lunes 22:10 => el próximo evento no puede ser el lunes que ya pasó
     monday_evening = datetime(2026, 10, 19, 22, 10).astimezone()
-    upcoming = next_event(monday_evening)
+    upcoming = schedule.next_event(svc.events.list(), monday_evening)
     assert upcoming is not None
-    starts = event_starts_at(upcoming, monday_evening)
-    assert starts > monday_evening
+    assert schedule.event_starts_at(upcoming, monday_evening) > monday_evening
 
 
-def test_events_note(app):
-    assert "UTC" in load_events_note() or "horario" in load_events_note().lower()
+def test_next_event_empty_agenda():
+    assert schedule.next_event([]) is None
+
+
+def test_events_note(svc):
+    note = svc.events.timezone_note()
+    assert "UTC" in note or "horario" in note.lower()

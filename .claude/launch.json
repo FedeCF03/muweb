@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "muweb",
+      "runtimeExecutable": ".venv/bin/python",
+      "runtimeArgs": ["-m", "flask", "--app", "app", "run", "--debug", "--port", "8000"],
+      "port": 8000
+    }
+  ]
+}

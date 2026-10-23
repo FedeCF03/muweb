@@ -5,13 +5,13 @@
 # ===========================================================================
 
 # EDITAR: nombre del server
-name: "MU Argentum"
+name: "OpenMuArg"
 
 # EDITAR: bajada corta, se usa en el subtítulo del navegador
 tagline: "Server privado de MU Online — Season 6 Episode 3"
 
 seo:
-  title: "MU Argentum | Server privado de MU Online — Season 6 Episode 3"
+  title: "OpenMuArg | Server privado de MU Online — Season 6 Episode 3"
   description: >-
     Server privado de MU Online Season 6 Episode 3. Rates altos, eventos semanales,
     comunidad activa y cliente 1.02.00 listo para descargar.
@@ -22,8 +22,9 @@ server:
   episode: "Episode 3"
   # Versión del cliente (WebZen 1.02.00)
   client_version: "1.02.00"
-  # El host del Connect Server se configura en .env (CONNECT_HOST)
-  connect_port: 44405
+  # La dirección del Connect Server NO se publica en la web: el cliente ya
+  # trae el ServerInfo configurado. Host y puerto viven en .env (CONNECT_HOST,
+  # CONNECT_PORT) y solo se usan para el estado en vivo (FEATURE_STATUS).
   # EDITAR: invite de Discord
   discord_url: "https://discord.gg/tu-servidor"
   # Texto del chip de estado. En la v0 es estático: no se sondea el server.
@@ -31,7 +32,7 @@ server:
 
 hero:
   badge: "Season 6 — Episode 3"
-  title: "MU Argentum"
+  title: "OpenMuArg"
   subtitle: >-
     Server privado con rates altos, eventos semanales y comunidad activa.
     Nostalgia de MU con contenido nuevo cada mes.
@@ -83,7 +84,7 @@ community:
   cta_label: "Unirme al Discord"
 
 footer:
-  note: "MU Argentum no está afiliado a Webzen. Proyecto fan sin fines de lucro."
+  note: "OpenMuArg no está afiliado a Webzen. Proyecto fan sin fines de lucro."
   links:
     - label: "Noticias"
       href: "/noticias"

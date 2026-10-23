@@ -17,10 +17,17 @@ muweb/
 ├── app/
 │   ├── __init__.py            # app factory (create_app)
 │   ├── config.py              # configuración desde el entorno
-│   ├── content.py             # carga YAML/Markdown (el punto de reemplazo por la DB)
-│   ├── blueprints/public.py   # rutas públicas
-│   ├── templates/             # Jinja (base + páginas + partials)
+│   ├── container.py           # arma repositorios y servicios según la config
+│   ├── models/                # M: dataclasses del dominio (noticias, descargas, cuentas...)
+│   ├── repositories/          # acceso a datos, detrás de contratos (base.py)
+│   │   ├── files/             #   v0: YAML/Markdown de content/
+│   │   └── postgres/          #   v1: base "muweb" + cuentas de OpenMU
+│   ├── services/              # reglas de negocio: agenda, tablero, cuentas, estado
+│   ├── controllers/           # C: blueprints (pages, news, account, system)
+│   ├── views.py               # V: filtros, contexto común y errores
+│   ├── templates/             # V: Jinja (base + páginas + partials)
 │   └── static/                # css compilado, js, imágenes, fuentes
+├── db/schema.sql              # esquema de la base "muweb" (v1)
 ├── content/                   # <<< TODO EL CONTENIDO EDITABLE
 │   ├── site.yml               # nombre, rates, hero, features, footer
 │   ├── downloads.yml          # descargas, requisitos, instrucciones
@@ -31,10 +38,42 @@ muweb/
 ├── docker/Caddyfile           # proxy inverso + descargas
 ├── src/app.css                # fuente de Tailwind (sistema de diseño)
 ├── scripts/build-css.sh       # compila el CSS
-├── tests/                     # tests de rutas y de contenido
+├── tests/                     # tests de rutas, repositorios y servicios
 ├── compose.yml                # web + caddy
 └── Dockerfile
 ```
+
+## Arquitectura (MVC en capas)
+
+Una request recorre siempre el mismo camino:
+
+```
+controlador  ->  servicio / repositorio  ->  modelo  ->  vista (plantilla)
+```
+
+- **Modelos** (`app/models/`): dataclasses sin Flask ni base de datos.
+- **Repositorios** (`app/repositories/`): implementan los contratos de
+  `base.py`. Hoy se usa `files` (lee `content/`); con `CONTENT_BACKEND=db`
+  noticias, descargas, páginas y ajustes salen de Postgres.
+- **Servicios** (`app/services/`): la lógica: próximo evento, geometría del
+  tablero, validación y alta de cuentas, estado del server.
+- **Controladores** (`app/controllers/`): finitos; piden datos con
+  `services()` y eligen la plantilla y el código HTTP.
+- **Vistas**: `app/templates/` más `app/views.py`.
+- **Contenedor** (`app/container.py`): el único lugar que sabe qué backend
+  se usa. Cambiar de archivos a Postgres no toca controladores ni plantillas.
+
+Pasar a la base de datos (v1):
+
+```bash
+pip install -r requirements-db.txt
+psql "$DATABASE_URL" -f db/schema.sql
+# en .env: CONTENT_BACKEND=db y DATABASE_URL=...
+```
+
+El registro necesita además `FEATURE_REGISTRATION=1`, `OPENMU_DATABASE_URL`
+y, recién después de verificar el alta contra OpenMU,
+`OPENMU_WRITES_VERIFIED=1` (ver `docs/v1-db.md`, sección 5).
 
 ## Arranque rápido (con Docker)
 
@@ -163,22 +202,26 @@ El panel de OpenMU (8080) y Postgres (5432) **no** se exponen nunca.
 | `SECRET_KEY` | (inseguro) | Clave de Flask para CSRF y sesiones. **Cambiala.** |
 | `PORT` | `8000` | Puerto interno de Gunicorn |
 | `GUNICORN_WORKERS` | `2` | Workers de Gunicorn |
-| `FEATURE_REGISTRATION` | `0` | Enciende el registro real (v1) |
-| `FEATURE_STATUS` | `0` | Enciende el estado real del server (v1) |
+| `FEATURE_REGISTRATION` | `0` | Habilita el formulario de registro (v1) |
+| `FEATURE_STATUS` | `0` | Estado en vivo: conexión TCP al Connect Server |
+| `CONNECT_HOST` | `127.0.0.1` | Host del Connect Server (nunca se muestra en la web; solo para `FEATURE_STATUS`) |
+| `CONNECT_PORT` | `44405` | Puerto del Connect Server para `FEATURE_STATUS` |
+| `CONTENT_BACKEND` | `files` | `files` (content/) o `db` (Postgres) |
 | `COOKIE_SECURE` | `0` | Cookies solo por HTTPS (activar con dominio) |
 | `CONTENT_DIR` | `./content` | Carpeta de contenido |
 | `DOWNLOADS_DIR` | `./downloads` | Carpeta de descargas |
 | `DATABASE_URL` | — | v1: base del CMS |
 | `OPENMU_DATABASE_URL` | — | v1: base de OpenMU (lectura + Account) |
+| `OPENMU_WRITES_VERIFIED` | `0` | Permite crear cuentas en OpenMU (solo tras verificar el hash) |
 
 ## Detalles técnicos
 
 - **Tailwind v4** compilado con el binario standalone (sin Node). El CSS
   compilado está commiteado, así que la imagen de Docker no necesita Node.
-- **Fuentes self-hosted** (Inter + Cinzel, licencia OFL) en
+- **Fuentes self-hosted** (B612 y B612 Mono, licencia OFL) en
   `app/static/fonts/`: la web no depende de Google Fonts ni de internet.
-- **Sin JavaScript obligatorio**: si el JS no carga, el contenido se ve igual
-  (el revelado al scrollear solo se activa con JS).
+- **Sin JavaScript obligatorio**: si el JS no carga, los instrumentos ya
+  muestran sus valores; el JS solo anima las agujas y mueve la carta semanal.
 - **Markdown saneado** con `nh3`: no se puede inyectar HTML.
 - **SEO**: metadatos, Open Graph, `robots.txt` y `sitemap.xml` generados.
 - **Accesibilidad**: skip link, foco visible, `prefers-reduced-motion`.
@@ -189,7 +232,9 @@ El panel de OpenMU (8080) y Postgres (5432) **no** se exponen nunca.
 make test
 ```
 
-Cubren las rutas públicas, la carga del contenido y el saneado del Markdown.
+Cubren las rutas públicas, los repositorios de archivos, el saneado del
+Markdown, la agenda, el tablero y el servicio de cuentas (con un repositorio
+en memoria que cumple el mismo contrato que tendrá OpenMU).
 
 ## Próximos pasos (v1)
 

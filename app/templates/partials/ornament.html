@@ -1,0 +1,15 @@
+{# Ornamentos del portal.
+   wing(side): un ala dorada (izquierda o espejada a la derecha).
+   box_title(text): título de caja lateral con alas a los costados. #}
+
+{% macro wing(side="left") -%}
+  <svg viewBox="0 0 80 52" aria-hidden="true" {% if side == "right" %}style="transform: scaleX(-1)"{% endif %}>
+    <path d="M78 30 C62 12 36 2 2 4 C20 10 34 16 42 23 C28 21 14 23 4 29 C22 29 36 32 46 36 C36 39 26 45 20 52 C40 46 60 38 78 34 Z" />
+  </svg>
+{%- endmacro %}
+
+{% macro box_title(text, tag="h2", id=none) -%}
+  <{{ tag }} class="wing-title"{% if id %} id="{{ id }}"{% endif %}>
+    {{ wing("left") }}<span>{{ text }}</span>{{ wing("right") }}
+  </{{ tag }}>
+{%- endmacro %}

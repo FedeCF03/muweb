@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}{{ title if title else site.seo.title }}{% endblock %}</title>
     <meta name="description" content="{% block description %}{{ site.seo.description }}{% endblock %}" />
-    <meta name="theme-color" content="#06080f" />
+    <meta name="theme-color" content="#070504" />
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml" />
 
     {# Open Graph / Twitter #}
@@ -17,154 +17,191 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
-    <script>
-      // Marca que hay JS: los animaciones de scroll solo se activan con JS.
-      document.documentElement.classList.add("js");
-    </script>
+    <link rel="preload" as="image" href="{{ url_for('static', filename='img/renders/caballero-alado.webp') }}" />
   </head>
 
-  <body class="grain min-h-screen bg-obsidian text-mist antialiased">
+  <body class="min-h-screen bg-panel text-lum antialiased">
+    {% from "partials/ornament.html" import box_title, wing %}
+    {% from "partials/icon.html" import icon %}
+    {% set is_home = request.path == "/" %}
     <a
       href="#contenido"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-gold focus:px-4 focus:py-2 focus:text-obsidian"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-gold focus:px-4 focus:py-2 focus:text-panel-deep"
     >
       Ir al contenido
     </a>
 
     {# ------------------------------------------------------------------ #}
-    {# Header                                                             #}
+    {# Cabecera: arte de personajes y logo tallado                        #}
     {# ------------------------------------------------------------------ #}
-    <header class="sticky top-0 z-40 border-b border-edge/70 bg-obsidian/85 backdrop-blur-md">
-      <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <a href="{{ url_for('public.index') }}" class="group flex items-center gap-3">
-          <img
-            src="{{ url_for('static', filename='img/crest.svg') }}"
-            alt=""
-            class="h-9 w-9 shrink-0 transition-transform duration-300 group-hover:scale-105"
-          />
-          <span class="flex flex-col leading-none">
-            <span class="font-display text-sm font-bold tracking-wide whitespace-nowrap text-mist sm:text-base">
-              {{ site.name }}
-            </span>
-            <span class="mt-1 hidden text-[0.65rem] font-semibold tracking-[0.22em] whitespace-nowrap text-gold-dim sm:block">
-              {{ site.server.season }} · {{ site.server.episode }}
-            </span>
-          </span>
+    <header class="masthead" data-masthead>
+      <img
+        src="{{ url_for('static', filename='img/renders/caballero-alado.webp') }}"
+        alt="" width="747" height="620" fetchpriority="high"
+        class="masthead-art left-1/2 -translate-x-1/2 opacity-40 sm:left-[-6%] sm:translate-x-0 sm:opacity-100 lg:left-[-1%]" data-depth="0.18"
+      />
+      <img
+        src="{{ url_for('static', filename='img/renders/mago-alado.webp') }}"
+        alt="" width="691" height="620"
+        class="masthead-art right-[-8%] hidden sm:block lg:right-[-1%]" data-depth="0.12"
+      />
+      <div class="relative z-10 mx-auto flex min-h-[13rem] max-w-[78rem] flex-col items-center justify-center px-4 pt-8 pb-10 text-center sm:min-h-[19rem] lg:min-h-[21rem]">
+        <a href="{{ url_for('pages.index') }}" class="no-underline">
+          {% if is_home %}<h1 class="logo-carved text-[clamp(2.4rem,6.2vw,4.4rem)] leading-none">{{ site.name }}</h1>
+          {% else %}<span class="logo-carved block text-[clamp(2.4rem,6.2vw,4.4rem)] leading-none">{{ site.name }}</span>{% endif %}
         </a>
-
-        <nav class="hidden items-center gap-1 md:flex" aria-label="Principal">
-          {% for label, href in nav_items %}
-            {% set active = request.path == href %}
-            <a
-              href="{{ href }}"
-              class="rounded px-3 py-2 text-sm font-medium transition-colors {% if active %}text-gold{% else %}text-muted hover:text-mist{% endif %}"
-              {% if active %}aria-current="page"{% endif %}
-            >
-              {{ label }}
-            </a>
-          {% endfor %}
-        </nav>
-
-        <div class="flex items-center gap-2">
-          <a
-            href="{{ discord_url }}"
-            class="btn btn-secondary hidden !px-4 !py-2 sm:inline-flex"
-            target="_blank"
-            rel="noopener"
-          >
-            Discord
-          </a>
-          <a href="{{ url_for('public.register') }}" class="btn btn-primary !px-3 !py-2 !text-xs sm:!px-4 sm:!text-sm">
-            Registro
-          </a>
-          <button
-            type="button"
-            id="nav-toggle"
-            class="btn btn-secondary !px-3 !py-2 md:hidden"
-            aria-expanded="false"
-            aria-controls="nav-mobile"
-            aria-label="Abrir menú"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <path d="M3 6h18M3 12h18M3 18h18" />
-            </svg>
-          </button>
-        </div>
+        <p class="mt-4 flex items-center gap-3 font-display text-[0.8rem] font-bold uppercase tracking-[0.3em] text-gold-hi [text-shadow:0_2px_8px_#000]">
+          <span class="w-8 text-gold">{{ wing("left") }}</span>
+          {{ site.server.season }} · {{ site.server.episode }}
+          <span class="w-8 text-gold">{{ wing("right") }}</span>
+        </p>
+        {# El estado solo se muestra cuando se mide de verdad (FEATURE_STATUS) #}
+        {% if server_status.source == "live" %}
+          <p class="mt-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-lum [text-shadow:0_1px_6px_#000]">
+            <span class="lamp {% if server_status.online %}lamp-on{% else %}lamp-warn{% endif %}" aria-hidden="true"></span>
+            Server {{ server_status.label }}
+          </p>
+        {% endif %}
       </div>
-
-      {# Menú mobile #}
-      <nav id="nav-mobile" class="hidden border-t border-edge/70 bg-surface/95 md:hidden" aria-label="Menú móvil">
-        <div class="mx-auto flex max-w-6xl flex-col px-5 py-3">
-          {% for label, href in nav_items %}
-            <a
-              href="{{ href }}"
-              class="border-b border-edge-soft py-3 text-sm text-mist transition-colors hover:text-gold last:border-0"
-            >
-              {{ label }}
-            </a>
-          {% endfor %}
-          <a href="{{ discord_url }}" class="py-3 text-sm text-gold" target="_blank" rel="noopener">
-            Discord de la comunidad →
-          </a>
-        </div>
-      </nav>
     </header>
 
-    <main id="contenido">
-      {% block content %}{% endblock %}
-    </main>
-
-    {# ------------------------------------------------------------------ #}
-    {# Footer                                                             #}
-    {# ------------------------------------------------------------------ #}
-    <footer class="mt-24 border-t border-edge/70 bg-surface/40">
-      <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-3">
-        <div>
-          <div class="flex items-center gap-3">
-            <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="" class="h-8 w-8" />
-            <span class="font-display text-lg text-mist">{{ site.name }}</span>
-          </div>
-          <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">{{ site.tagline }}</p>
-          <p class="mt-4 text-xs text-faint">{{ site.footer.note }}</p>
+    {# Barra de navegación #}
+    <nav class="navbar sticky top-0 z-40" aria-label="Principal">
+      <div class="mx-auto flex max-w-[78rem] items-center justify-between gap-2 px-3 lg:justify-center">
+        <div class="hidden flex-wrap items-center justify-center md:flex">
+          {% for label, href in nav_items %}
+            {% if not loop.first %}<span class="h-1.5 w-1.5 rotate-45 bg-gold-deep" aria-hidden="true"></span>{% endif %}
+            <a href="{{ href }}" class="nav-link" {% if request.path == href %}aria-current="page"{% endif %}>{{ label }}</a>
+          {% endfor %}
+          <span class="h-1.5 w-1.5 rotate-45 bg-gold-deep" aria-hidden="true"></span>
+          <a href="{{ discord_url }}" class="nav-link" target="_blank" rel="noopener">Discord</a>
         </div>
+        <span class="nav-link md:hidden">{{ site.name }}</span>
+        <button
+          type="button" id="nav-toggle"
+          class="btn btn-secondary !min-h-0 !px-3 !py-2 md:hidden"
+          aria-expanded="false" aria-controls="nav-mobile" aria-label="Abrir menú"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+        </button>
+      </div>
+      <div id="nav-mobile" class="hidden border-t border-gold-deep md:hidden">
+        <div class="flex flex-col px-4 py-2">
+          {% for label, href in nav_items %}
+            <a href="{{ href }}" class="nav-link !px-0 border-b border-edge-soft last:border-0" {% if request.path == href %}aria-current="page"{% endif %}>{{ label }}</a>
+          {% endfor %}
+          <a href="{{ discord_url }}" class="nav-link !px-0" target="_blank" rel="noopener">Discord</a>
+        </div>
+      </div>
+    </nav>
 
-        <div>
-          <h2 class="text-xs font-bold uppercase tracking-[0.22em] text-gold">Navegación</h2>
-          <ul class="mt-4 space-y-2">
-            {% for link in site.footer.links %}
-              <li>
-                <a href="{{ link.href }}" class="text-sm text-muted transition-colors hover:text-gold">{{ link.label }}</a>
+    {# ------------------------------------------------------------------ #}
+    {# Portal: tres columnas                                              #}
+    {# ------------------------------------------------------------------ #}
+    <div class="mx-auto grid max-w-[78rem] gap-6 px-3 pt-8 sm:px-5 lg:grid-cols-[15.5rem_minmax(0,1fr)_15.5rem]">
+
+      {# Columna izquierda: cuenta, descarga y menú #}
+      <aside class="order-2 flex flex-col gap-6 lg:order-1 lg:sticky lg:top-16 lg:self-start" aria-label="Cuenta y menú">
+        <section class="box" aria-labelledby="panel-cuenta">
+          {{ box_title("Panel de cuenta", id="panel-cuenta") }}
+          <div class="box-body">
+            <form class="flex flex-col gap-2.5" aria-describedby="cuenta-estado" onsubmit="return false">
+              <label class="sr-only" for="login-user">Usuario</label>
+              <input id="login-user" class="field" type="text" placeholder="Usuario" autocomplete="username" disabled />
+              <label class="sr-only" for="login-pass">Contraseña</label>
+              <input id="login-pass" class="field" type="password" placeholder="Contraseña" autocomplete="current-password" disabled />
+              <button type="submit" class="btn btn-secondary w-full" disabled aria-disabled="true">Entrar</button>
+            </form>
+            <p id="cuenta-estado" class="mt-3 text-xs leading-relaxed text-muted">
+              El panel de cuenta se habilita cuando conectemos la web con OpenMU.
+            </p>
+            <a href="{{ url_for('account.register') }}" class="btn btn-secondary mt-3 w-full">Crear cuenta</a>
+          </div>
+        </section>
+
+        <a href="{{ url_for('pages.downloads') }}" class="btn btn-primary !min-h-14 w-full !text-[0.95rem]">
+          {{ icon('download', 'h-5 w-5') }} Descargar cliente
+        </a>
+
+        <section class="box" aria-labelledby="menu-rapido">
+          {{ box_title("Menú", id="menu-rapido") }}
+          <ul class="box-body !py-2">
+            {% set menu = nav_items + [("Clases", "/#clases"), ("Agenda semanal", "/#agenda"), ("Mapas", "/#mapas"), ("Crear cuenta", "/registro")] %}
+            {% for label, href in menu %}
+              <li class="border-b border-edge-soft last:border-0">
+                <a href="{{ href }}" class="flex items-center gap-2.5 py-2 text-sm text-muted no-underline transition-colors hover:text-gold-hi {% if request.path == href %}!text-gold-hi{% endif %}">
+                  <span class="h-1.5 w-1.5 rotate-45 bg-gold" aria-hidden="true"></span>{{ label }}
+                </a>
               </li>
             {% endfor %}
           </ul>
-        </div>
+        </section>
+      </aside>
 
-        <div>
-          <h2 class="text-xs font-bold uppercase tracking-[0.22em] text-gold">Conexión</h2>
-          <dl class="mt-4 space-y-2 text-sm">
-            <div class="flex justify-between gap-4">
-              <dt class="text-muted">Servidor</dt>
-              <dd class="font-medium text-mist">{{ server_info.connect_host }}:{{ server_info.connect_port }}</dd>
-            </div>
-            <div class="flex justify-between gap-4">
-              <dt class="text-muted">Versión</dt>
-              <dd class="font-medium text-mist">{{ server_info.season }} {{ server_info.episode }}</dd>
-            </div>
-            <div class="flex justify-between gap-4">
-              <dt class="text-muted">Cliente</dt>
-              <dd class="font-medium text-mist">{{ server_info.client_version }}</dd>
-            </div>
+      {# Columna central: pergamino #}
+      <main id="contenido" class="parchment order-1 min-w-0 px-4 py-6 sm:px-8 sm:py-8 lg:order-2">
+        {% block content %}{% endblock %}
+      </main>
+
+      {# Columna derecha: cómo jugar, castle siege, rankings, comunidad #}
+      <aside class="order-3 flex flex-col gap-6 lg:sticky lg:top-16 lg:self-start" aria-label="Información del server">
+        <section class="box" aria-labelledby="como-jugar">
+          {{ box_title("Cómo jugar", id="como-jugar") }}
+          <ol class="box-body flex flex-col gap-3.5">
+            {% for step in site.steps %}
+              <li class="flex gap-3">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gold-deep font-display text-xs font-bold text-gold-hi">{{ loop.index }}</span>
+                <span>
+                  <span class="block text-sm font-semibold text-lum">{{ step.title }}</span>
+                  {% if loop.index == 1 %}<a href="{{ url_for('pages.downloads') }}" class="mt-1 inline-block text-xs text-radium underline">Ir a descargas</a>
+                  {% elif loop.index == 2 %}<a href="{{ url_for('account.register') }}" class="mt-1 inline-block text-xs text-radium underline">Ir al registro</a>{% endif %}
+                </span>
+              </li>
+            {% endfor %}
+          </ol>
+        </section>
+
+        <section class="box" aria-labelledby="castle-siege">
+          {{ box_title("Castle Siege", id="castle-siege") }}
+          <dl class="box-body grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
+            <dt class="text-muted">Dueño</dt><dd class="text-right text-faint">Sin datos</dd>
+            <dt class="text-muted">Próximo</dt><dd class="text-right text-faint">Sin datos</dd>
           </dl>
-          <a href="{{ discord_url }}" class="btn btn-secondary mt-6 w-full" target="_blank" rel="noopener">
-            Entrar al Discord
-          </a>
-        </div>
-      </div>
+          <p class="px-4 pb-4 text-xs leading-relaxed text-faint">Se muestra cuando conectemos la web con OpenMU.</p>
+        </section>
 
-      <div class="border-t border-edge/60">
-        <div class="mx-auto max-w-6xl px-5 py-5 text-xs text-faint">
-          © {{ current_year }} {{ site.name }}. Todos los derechos reservados.
-        </div>
+        <section class="box" aria-labelledby="top-personajes">
+          {{ box_title("Top personajes", id="top-personajes") }}
+          <div class="box-body">
+            <p class="text-xs leading-relaxed text-faint">Sin datos todavía. El ranking de personajes y guilds aparece cuando conectemos la web con OpenMU.</p>
+          </div>
+        </section>
+
+        <section class="box" aria-labelledby="comunidad-lateral">
+          {{ box_title("Comunidad", id="comunidad-lateral") }}
+          <div class="box-body">
+            <p class="text-sm leading-relaxed text-muted">Anuncios, eventos y soporte en Discord.</p>
+            <a href="{{ discord_url }}" class="btn btn-secondary mt-3 w-full" target="_blank" rel="noopener">
+              {{ icon('discord', 'h-4 w-4') }} Entrar al Discord
+            </a>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    {# ------------------------------------------------------------------ #}
+    {# Pie                                                                #}
+    {# ------------------------------------------------------------------ #}
+    <footer class="mt-14 border-t border-gold-deep bg-panel-deep">
+      <div class="mx-auto flex max-w-[78rem] flex-col items-center gap-3 px-4 py-10 text-center">
+        <p class="logo-carved text-2xl">{{ site.name }}</p>
+        <nav class="flex flex-wrap justify-center gap-x-5 gap-y-1" aria-label="Pie">
+          {% for link in site.footer.links %}
+            <a href="{{ link.href }}" class="text-sm text-muted no-underline hover:text-gold-hi">{{ link.label }}</a>
+          {% endfor %}
+        </nav>
+        <p class="max-w-xl text-xs leading-relaxed text-faint">{{ site.footer.note }}</p>
+        <p class="text-xs text-faint">© {{ current_year }} {{ site.name }}.</p>
       </div>
     </footer>
 

@@ -4,19 +4,19 @@
 {% block title %}Noticias · {{ site.name }}{% endblock %}
 
 {% block content %}
-  <section class="mx-auto max-w-6xl px-5 py-16">
-    <span class="eyebrow">Noticias</span>
-    <h1 class="mt-5 text-4xl sm:text-5xl">Todas las novedades</h1>
+  <section>
+
+    <h1 class="text-4xl sm:text-5xl">Todas las novedades</h1>
     <p class="mt-4 max-w-2xl text-muted">
       Anuncios, eventos y actualizaciones del server.
     </p>
 
     {% if news %}
-      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <ul class="mt-10 max-w-4xl divide-y divide-edge-soft border-y border-edge-soft">
         {% for item in news %}
-          <div class="reveal">{{ news_card(item) }}</div>
+          <li>{{ news_card(item) }}</li>
         {% endfor %}
-      </div>
+      </ul>
     {% else %}
       <p class="mt-12 text-muted">Todavía no hay noticias publicadas.</p>
     {% endif %}

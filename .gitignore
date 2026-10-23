@@ -27,3 +27,10 @@ downloads/*
 
 # Logs y pids del servidor local
 .run/
+
+# Impeccable: capturas, mocks y referencias locales (pueden mostrar datos del server)
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/qb/
+.impeccable/questions/
+.impeccable/build/

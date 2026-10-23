@@ -5,30 +5,30 @@
 {% block title %}Descargas · {{ site.name }}{% endblock %}
 
 {% block content %}
-  <section class="mx-auto max-w-6xl px-5 py-16">
-    <span class="eyebrow">Descargas</span>
-    <h1 class="mt-5 text-4xl sm:text-5xl">Cliente e instalación</h1>
+  <section>
+
+    <h1 class="text-4xl sm:text-5xl">Cliente e instalación</h1>
     <p class="mt-4 max-w-2xl text-muted">
       Todo lo que necesitás para entrar al server. El pack ya viene con el
       ServerInfo configurado, así que no tenés que tocar ningún archivo de texto.
     </p>
 
-    <div class="mt-12 grid gap-5 md:grid-cols-3">
-      {% for item in downloads['items'] %}
+    <div class="mt-10 grid gap-0">
+      {% for item in downloads.items %}
         <div class="reveal">{{ download_card(item) }}</div>
       {% endfor %}
     </div>
 
     {# Requisitos #}
-    <div class="mt-16 grid items-start gap-6 lg:grid-cols-2">
+    <div class="mt-12 grid items-start gap-10 xl:grid-cols-2">
       <div class="panel reveal p-7">
-        <h2 class="flex items-center gap-3 text-lg text-mist">
-          <span class="text-gold">{{ icon('spark', 'h-5 w-5') }}</span> Requisitos
+        <h2 class="flex items-center gap-3 text-lg text-lum">
+          <span class="text-radium">{{ icon('spark', 'h-5 w-5') }}</span> Requisitos
         </h2>
         <ul class="mt-5 space-y-3">
-          {% for req in downloads['requirements'] %}
+          {% for req in downloads.requirements %}
             <li class="flex items-start gap-3 text-sm text-muted">
-              <span class="mt-0.5 text-gold">{{ icon('check', 'h-4 w-4') }}</span> {{ req }}
+              <span class="mt-0.5 text-radium">{{ icon('check', 'h-4 w-4') }}</span> {{ req }}
             </li>
           {% endfor %}
         </ul>
@@ -36,15 +36,15 @@
 
       {# Instrucciones #}
       <div class="panel reveal p-7">
-        <h2 class="flex items-center gap-3 text-lg text-mist">
-          <span class="text-gold">{{ icon('scroll', 'h-5 w-5') }}</span> Cómo instalarlo
+        <h2 class="flex items-center gap-3 text-lg text-lum">
+          <span class="text-radium">{{ icon('scroll', 'h-5 w-5') }}</span> Cómo instalarlo
         </h2>
         <ol class="mt-5 space-y-4">
-          {% for step in downloads['instructions'] %}
+          {% for step in downloads.instructions %}
             <li class="flex gap-4">
-              <span class="font-display text-lg text-gold/50">{{ "%02d" % loop.index }}</span>
+              <span class="w-6 font-display text-sm font-bold tabular-nums text-lacre">{{ "%02d" % loop.index }}</span>
               <div>
-                <p class="text-sm font-semibold text-mist">{{ step.title }}</p>
+                <p class="text-sm font-semibold text-lum">{{ step.title }}</p>
                 <p class="mt-1 text-sm leading-relaxed text-muted">{{ step.text }}</p>
               </div>
             </li>
@@ -55,12 +55,12 @@
 
     <div class="panel reveal mt-6 flex flex-wrap items-center justify-between gap-4 p-7">
       <div>
-        <h2 class="text-lg text-mist">¿Tenés problema con la descarga?</h2>
+        <h2 class="text-lg text-lum">¿Tenés problema con la descarga?</h2>
         <p class="mt-1 text-sm text-muted">
           Pedí el link por Discord o reportá el problema en el canal de soporte.
         </p>
       </div>
-      <a href="{{ site.server.discord_url }}" class="btn btn-primary" target="_blank" rel="noopener">
+      <a href="{{ site.server.discord_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
         {{ icon('discord', 'h-4 w-4') }} Pedir ayuda
       </a>
     </div>

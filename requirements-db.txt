@@ -1,0 +1,4 @@
+# Dependencias del backend Postgres (v1). Opcionales mientras CONTENT_BACKEND=files.
+-r requirements.txt
+psycopg[binary]>=3.2,<4
+psycopg-pool>=3.2,<4
