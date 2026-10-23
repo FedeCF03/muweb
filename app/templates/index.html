@@ -145,8 +145,8 @@
   {# Agenda semanal                                                     #}
   {# ------------------------------------------------------------------ #}
   <section id="agenda" class="mt-12" aria-labelledby="agenda-titulo">
-    <h2 id="agenda-titulo" class="scroll-title text-2xl">Agenda semanal</h2>
-    <p class="mt-3 text-sm text-muted">Eventos que se repiten todas las semanas. {{ events_note }}</p>
+    <h2 id="agenda-titulo" class="scroll-title text-2xl">Agenda de eventos</h2>
+    <p class="mt-3 text-sm text-muted">Eventos fijos de todos los días. {{ events_note }}</p>
 
     {% set days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
     <table class="mt-4 w-full border-collapse text-sm">
@@ -163,12 +163,14 @@
                 <p class="flex flex-wrap gap-x-3">
                   <span class="w-11 font-semibold tabular-nums text-ink">{{ ev.time }}</span>
                   <span class="text-ink">{{ ev.name }}</span>
+                  {% if ev.duration %}<span class="text-faint">{{ ev.duration }}</span>{% endif %}
                 </p>
               {% endfor %}
             </td>
           </tr>
         {% endif %}
-        {% for day_name in days %}
+        {% set weekly = events | rejectattr("daily") | list %}
+        {% for day_name in days if weekly %}
           {% set day_index = loop.index0 %}
           {% set day_events = events | rejectattr("daily") | selectattr("day_index", "equalto", day_index) | list %}
           {% set is_today = day_index == today_index %}

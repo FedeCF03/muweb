@@ -126,7 +126,7 @@
         <section class="box" aria-labelledby="menu-rapido">
           {{ box_title("Menú", id="menu-rapido") }}
           <ul class="box-body !py-2">
-            {% set menu = nav_items + [("Clases", "/#clases"), ("Agenda semanal", "/#agenda"), ("Mapas", "/#mapas"), ("Crear cuenta", "/registro")] %}
+            {% set menu = nav_items + [("Clases", "/#clases"), ("Agenda de eventos", "/#agenda"), ("Mapas", "/#mapas"), ("Crear cuenta", "/registro")] %}
             {% for label, href in menu %}
               <li class="border-b border-edge-soft last:border-0">
                 <a href="{{ href }}" class="flex items-center gap-2.5 py-2 text-sm text-muted no-underline transition-colors hover:text-gold-hi {% if request.path == href %}!text-gold-hi{% endif %}">

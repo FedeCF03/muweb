@@ -21,9 +21,10 @@ items:
 
   - question: "¿Hay reset de personaje?"
     answer: >-
-      Sí. Al llegar a nivel 400 escribís /reset en el chat. Cuesta 25.000.000 de Zen
-      (y sube en cada reset), te da 500 puntos y conservás las skills. Hay hasta
-      5 resets. El detalle está en la página de Jugabilidad.
+      Sí, y sin límite. En nivel 400 escribís /reset o hablás con Leo the Helper en
+      Lorencia. Cuesta 10.000.000 de Zen por número de reset y te da 1.000 puntos
+      por número de reset; el master level se conserva. Con /resetinfo ves cuánto
+      cuesta el próximo. El detalle está en la página de Jugabilidad.
 
   - question: "¿Cómo reporto un bug o un hacker?"
     answer: >-
@@ -32,5 +33,5 @@ items:
 
   - question: "¿Puedo jugar con el mismo personaje desde otra PC?"
     answer: >-
-      Sí. Se permiten hasta 5 conexiones por PC o por IP. Cerrá la sesión antes de
-      entrar desde otra máquina, porque la cuenta queda online.
+      Sí. Cerrá la sesión antes de entrar desde otra máquina, porque la cuenta
+      queda online.

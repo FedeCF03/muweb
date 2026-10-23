@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Jugabilidad · {{ site.name }}{% endblock %}
-{% block description %}Experiencia, resets, clases, PvP, mapas y Chaos Mix de {{ site.name }}.{% endblock %}
+{% block description %}Experiencia, resets, clases y eventos de {{ site.name }}.{% endblock %}
 
 {# Tabla de dos columnas: etiqueta / valor #}
 {% macro facts(rows) -%}
@@ -15,195 +15,142 @@
   </dl>
 {%- endmacro %}
 
+{% macro bullets(items) -%}
+  <ul class="mt-4 flex flex-col gap-2 text-sm text-ink">
+    {% for point in items %}
+      <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rotate-45 bg-lacre" aria-hidden="true"></span>{{ point }}</li>
+    {% endfor %}
+  </ul>
+{%- endmacro %}
+
 {% block content %}
   <h1 class="text-[clamp(1.8rem,3.6vw,2.6rem)] text-ink">Jugabilidad</h1>
   <p class="mt-3 max-w-[62ch] text-base leading-relaxed text-muted">{{ gameplay.intro }}</p>
 
+  {# El índice solo lista las secciones que existen en gameplay.yml #}
+  {% set sections = [
+    ("config", "Configuración", gameplay.config),
+    ("experiencia", "Experiencia", gameplay.experience),
+    ("reset", "Reset", gameplay.reset),
+    ("clases", "Clases", gameplay.class_points),
+    ("eventos", "Eventos", gameplay.events),
+    ("comandos", "Comandos", gameplay.commands),
+  ] %}
   <nav class="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold" aria-label="En esta página">
-    {% for anchor, label in [("config", "Configuración"), ("experiencia", "Experiencia"), ("reset", "Reset"), ("clases", "Clases"), ("pvp", "Party y PvP"), ("guild", "Guild"), ("drops", "Drops"), ("mapas", "Mapas"), ("chaos", "Chaos Mix"), ("comandos", "Comandos")] %}
+    {% for anchor, label, data in sections if data %}
       <a href="#{{ anchor }}">{{ label }}</a>
     {% endfor %}
   </nav>
 
-  {# --- Configuración general ------------------------------------------ #}
-  <section id="config" class="mt-10 scroll-mt-20" aria-labelledby="config-t">
-    <h2 id="config-t" class="scroll-title text-2xl">Configuración general</h2>
-    {{ facts(gameplay.config) }}
-  </section>
+  {% if gameplay.config %}
+    <section id="config" class="mt-10 scroll-mt-20" aria-labelledby="config-t">
+      <h2 id="config-t" class="scroll-title text-2xl">Configuración general</h2>
+      {{ facts(gameplay.config) }}
+    </section>
+  {% endif %}
 
-  {# --- Experiencia ---------------------------------------------------- #}
-  <section id="experiencia" class="mt-12 scroll-mt-20" aria-labelledby="exp-t">
-    <h2 id="exp-t" class="scroll-title text-2xl">Ganancia de experiencia</h2>
-    <p class="mt-4 max-w-[62ch] text-base leading-relaxed text-muted">{{ gameplay.experience.summary }}</p>
-    <ul class="mt-4 flex flex-col gap-2 text-sm text-ink">
-      {% for point in gameplay.experience.points %}
-        <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rotate-45 bg-lacre" aria-hidden="true"></span>{{ point }}</li>
-      {% endfor %}
-    </ul>
-    <table class="mt-5 w-full border-collapse text-sm">
-      <caption class="pb-2 text-left font-display font-bold text-ink">Rate por tramo de nivel</caption>
-      <thead>
-        <tr class="border-b-2 border-gold-deep/60 text-left">
-          <th scope="col" class="py-2 pr-3 font-semibold text-muted">Tramo</th>
-          <th scope="col" class="py-2 pr-3 font-semibold text-muted">Reset 1</th>
-          <th scope="col" class="py-2 font-semibold text-muted">Reset 5</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in gameplay.experience.curve %}
-          <tr class="border-b border-edge-soft">
-            <th scope="row" class="py-2 pr-3 text-left font-semibold whitespace-nowrap text-ink">{{ row.stage }}</th>
-            <td class="py-2 pr-3 tabular-nums text-ink">{{ row.reset_1 }}</td>
-            <td class="py-2 tabular-nums text-ink">{{ row.reset_5 }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-
-  {# --- Reset --------------------------------------------------------- #}
-  <section id="reset" class="mt-12 scroll-mt-20" aria-labelledby="reset-t">
-    <h2 id="reset-t" class="scroll-title text-2xl">Sistema de reset</h2>
-    <p class="mt-4 text-base text-ink">{{ gameplay.reset.how }}</p>
-    {{ facts(gameplay.reset.points) }}
-  </section>
-
-  {# --- Clases --------------------------------------------------------- #}
-  <section id="clases" class="mt-12 scroll-mt-20" aria-labelledby="clases-t">
-    <h2 id="clases-t" class="scroll-title text-2xl">Clases</h2>
-    <p class="mt-4 text-sm text-muted">Todos los personajes arrancan en nivel 1.</p>
-    <table class="mt-3 w-full border-collapse text-sm">
-      <thead>
-        <tr class="border-b-2 border-gold-deep/60 text-left">
-          <th scope="col" class="py-2 pr-3 font-semibold text-muted">Clase</th>
-          <th scope="col" class="py-2 pr-3 font-semibold text-muted">Rol</th>
-          <th scope="col" class="py-2 text-right font-semibold text-muted">Puntos por nivel</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in classes %}
-          <tr class="border-b border-edge-soft">
-            <th scope="row" class="py-2 pr-3 text-left font-display font-bold whitespace-nowrap text-ink">{{ item.name }}</th>
-            <td class="py-2 pr-3 text-muted">{{ item.role }}</td>
-            <td class="py-2 text-right font-semibold tabular-nums text-lacre">{{ gameplay.class_points.get(item.key, "—") }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-
-  {# --- Party, PvP y PK ------------------------------------------------ #}
-  <section id="pvp" class="mt-12 scroll-mt-20" aria-labelledby="pvp-t">
-    <h2 id="pvp-t" class="scroll-title text-2xl">Party y PvP</h2>
-    <div class="mt-4 grid gap-8 sm:grid-cols-2">
-      <div>
-        <h3 class="font-display text-lg text-ink">Party</h3>
-        <ul class="mt-2 flex flex-col gap-2 text-sm text-ink">
-          {% for point in gameplay.party %}
-            <li class="flex gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rotate-45 bg-lacre" aria-hidden="true"></span>{{ point }}</li>
+  {% if gameplay.experience %}
+    <section id="experiencia" class="mt-12 scroll-mt-20" aria-labelledby="exp-t">
+      <h2 id="exp-t" class="scroll-title text-2xl">Ganancia de experiencia</h2>
+      <p class="mt-4 max-w-[62ch] text-base leading-relaxed text-muted">{{ gameplay.experience.summary }}</p>
+      {{ bullets(gameplay.experience.points) }}
+      {% if gameplay.experience.happy_hour %}
+        <h3 class="mt-6 font-display text-lg text-ink">Horarios de Happy Hour</h3>
+        <p class="mt-2 flex flex-wrap gap-2">
+          {% for time in gameplay.experience.happy_hour %}
+            <span class="readout px-2.5 py-1 text-sm">{{ time }}</span>
           {% endfor %}
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-display text-lg text-ink">PvP</h3>
-        <p class="mt-2 text-sm leading-relaxed text-muted">{{ gameplay.pvp.summary }}</p>
-      </div>
-    </div>
-    <div class="mt-6 grid gap-8 sm:grid-cols-2">
-      <div>
-        <h3 class="font-display text-lg text-ink">Sistema PK</h3>
-        {{ facts(gameplay.pvp.pk) }}
-      </div>
-      <div>
-        <h3 class="font-display text-lg text-ink">Summon del Dark Lord</h3>
-        {{ facts(gameplay.pvp.dark_lord_summon) }}
-      </div>
-    </div>
-  </section>
+        </p>
+        <p class="mt-2 text-xs text-faint">Hora Argentina (UTC-3). Dura una hora desde cada horario.</p>
+      {% endif %}
+    </section>
+  {% endif %}
 
-  {# --- Guild ---------------------------------------------------------- #}
-  <section id="guild" class="mt-12 scroll-mt-20" aria-labelledby="guild-t">
-    <h2 id="guild-t" class="scroll-title text-2xl">Guild</h2>
-    {{ facts(gameplay.guild) }}
-  </section>
+  {% if gameplay.reset %}
+    <section id="reset" class="mt-12 scroll-mt-20" aria-labelledby="reset-t">
+      <h2 id="reset-t" class="scroll-title text-2xl">Sistema de reset</h2>
+      <p class="mt-4 max-w-[62ch] text-base text-ink">{{ gameplay.reset.how }}</p>
+      {{ facts(gameplay.reset.points) }}
+      {% if gameplay.reset.examples %}
+        <table class="mt-6 w-full border-collapse text-sm">
+          <caption class="pb-2 text-left font-display font-bold text-ink">Cuánto cuesta y cuánto da cada reset</caption>
+          <thead>
+            <tr class="border-b-2 border-gold-deep/60 text-left">
+              <th scope="col" class="py-2 pr-3 font-semibold text-muted">Reset</th>
+              <th scope="col" class="py-2 pr-3 text-right font-semibold text-muted">Costo (Zen)</th>
+              <th scope="col" class="py-2 text-right font-semibold text-muted">Puntos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in gameplay.reset.examples %}
+              <tr class="border-b border-edge-soft">
+                <th scope="row" class="py-2 pr-3 text-left font-semibold tabular-nums text-ink">{{ row.reset }}</th>
+                <td class="py-2 pr-3 text-right tabular-nums text-ink">{{ row.cost }}</td>
+                <td class="py-2 text-right font-semibold tabular-nums text-lacre">{{ row.points }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+      {% if gameplay.reset.note %}
+        <p class="mt-3 max-w-[62ch] text-sm text-muted">{{ gameplay.reset.note }}</p>
+      {% endif %}
+    </section>
+  {% endif %}
 
-  {# --- Drops ---------------------------------------------------------- #}
-  <section id="drops" class="mt-12 scroll-mt-20" aria-labelledby="drops-t">
-    <h2 id="drops-t" class="scroll-title text-2xl">Drops</h2>
-    <p class="mt-4 max-w-[62ch] text-sm leading-relaxed text-muted">{{ gameplay.drops.note }}</p>
-    <div class="mt-2 grid gap-8 sm:grid-cols-2">
-      <div>
-        <h3 class="mt-4 font-display text-lg text-ink">Límite de opciones</h3>
-        {{ facts(gameplay.drops.limits) }}
-      </div>
-      <div>
-        <h3 class="mt-4 font-display text-lg text-ink">Drops especiales</h3>
-        <dl class="mt-4 divide-y divide-edge-soft border-y border-edge-soft text-sm">
-          {% for row in gameplay.drops.special %}
-            <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-4 py-2">
-              <dt class="font-semibold text-ink">{{ row.item }}</dt>
-              <dd class="text-right text-muted">{{ row.where }}</dd>
-            </div>
-          {% endfor %}
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  {# --- Mapas ---------------------------------------------------------- #}
-  <section id="mapas" class="mt-12 scroll-mt-20" aria-labelledby="mapas-t">
-    <h2 id="mapas-t" class="scroll-title text-2xl">Mapas y requisitos</h2>
-    <p class="mt-4 text-sm text-muted">Nivel mínimo, resets necesarios y costo en Zen del <code class="font-semibold text-ink">/move</code>.</p>
-    {% for group in gameplay.maps %}
-      <table class="mt-5 w-full border-collapse text-sm">
-        <caption class="pb-2 text-left font-display font-bold text-ink">{{ group.group }}</caption>
+  {% if gameplay.class_points %}
+    <section id="clases" class="mt-12 scroll-mt-20" aria-labelledby="clases-t">
+      <h2 id="clases-t" class="scroll-title text-2xl">Clases</h2>
+      <table class="mt-4 w-full border-collapse text-sm">
         <thead>
           <tr class="border-b-2 border-gold-deep/60 text-left">
-            <th scope="col" class="py-2 pr-3 font-semibold text-muted">Mapa</th>
-            <th scope="col" class="py-2 pr-3 text-right font-semibold text-muted">Nivel</th>
-            <th scope="col" class="py-2 pr-3 font-semibold text-muted">Resets</th>
-            <th scope="col" class="py-2 text-right font-semibold text-muted">Zen</th>
+            <th scope="col" class="py-2 pr-3 font-semibold text-muted">Clase</th>
+            <th scope="col" class="py-2 pr-3 font-semibold text-muted">Rol</th>
+            <th scope="col" class="py-2 text-right font-semibold text-muted">Puntos por nivel</th>
           </tr>
         </thead>
         <tbody>
-          {% for m in group['items'] %}
+          {% for item in classes %}
             <tr class="border-b border-edge-soft">
-              <th scope="row" class="py-1.5 pr-3 text-left font-semibold text-ink">{{ m.name }}</th>
-              <td class="py-1.5 pr-3 text-right tabular-nums text-ink">{{ m.level }}</td>
-              <td class="py-1.5 pr-3 {% if m.reset != '—' %}font-semibold text-lacre{% else %}text-faint{% endif %}">{{ m.reset }}</td>
-              <td class="py-1.5 text-right tabular-nums text-muted">{{ m.cost }}</td>
+              <th scope="row" class="py-2 pr-3 text-left font-display font-bold whitespace-nowrap text-ink">{{ item.name }}</th>
+              <td class="py-2 pr-3 text-muted">{{ item.role }}</td>
+              <td class="py-2 text-right font-semibold tabular-nums text-lacre">{{ gameplay.class_points.get(item.key, "—") }}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
-    {% endfor %}
-  </section>
+    </section>
+  {% endif %}
 
-  {# --- Chaos Mix ------------------------------------------------------ #}
-  <section id="chaos" class="mt-12 scroll-mt-20" aria-labelledby="chaos-t">
-    <h2 id="chaos-t" class="scroll-title text-2xl">Chaos Mix</h2>
-    <p class="mt-4 text-sm text-muted">{{ gameplay.chaos_mix.note }}</p>
-    <dl class="mt-3 grid gap-x-8 border-t border-edge-soft text-sm sm:grid-cols-2">
-      {% for row in gameplay.chaos_mix['items'] %}
-        <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-edge-soft py-2">
-          <dt class="text-ink">{{ row.mix }}</dt>
-          <dd class="font-semibold tabular-nums text-lacre">{{ row.rate }}</dd>
-        </div>
-      {% endfor %}
-    </dl>
-  </section>
+  {% if gameplay.events %}
+    <section id="eventos" class="mt-12 scroll-mt-20" aria-labelledby="eventos-t">
+      <h2 id="eventos-t" class="scroll-title text-2xl">Eventos</h2>
+      <p class="mt-4 max-w-[62ch] text-sm text-muted">{{ gameplay.events.note }}</p>
+      <dl class="mt-3 divide-y divide-edge-soft border-y border-edge-soft text-sm">
+        {% for ev in gameplay.events['items'] %}
+          <div class="grid gap-x-6 gap-y-1 py-2.5 sm:grid-cols-[10rem_1fr]">
+            <dt class="font-display font-bold text-ink">{{ ev.name }}</dt>
+            <dd class="flex flex-wrap gap-2">
+              {% for time in ev.times %}<span class="readout px-2 py-0.5 text-xs">{{ time }}</span>{% endfor %}
+            </dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </section>
+  {% endif %}
 
-  {# --- Comandos ------------------------------------------------------- #}
-  <section id="comandos" class="mt-12 scroll-mt-20" aria-labelledby="comandos-t">
-    <h2 id="comandos-t" class="scroll-title text-2xl">Comandos</h2>
-    <p class="mt-4 text-sm text-muted">Se escriben en el chat del juego (Enter).</p>
-    <dl class="mt-3 divide-y divide-edge-soft border-y border-edge-soft text-sm">
-      {% for row in gameplay.commands %}
-        <div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-4 py-2">
-          <dt><code class="font-semibold text-lacre">{{ row.cmd }}</code></dt>
-          <dd class="text-ink">{{ row.what }}</dd>
-        </div>
-      {% endfor %}
-    </dl>
-  </section>
+  {% if gameplay.commands %}
+    <section id="comandos" class="mt-12 scroll-mt-20" aria-labelledby="comandos-t">
+      <h2 id="comandos-t" class="scroll-title text-2xl">Comandos</h2>
+      <p class="mt-4 text-sm text-muted">Se escriben en el chat del juego (Enter).</p>
+      <dl class="mt-3 divide-y divide-edge-soft border-y border-edge-soft text-sm">
+        {% for row in gameplay.commands %}
+          <div class="grid grid-cols-[8rem_minmax(0,1fr)] gap-4 py-2">
+            <dt><code class="font-semibold text-lacre">{{ row.cmd }}</code></dt>
+            <dd class="text-ink">{{ row.what }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </section>
+  {% endif %}
 {% endblock %}

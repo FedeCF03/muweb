@@ -13,8 +13,8 @@ tagline: "Server privado de MU Online — Season 6 Episode 3"
 seo:
   title: "OpenMuArg | Server privado de MU Online — Season 6 Episode 3"
   description: >-
-    Server privado de MU Online Season 6 Episode 3. Slow x5 progresivo, Full PvP
-    competitivo, 5 resets y cliente 1.02.00 listo para descargar.
+    Server privado de MU Online Season 6 Episode 3 sobre OpenMU. Experiencia 10x,
+    Happy Hour 15x, resets sin límite y cliente listo para descargar.
   keywords: "mu online, mu online privado, season 6, episode 3, mu online server, descend"
 
 server:
@@ -34,8 +34,8 @@ hero:
   badge: "Season 6 — Episode 3"
   title: "OpenMuArg"
   subtitle: >-
-    Server Slow de Season 6 con PvP competitivo. Experiencia x5 progresiva,
-    5 resets y cada nivel ganado a pulmón, como cuando jugábamos en el ciber.
+    Season 6 Episode 3 sobre OpenMU. Experiencia 10x, Happy Hour 15x cuatro
+    veces por día y resets sin límite, para volver al MU de siempre.
   primary:
     label: "Descargar cliente"
     href: "/descargas"
@@ -47,27 +47,27 @@ hero:
 # content/gameplay.yml (página /jugabilidad).
 rates:
   - label: "Experiencia"
-    value: "x5 progresiva"
-  - label: "Drop"
-    value: "x20"
-  - label: "Nivel máximo"
+    value: "10x"
+  - label: "Happy Hour"
+    value: "15x"
+  - label: "Nivel para reset"
     value: "400"
-  - label: "Resets máximos"
-    value: "5"
+  - label: "Resets"
+    value: "Sin límite"
 
 features:
   - icon: "sword"
-    title: "Full PvP competitivo"
-    text: "Balance por clase y por etapa de progreso. La party, la estrategia y la mano del jugador definen."
+    title: "Las 7 clases de Season 6"
+    text: "Dark Knight, Dark Wizard, Fairy Elf, Summoner, Magic Gladiator, Dark Lord y Rage Fighter."
   - icon: "shield"
     title: "Sin ventaja comprada"
     text: "Todo el contenido es jugable. Las recompensas de la tienda son estéticas y opcionales."
   - icon: "scroll"
-    title: "Progresión Slow"
-    text: "Experiencia x5 que se endurece arriba del nivel 100 y con cada reset. Hasta 5 resets, 500 puntos por reset."
+    title: "Resets sin límite"
+    text: "Reset en nivel 400: 1.000 puntos y 10.000.000 de Zen por cada número de reset. El master level se conserva."
   - icon: "crown"
-    title: "Guilds y Castle Siege"
-    text: "Guilds de hasta 40 miembros, sin alianzas. Castle Siege para guilds de 30 o más."
+    title: "Eventos todos los días"
+    text: "Blood Castle, Devil Square y Chaos Castle cada noche, Kanturu cuatro veces por día y Happy Hour 15x."
 
 steps:
   - title: "Descargá el cliente"

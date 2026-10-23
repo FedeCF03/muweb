@@ -1,100 +1,76 @@
 # ===========================================================================
-#  Jugabilidad del server: configuración, experiencia, resets, clases, PvP,
-#  guild, drops, mapas, Chaos Mix y comandos. Se muestra en /jugabilidad.
-#  Editá los valores acá y recargá la página.
+#  Jugabilidad del server. Se muestra en /jugabilidad.
 #
-#  OJO: todo lo que dice este archivo es una promesa a los jugadores. Cada
-#  valor tiene que coincidir con la configuración real de OpenMU.
+#  Fuente: configuración real de OpenMU en el VPS (/opt/lab/CONFIG.md,
+#  aplicada el 2026-10-21). Todo lo que dice este archivo es una promesa a los
+#  jugadores: si cambiás algo en el panel de OpenMU, cambialo también acá.
+#  Una sección que no esté en el archivo no se muestra en la página.
 # ===========================================================================
 
 intro: >-
-  Server Slow de Season 6 Episode 3 con PvP competitivo. Subir cuesta, y
-  cuesta más en cada reset: la gracia es que cada nivel se gane.
+  Season 6 Episode 3 sobre OpenMU, con experiencia 10x, Happy Hour cuatro
+  veces por día y resets sin límite.
 
-# Ficha general (tabla de dos columnas)
 config:
   - label: "Versión"
-    value: "Season 6 Episode 3"
-  - label: "Estilo"
-    value: "Slow · Full PvP competitivo"
+    value: "Season 6 Episode 3 (OpenMU)"
   - label: "Experiencia"
-    value: "x5 progresiva"
-  - label: "Drop de ítems"
-    value: "x20 (difícil)"
-  - label: "Drop de Zen"
-    value: "Difícil"
+    value: "10x"
+  - label: "Experiencia master"
+    value: "10x"
+  - label: "Happy Hour"
+    value: "15x durante 1 hora, 4 veces por día"
+  - label: "Drop"
+    value: "Por defecto de OpenMU (sin modificar)"
   - label: "Nivel máximo"
     value: "400"
-  - label: "Resets máximos"
-    value: "5"
-  - label: "Conexiones"
-    value: "Hasta 5 por PC / IP"
-  - label: "Máx. opción con Jewel of Life"
-    value: "+16"
-  - label: "Máx. upgrade de ítem"
-    value: "+15"
-  - label: "Diferencia de nivel en party"
-    value: "130 niveles"
-  - label: "Delay de pociones"
-    value: "300 ms"
-  - label: "Self Defense"
-    value: "30 segundos"
-  - label: "Auto-ataque (F8)"
-    value: "Deshabilitado"
-  - label: "MU Helper"
-    value: "Activado"
-  - label: "OFF Helper"
-    value: "Activado (activá el helper y usá /offline)"
-  - label: "Blood Castle"
-    value: "Hasta 3 por día"
-  - label: "Devil Square"
-    value: "Hasta 3 por día"
+  - label: "Resets"
+    value: "Sin límite"
+  - label: "Game servers activos"
+    value: "1"
 
-# Ganancia de experiencia
 experience:
   summary: >-
-    La base es un x5 Slow tradicional, pero la dificultad se concentra arriba:
-    la curva corre del nivel 100 al 400 y se endurece con cada reset.
+    La experiencia normal es 10x, igual para la experiencia master. Durante la
+    Happy Hour se multiplica por 1,5: pasa a 15x durante una hora.
   points:
-    - "Del nivel 1 al 100 se sube rápido; la curva arranca en el 100."
-    - "Cada 2 resets la experiencia baja a la mitad."
-    - "Volver al 400 cuesta un poco más en cada reset."
-    - "El tiempo por reset depende de tu ritmo, la party, los spots y los eventos."
-  # Rate del tramo según el reset (porcentaje del rate base)
-  curve:
-    - stage: "Lv. 100–200"
-      reset_1: "90%"
-      reset_5: "—"
-    - stage: "Lv. 100–367"
-      reset_1: "Baja de a poco"
-      reset_5: "—"
-    - stage: "Lv. 368–386"
-      reset_1: "Zona avanzada (cae fuerte desde el 371)"
-      reset_5: "—"
-    - stage: "Lv. 397–400"
-      reset_1: "4%"
-      reset_5: "1%"
+    - "Experiencia normal: 10x. Experiencia master: 10x."
+    - "Happy Hour: 15x durante 1 hora."
+    - "El reset no te baja el master level: el nivel master y sus puntos se conservan."
+  # Horarios de Happy Hour (hora Argentina)
+  happy_hour: ["03:05", "09:05", "15:05", "21:05"]
 
-# Sistema de reset
 reset:
   points:
     - label: "Nivel requerido"
       value: "400"
+    - label: "Nivel después del reset"
+      value: "10"
     - label: "Costo"
-      value: "25.000.000 Zen (sube en cada reset)"
+      value: "10.000.000 Zen × número de reset"
+    - label: "Puntos"
+      value: "1.000 × número de reset"
     - label: "Stats"
       value: "Se reinician"
-    - label: "Skills"
-      value: "Se conservan"
-    - label: "Puntos por reset"
-      value: "500"
-    - label: "Resets máximos"
-      value: "5"
-    - label: "Experiencia"
-      value: "Baja a la mitad cada 2 resets"
-  how: "Llegá a nivel 400, juntá el Zen y escribí /reset en el chat."
+    - label: "Master level"
+      value: "Se conserva"
+    - label: "Límite de resets"
+      value: "Sin límite"
+  how: >-
+    Llegá a nivel 400 y escribí /reset, o hablá con Leo the Helper en Lorencia.
+    Volvés a Lorencia en nivel 10 y pasás a la selección de personajes.
+  # Ejemplos calculados con las fórmulas de arriba
+  examples:
+    - { reset: 1, cost: "10.000.000", points: "1.000" }
+    - { reset: 2, cost: "20.000.000", points: "2.000" }
+    - { reset: 3, cost: "30.000.000", points: "3.000" }
+    - { reset: 5, cost: "50.000.000", points: "5.000" }
+    - { reset: 10, cost: "100.000.000", points: "10.000" }
+  note: >-
+    Los puntos no se suman a los anteriores: en cada reset quedás con el total
+    que corresponde a ese número de reset.
 
-# Puntos de stat por nivel según la clase (key = classes.yml)
+# Puntos de stat por nivel según la clase (valores de Season 6, key = classes.yml)
 class_points:
   dk: 5
   dw: 5
@@ -104,132 +80,16 @@ class_points:
   dl: 7
   rf: 7
 
-party:
-  - "Party de 5: bonus de experiencia completo."
-  - "Party de 4, 3 o 2: la experiencia baja según la cantidad de integrantes."
-  - "Solo: progresás casi igual que en una party de 5."
-  - "Diferencia máxima de nivel dentro de la party: 130."
-
-pvp:
-  summary: >-
-    El server prioriza el PvP competitivo y balanceado: por clase, por etapa de
-    progreso y por lo que se puede conseguir en cada momento. Ganan la
-    estrategia, la party y la mano del jugador.
-  pk:
-    - label: "Limpiar PK (/pk)"
-      value: "5.000.000 Zen"
-    - label: "Por cada kill extra"
-      value: "+5.000.000 Zen"
-    - label: "PK en eventos"
-      value: "Activado"
-  dark_lord_summon:
-    - label: "Nivel para Summon (Dark Lord)"
-      value: "200"
-    - label: "Summon con PK"
-      value: "Activado"
-
-guild:
-  - label: "Crear guild"
-    value: "Nivel 150"
-  - label: "Miembros"
-    value: "Hasta 40"
-  - label: "Alianzas"
-    value: "No hay"
-  - label: "Castle Siege"
-    value: "Mínimo 30 miembros"
-
-drops:
-  limits:
-    - label: "Sets, armas y escudos"
-      value: "Hasta Semi Full, se habilita por etapas"
-    - label: "Anillos y pendientes"
-      value: "Hasta 3 opciones"
-    - label: "Alas"
-      value: "Pueden salir Full"
-  special:
-    - item: "Loch's Feather"
-      where: "Icarus"
-    - item: "Crest of Monarch"
-      where: "Icarus"
-    - item: "Dark Horse / Spirit"
-      where: "Kanturu e Icarus"
-    - item: "Gemstone"
-      where: "Kanturu Relics"
-    - item: "Sign of Lord"
-      where: "La Cleon, Swamp y Kanturu"
+events:
   note: >-
-    Las plumas y el Crest solo caen en Icarus, que pide 1 reset o más. El drop
-    es muy difícil en todos los servidores.
-
-# Mapas: nivel, reset y costo del /move
-maps:
-  - group: "Inicio (Lv. 1–50)"
-    items:
-      - { name: "Lorencia", level: 1, reset: "—", cost: "Gratis" }
-      - { name: "Noria", level: 1, reset: "—", cost: "Gratis" }
-      - { name: "Elbeland", level: 1, reset: "—", cost: "Gratis" }
-      - { name: "LorenMarket", level: 10, reset: "—", cost: "Gratis" }
-      - { name: "LorenDeep", level: 10, reset: "—", cost: "Gratis" }
-      - { name: "Elbeland 2", level: 10, reset: "—", cost: "2.500" }
-      - { name: "Elbeland 3", level: 10, reset: "—", cost: "3.000" }
-      - { name: "Devias 1–4", level: 20, reset: "—", cost: "2.000 a 3.500" }
-      - { name: "Dungeon", level: 30, reset: "—", cost: "3.000" }
-      - { name: "Dungeon 2", level: 40, reset: "—", cost: "3.500" }
-      - { name: "Arena", level: 50, reset: "—", cost: "2.000" }
-      - { name: "Dungeon 3", level: 50, reset: "—", cost: "4.000" }
-      - { name: "Lost Tower 1–3", level: 50, reset: "—", cost: "5.000 a 6.000" }
-  - group: "Intermedios (Lv. 60–150)"
-    items:
-      - { name: "Lost Tower 4–5", level: 60, reset: "—", cost: "6.500 a 7.000" }
-      - { name: "Lost Tower 6–7", level: 70, reset: "—", cost: "7.500 a 8.000" }
-      - { name: "Atlans", level: 70, reset: "—", cost: "4.000" }
-      - { name: "Atlans 2", level: 80, reset: "—", cost: "4.500" }
-      - { name: "Atlans 3", level: 90, reset: "—", cost: "5.000" }
-      - { name: "Tarkan 1–2", level: 140, reset: "—", cost: "8.000 a 8.500" }
-      - { name: "Aida 1–2", level: 150, reset: "—", cost: "8.500" }
-  - group: "Avanzados (Lv. 160–400)"
-    items:
-      - { name: "Kanturu 1–2", level: 160, reset: "—", cost: "9.000" }
-      - { name: "Kanturu 3", level: 160, reset: "—", cost: "15.000" }
-      - { name: "Icarus", level: 170, reset: "1 o más", cost: "10.000" }
-      - { name: "Karutan 1", level: 170, reset: "—", cost: "13.000" }
-      - { name: "Karutan 2", level: 170, reset: "—", cost: "14.000" }
-      - { name: "Kanturu Remain", level: 230, reset: "—", cost: "12.000" }
-      - { name: "Raklion", level: 280, reset: "—", cost: "15.000" }
-      - { name: "Vulcanus", level: 300, reset: "Solo con 0", cost: "15.000" }
-      - { name: "Swamp of Calmness", level: 400, reset: "5", cost: "15.000" }
-      - { name: "Crywolf", level: 10, reset: "5", cost: "Gratis" }
-
-chaos_mix:
-  note: "No hay VIP: los porcentajes son los mismos para todos."
+    Hora Argentina (UTC-3). La entrada a Blood Castle y Devil Square está
+    abierta 1 minuto; la de Chaos Castle, 5 minutos.
   items:
-    - { mix: "Ítem +10", rate: "60%" }
-    - { mix: "Ítem +11", rate: "50%" }
-    - { mix: "Ítem +12", rate: "40%" }
-    - { mix: "Ítem +13", rate: "40%" }
-    - { mix: "Ítem +14", rate: "30%" }
-    - { mix: "Ítem +15", rate: "30%" }
-    - { mix: "Ítem 380", rate: "40%" }
-    - { mix: "Alas nivel 2 (máximo)", rate: "90%" }
-    - { mix: "Alas nivel 3 (máximo)", rate: "40%" }
-    - { mix: "Ticket de Devil Square", rate: "60%" }
-    - { mix: "Ticket de Blood Castle", rate: "60%" }
-    - { mix: "Ticket de Illusion Temple", rate: "70%" }
-    - { mix: "Dinorant", rate: "70%" }
-    - { mix: "Fruta", rate: "90%" }
-    - { mix: "Pet", rate: "60%" }
-    - { mix: "Broken Horn", rate: "50%" }
-    - { mix: "Horn of Fenrir", rate: "30%" }
-    - { mix: "Jewel of Harmony: Purity", rate: "50%" }
-    - { mix: "Jewel of Harmony: Smelt", rate: "70%" }
-    - { mix: "Jewel of Harmony: Restore", rate: "100%" }
+    - { name: "Blood Castle", times: ["18:00", "20:00", "22:00"] }
+    - { name: "Devil Square", times: ["18:30", "20:30", "22:30"] }
+    - { name: "Chaos Castle", times: ["19:00", "21:00", "23:00"] }
+    - { name: "Kanturu", times: ["03:00", "09:00", "15:00", "21:00"] }
 
 commands:
-  - { cmd: "/move", what: "Moverte a otro mapa" }
-  - { cmd: "/post", what: "Mensaje en el chat global" }
   - { cmd: "/reset", what: "Resetear el personaje (nivel 400 y Zen)" }
-  - { cmd: "/pk", what: "Limpiar el estado PK" }
-  - { cmd: "/ware", what: "Abrir el baúl extendido" }
-  - { cmd: "/s /a /v /e", what: "Asignar puntos a fuerza, agilidad, vitalidad y energía" }
-  - { cmd: "/offhelper", what: "Quedarte en modo OffHelper" }
-  - { cmd: "/offline", what: "Seguir farmeando desconectado (con el helper activo)" }
+  - { cmd: "/resetinfo", what: "Ver el costo y los puntos del próximo reset" }

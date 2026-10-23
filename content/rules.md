@@ -28,21 +28,10 @@
 - **Un personaje conectado por cuenta.** No se juega con dos personajes a la
   vez desde la misma cuenta.
 
-## 3. Límites del server
+## 3. Juego
 
-- **Hasta 5 conexiones por PC o por IP.**
-- **Blood Castle y Devil Square: hasta 3 entradas por día cada uno**, por personaje.
-- **El auto-ataque F8 está deshabilitado.** El MU Helper y el OFF Helper
-  (`/offline`) sí están permitidos.
-- **Defensa propia: 30 segundos.** Si te atacan, tenés ese tiempo para
-  responder sin quedar PK.
-- **Matar jugadores tiene costo.** Limpiar el PK sale 5.000.000 de Zen, más
-  5.000.000 por cada kill extra. En los eventos el PK está activado.
-- **Guilds:** se crean desde nivel 150, con hasta 40 miembros y sin alianzas.
-  Para anotarse en Castle Siege hacen falta 30 miembros.
-
-El resto de la configuración (experiencia, resets, mapas, drops) está en la
-página de [Jugabilidad](/jugabilidad).
+- La configuración del server (experiencia, resets, eventos) está en la
+  página de [Jugabilidad](/jugabilidad).
 
 ## 4. Chat
 

@@ -75,7 +75,8 @@ def test_gameplay_config(svc):
     labels = {row["label"]: row["value"] for row in gameplay["config"]}
     assert labels["Nivel máximo"] == "400"
     reset = {row["label"]: row["value"] for row in gameplay["reset"]["points"]}
-    assert reset["Puntos por reset"] == "500"
+    assert reset["Nivel requerido"] == "400"
+    assert reset["Límite de resets"] == "Sin límite"
     # cada clase de classes.yml tiene sus puntos por nivel
     keys = {item.key for item in svc.classes.list()}
     assert keys <= set(gameplay["class_points"])

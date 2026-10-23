@@ -1,0 +1,20 @@
+# ---------------------------------------------------------------------------
+# Deploy en el VPS (/opt/lab/muweb), detrás del Caddy que ya existe
+# (contenedor reverse_proxy de /opt/lab/docker-compose.yml).
+#
+# La app se une a la red de ese Caddy (openmu_openmu) como "muweb_web" y no
+# levanta su propio Caddy: el 80/443 ya los usa reverse_proxy.
+#
+#   sudo docker compose -f compose.yml -f compose.vps.yml up -d --build web
+# ---------------------------------------------------------------------------
+services:
+  web:
+    container_name: muweb_web
+    networks:
+      - muweb
+      - openmu
+
+networks:
+  openmu:
+    name: openmu_openmu
+    external: true
