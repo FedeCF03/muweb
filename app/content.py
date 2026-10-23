@@ -10,6 +10,7 @@ El cache se invalida solo: si cambia el mtime de un archivo, se vuelve a leer.
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
@@ -157,7 +158,11 @@ def content_dir() -> Path:
 def load_site() -> dict[str, Any]:
     """Datos generales del sitio (nombre, rates, hero, features, etc.)."""
     path = content_dir() / "site.yml"
-    return _cached(path, lambda: _read_yaml(path))
+    site = _cached(path, lambda: _read_yaml(path))
+    # El host del Connect Server no se versiona: viene del entorno (.env)
+    server = site.setdefault("server", {})
+    server["connect_host"] = os.environ.get("CONNECT_HOST", "127.0.0.1")
+    return site
 
 def load_downloads() -> dict[str, Any]:
     """Descargas, requisitos e instrucciones de instalación."""

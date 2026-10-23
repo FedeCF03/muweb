@@ -22,8 +22,7 @@ server:
   episode: "Episode 3"
   # Versión del cliente (WebZen 1.02.00)
   client_version: "1.02.00"
-  # EDITAR: host al que se conecta el cliente (Connect Server)
-  connect_host: "181.45.236.68"
+  # El host del Connect Server se configura en .env (CONNECT_HOST)
   connect_port: 44405
   # EDITAR: invite de Discord
   discord_url: "https://discord.gg/tu-servidor"
