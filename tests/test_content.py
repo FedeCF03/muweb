@@ -48,7 +48,7 @@ def test_downloads_structure(svc):
     assert catalog.items
     assert all(isinstance(item, Download) and item.name for item in catalog.items)
     assert catalog.requirements
-    assert catalog.instructions
+    assert isinstance(catalog.instructions, list)  # puede estar vacío: la página muestra "Próximamente"
 
 
 def test_download_ready_needs_file():

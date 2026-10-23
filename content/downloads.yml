@@ -10,37 +10,30 @@
 # ===========================================================================
 
 items:
-  - id: cliente
-    name: "Cliente completo"
-    kind: "Pack del juego"
+  - id: windows
+    name: "Cliente para Windows"
+    kind: "Windows"
     version: "1.02.00"
-    size: "≈ 620 MB"
-    file: null
-    available: false
-    sha256: null
+    size: "≈ 465 MB (zip)"
+    file: "OpenMuArg-Windows.zip"
+    available: true
+    sha256: "bcd72bc5889d80cb2fd2ee34654800476f6b81e0ae8068d24c1a2e2383d5cfb5"
     note: >-
-      Incluye el juego completo, el launcher y el ServerInfo apuntando al server.
-      Descomprimí en una carpeta y no muevas los archivos después.
+      Juego completo con la conexión al server ya configurada. Descomprimí la
+      carpeta en C:\OpenMuArg y abrí Main.exe (o Jugar.bat).
 
-  - id: parche
-    name: "Parche de actualización"
-    kind: "Actualización"
-    version: "1.02.00 → 1.02.00 S6E3"
-    size: "≈ 180 MB"
-    file: null
-    available: false
-    sha256: null
-    note: "Solo para quien ya tiene el cliente base instalado."
-
-  - id: launcher
-    name: "Launcher standalone"
-    kind: "Acceso rápido"
+  - id: linux
+    name: "Cliente para Linux"
+    kind: "Linux (x64)"
     version: "1.02.00"
-    size: "≈ 2 MB"
-    file: null
-    available: false
-    sha256: null
-    note: "Permite cambiar de sub-servidor y ver el estado sin abrir el juego."
+    size: "≈ 456 MB (tar.gz)"
+    file: "OpenMuArg-Linux-x64.tar.gz"
+    available: true
+    sha256: "05162e7a4dff7851a5124abe76a2634fca5212a96875ce8d6f49f601a5f78bbb"
+    note: >-
+      Cliente nativo para Linux de 64 bits, con la conexión al server ya
+      configurada. Descomprimí con tar -xzf y ejecutá ./Main. Necesita
+      libcurl4 y libturbojpeg0.
 
 requirements:
   - "Windows 7, 10 u 11 (32 y 64 bits)"
@@ -48,12 +41,8 @@ requirements:
   - "2 GB de RAM como mínimo"
   - "Espacio libre: 3 GB en disco"
 
-instructions:
-  - title: "Descomprimir"
-    text: "El pack viene en un .zip. Extráelo completo en C:\\MU o en el Disco D, sin que el antivirus lo bloquee."
-  - title: "Ejecutar el launcher"
-    text: "Entrá a la carpeta y corré el launcher. La primera vez puede pedir permisos de administrador."
-  - title: "Elegir sub-servidor"
-    text: "El launcher ya tiene cargada la lista de sub-servidores. Elegí cualquiera: todos tienen el mismo contenido."
-  - title: "Ingresar"
-    text: "Escribí tu cuenta y contraseña (las que creaste en el sitio) y listo."
+# Pasos de instalación. Vacío = la página muestra "Próximamente".
+# Formato:
+#   - title: "Descomprimir"
+#     text: "..."
+instructions: []

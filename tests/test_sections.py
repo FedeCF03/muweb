@@ -9,7 +9,7 @@ from app.services import schedule
 
 def test_classes_structure(svc):
     classes = svc.classes.list()
-    assert len(classes) == 5
+    assert len(classes) == 7
     for item in classes:
         assert item.name
         assert item.icon
@@ -68,3 +68,20 @@ def test_next_event_empty_agenda():
 def test_events_note(svc):
     note = svc.events.timezone_note()
     assert "UTC" in note or "horario" in note.lower()
+
+
+def test_gameplay_config(svc):
+    gameplay = svc.gameplay.get()
+    labels = {row["label"]: row["value"] for row in gameplay["config"]}
+    assert labels["Nivel máximo"] == "400"
+    reset = {row["label"]: row["value"] for row in gameplay["reset"]["points"]}
+    assert reset["Puntos por reset"] == "500"
+    # cada clase de classes.yml tiene sus puntos por nivel
+    keys = {item.key for item in svc.classes.list()}
+    assert keys <= set(gameplay["class_points"])
+
+
+def test_daily_events_expand_to_every_day(svc):
+    daily = [ev for ev in svc.events.list() if ev.daily]
+    assert daily
+    assert {ev.day_index for ev in daily} == set(range(7))

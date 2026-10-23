@@ -16,5 +16,6 @@ def summary(s: Any) -> dict[str, Any]:
         "galeria": len(s.gallery.get().items),
         "eventos": len(s.events.list()),
         "faq": len(s.faq.list()),
+        "jugabilidad": len(s.gameplay.get().get("config", [])),
         "paginas": s.pages.slugs(),
     }

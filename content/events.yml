@@ -1,43 +1,56 @@
 # ===========================================================================
-#  Agenda de eventos recurrentes.
+#  Agenda de eventos.
 #
-#  day:   Lunes, Martes, Miércoles, Jueves, Viernes, Sábado o Domingo
+#  day:   Lunes, Martes, Miércoles, Jueves, Viernes, Sábado, Domingo
+#         o "Todos los días" (se repite los 7 días)
 #  time:  hora de inicio (formato 24 h, hora local del server)
 #  duration: cuánto dura ("1 h", "Todo el día", etc.)
 #
 #  El próximo evento se calcula solo: la web muestra el más cercano con
-#  cuenta regresiva y marca el día de hoy en la grilla.
+#  cuenta regresiva y marca el día de hoy en la agenda.
+#  Blood Castle (cada 2 h en punto) y Devil Square (a y media) no se listan
+#  acá para no llenar la agenda: están en la página de Jugabilidad.
 # ===========================================================================
 
 timezone_note: "Los horarios son de Argentina (UTC-3)."
 
 events:
-  - day: "Lunes"
-    time: "21:00"
-    name: "Invasión de dragonidos en Lorencia"
-    duration: "1 h"
+  - day: "Todos los días"
+    time: "09:00"
+    name: "Golden Invasion (dorados +1 y +2)"
+    duration: "Hasta que caigan"
 
-  - day: "Miércoles"
-    time: "21:30"
-    name: "Boss rush de Kundun en Devias"
-    duration: "45 min"
+  - day: "Todos los días"
+    time: "14:00"
+    name: "Golden Invasion (dorados +1 y +2)"
+    duration: "Hasta que caigan"
 
-  - day: "Viernes"
-    time: "22:00"
-    name: "Boss rush de la Lost Tower"
-    duration: "1 h"
+  - day: "Todos los días"
+    time: "19:30"
+    name: "Golden Invasion (dorados +1 y +2)"
+    duration: "Hasta que caigan"
+
+  - day: "Todos los días"
+    time: "19:50"
+    name: "Golden Boss: Golden Golem en Aida"
+    duration: "Hasta que caiga"
+
+  - day: "Todos los días"
+    time: "23:00"
+    name: "Golden Invasion (dorados +1 y +2)"
+    duration: "Hasta que caigan"
+
+  - day: "Todos los días"
+    time: "23:20"
+    name: "Golden Boss: Golden Golem en Aida"
+    duration: "Hasta que caiga"
 
   - day: "Sábado"
-    time: "00:00"
-    name: "Doble EXP en todos los sub-servidores"
-    duration: "Todo el día"
+    time: "21:30"
+    name: "Omega Wing en Icarus (servidor de eventos)"
+    duration: "Hasta que caigan"
 
   - day: "Domingo"
-    time: "00:00"
-    name: "Doble EXP en todos los sub-servidores"
-    duration: "Todo el día"
-
-  - day: "Domingo"
-    time: "21:00"
-    name: "Cierre de temporada y reparto de premios"
-    duration: "30 min"
+    time: "21:30"
+    name: "Omega Wing en Icarus (servidor de eventos)"
+    duration: "Hasta que caigan"

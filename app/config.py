@@ -29,8 +29,9 @@ class Config:
     MAX_CONTENT_LENGTH = 64 * 1024  # 64 KB alcanza para un formulario
 
     # --- Rutas ---
-    CONTENT_DIR = Path(os.environ.get("CONTENT_DIR", DEFAULT_CONTENT_DIR))
-    DOWNLOADS_DIR = Path(os.environ.get("DOWNLOADS_DIR", DEFAULT_DOWNLOADS_DIR))
+    # Las rutas relativas del .env se resuelven desde la raíz del proyecto
+    CONTENT_DIR = BASE_DIR / os.environ.get("CONTENT_DIR", str(DEFAULT_CONTENT_DIR))
+    DOWNLOADS_DIR = BASE_DIR / os.environ.get("DOWNLOADS_DIR", str(DEFAULT_DOWNLOADS_DIR))
 
     # --- Flags de funcionalidad ---
     # v0: todo estático. La v1 enciende el registro y el estado real del server.

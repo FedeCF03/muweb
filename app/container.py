@@ -19,6 +19,7 @@ from .repositories.base import (
     EventRepository,
     FaqRepository,
     GalleryRepository,
+    GameplayRepository,
     NewsRepository,
     PageRepository,
     SiteRepository,
@@ -30,6 +31,7 @@ from .repositories.files import (
     FileEventRepository,
     FileFaqRepository,
     FileGalleryRepository,
+    FileGameplayRepository,
     FileNewsRepository,
     FilePageRepository,
     FileSiteRepository,
@@ -51,6 +53,7 @@ class Services:
     classes: ClassRepository
     gallery: GalleryRepository
     events: EventRepository
+    gameplay: GameplayRepository
     accounts: AccountService
     status: StatusService
     backend: str
@@ -106,6 +109,7 @@ def build(config: dict[str, Any]) -> Services:
         classes=FileClassRepository(store),
         gallery=FileGalleryRepository(store),
         events=FileEventRepository(store),
+        gameplay=FileGameplayRepository(store),
         accounts=AccountService(account_repo, enabled=bool(config.get("FEATURE_REGISTRATION"))),
         status=status,
         backend=backend,

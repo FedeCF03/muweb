@@ -104,7 +104,7 @@
         <input type="radio" name="clase" id="clase-{{ item.key }}" class="class-input sr-only" {% if loop.first %}checked{% endif %} />
       {% endfor %}
 
-      <div class="class-tabs grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5" role="presentation">
+      <div class="class-tabs grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7" role="presentation">
         {% for item in classes %}
           <label for="clase-{{ item.key }}" class="class-tab">{{ item.name }}</label>
         {% endfor %}
@@ -120,9 +120,9 @@
               <p class="mt-3 text-sm leading-relaxed text-muted">
                 <span class="font-semibold text-ink">{{ item.role }}.</span> {{ item.description }}
               </p>
-              {% if item.requirement %}
-                <p class="mt-3 text-sm font-semibold text-lacre">{{ item.requirement }}</p>
-              {% endif %}
+              <p class="mt-3 text-sm text-ink">
+                <span class="font-semibold">{{ class_points.get(item.key, "—") }} puntos por nivel</span>{% if item.requirement %} · <span class="font-semibold text-lacre">{{ item.requirement }}</span>{% endif %}
+              </p>
             </div>
             <dl class="flex flex-col justify-center gap-3">
               {% for label, value in item.stats.items() %}
@@ -154,9 +154,23 @@
         <tr><th scope="col">Día</th><th scope="col">Eventos</th></tr>
       </thead>
       <tbody>
+        {% set daily = events | selectattr("daily") | selectattr("day_index", "equalto", 0) | list %}
+        {% if daily %}
+          <tr class="border-b border-edge-soft align-top">
+            <th scope="row" class="w-28 py-2.5 pr-3 pl-2 text-left font-display font-bold text-ink sm:w-32">Todos los días</th>
+            <td class="py-2.5">
+              {% for ev in daily %}
+                <p class="flex flex-wrap gap-x-3">
+                  <span class="w-11 font-semibold tabular-nums text-ink">{{ ev.time }}</span>
+                  <span class="text-ink">{{ ev.name }}</span>
+                </p>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endif %}
         {% for day_name in days %}
           {% set day_index = loop.index0 %}
-          {% set day_events = events | selectattr("day_index", "equalto", day_index) | list %}
+          {% set day_events = events | rejectattr("daily") | selectattr("day_index", "equalto", day_index) | list %}
           {% set is_today = day_index == today_index %}
           <tr class="border-b border-edge-soft align-top {% if is_today %}bg-parchment-deep/50{% endif %}" {% if is_today %}aria-current="date"{% endif %}>
             <th scope="row" class="w-28 py-2.5 pr-3 pl-2 text-left font-display font-bold {% if is_today %}text-lacre{% else %}text-ink{% endif %} sm:w-32">

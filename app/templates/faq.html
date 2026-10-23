@@ -11,7 +11,7 @@
 
     <div class="mt-12 space-y-3">
       {% for item in faq %}
-        <details class="panel group px-6 py-5 reveal">
+        <details class="panel group px-6 py-5">
           <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-lum marker:hidden">
             <span class="font-medium">{{ item.question }}</span>
             <span class="shrink-0 text-radium transition-transform duration-200 group-open:rotate-90">
@@ -23,7 +23,7 @@
       {% endfor %}
     </div>
 
-    <div class="panel reveal mt-10 flex flex-wrap items-center justify-between gap-4 p-7">
+    <div class="panel mt-10 flex flex-wrap items-center justify-between gap-4 p-7">
       <div>
         <h2 class="text-lg text-lum">¿Falta tu pregunta?</h2>
         <p class="mt-1 text-sm text-muted">Escribinos al Discord y la sumamos a esta página.</p>

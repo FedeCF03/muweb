@@ -34,6 +34,10 @@ WEEKDAYS_ES = {
 }
 
 
+DAILY = {"todos los días", "todos los dias", "diario", "todos"}
+DAY_NAMES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+
+
 def _parse_time(value: Any) -> tuple[int, int]:
     """"21:30" -> (21, 30). Tolerante a formatos raros."""
     hours, _, minutes = str(value or "0:0").partition(":")
@@ -124,9 +128,9 @@ class FileDownloadRepository:
             Download(
                 id=str(raw.get("id", "")),
                 name=str(raw.get("name", "")),
-                kind=str(raw.get("kind", "")),
-                version=str(raw.get("version", "")),
-                size=str(raw.get("size", "") or ""),
+                kind=str(raw.get("kind") or ""),
+                version=str(raw.get("version") or ""),
+                size=str(raw.get("size") or ""),
                 note=str(raw.get("note", "") or ""),
                 file=_optional(raw.get("file")),
                 sha256=_optional(raw.get("sha256")),
@@ -199,6 +203,14 @@ class FileGalleryRepository:
         )
 
 
+class FileGameplayRepository:
+    def __init__(self, store: FileStore) -> None:
+        self.store = store
+
+    def get(self) -> dict[str, Any]:
+        return copy.deepcopy(self.store.yaml("gameplay.yml"))
+
+
 class FileEventRepository:
     def __init__(self, store: FileStore) -> None:
         self.store = store
@@ -207,21 +219,25 @@ class FileEventRepository:
         items: list[EventItem] = []
         for raw in self.store.yaml("events.yml").get("events", []):
             day = str(raw.get("day", ""))
-            day_index = WEEKDAYS_ES.get(day.strip().lower())
-            if day_index is None:
+            key = day.strip().lower()
+            daily = key in DAILY
+            indexes = list(range(7)) if daily else [WEEKDAYS_ES.get(key)]
+            if indexes == [None]:
                 continue
             hour, minute = _parse_time(raw.get("time"))
-            items.append(
-                EventItem(
-                    name=str(raw.get("name", "")),
-                    day=day,
-                    day_index=day_index,
-                    time=str(raw.get("time", "")),
-                    hour=hour,
-                    minute=minute,
-                    duration=str(raw.get("duration", "")),
+            for day_index in indexes:
+                items.append(
+                    EventItem(
+                        name=str(raw.get("name", "")),
+                        day=DAY_NAMES[day_index] if daily else day,
+                        day_index=day_index,
+                        time=str(raw.get("time", "")),
+                        hour=hour,
+                        minute=minute,
+                        duration=str(raw.get("duration", "")),
+                        daily=daily,
+                    )
                 )
-            )
         items.sort(key=lambda ev: (ev.day_index, ev.hour, ev.minute))
         return items
 

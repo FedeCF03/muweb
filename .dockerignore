@@ -16,3 +16,6 @@ src
 *.log
 Makefile
 README.md
+
+# Clientes del juego: no entran en la imagen
+app/clients/

@@ -71,3 +71,29 @@ classes:
       Daño: 80
       Resistencia: 70
       Dificultad: 60
+
+  - key: sum
+    name: "Summoner"
+    role: "Maldiciones y daño mágico"
+    icon: "book"
+    accent: "#b07ad6"
+    description: >-
+      Usa libros y varas para debilitar al rival y castigarlo con daño mágico.
+      Brilla en PvP cuando sabe a quién apuntar primero.
+    stats:
+      Daño: 80
+      Resistencia: 40
+      Dificultad: 70
+
+  - key: rf
+    name: "Rage Fighter"
+    role: "Combate cuerpo a cuerpo con puños"
+    icon: "fist"
+    accent: "#d9744a"
+    description: >-
+      Pelea con guantes y combos rápidos en el frente. Aguanta bien y castiga
+      fuerte cuando encadena golpes.
+    stats:
+      Daño: 80
+      Resistencia: 75
+      Dificultad: 55

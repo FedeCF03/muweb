@@ -14,6 +14,7 @@ from .services.markdown import render_markdown
 NAV_ITEMS = [
     ("Inicio", "/"),
     ("Noticias", "/noticias"),
+    ("Jugabilidad", "/jugabilidad"),
     ("Descargas", "/descargas"),
     ("FAQ", "/faq"),
     ("Reglas", "/reglas"),

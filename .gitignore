@@ -34,3 +34,6 @@ downloads/*
 .impeccable/qb/
 .impeccable/questions/
 .impeccable/build/
+
+# Clientes del juego (pesados): se publican desde downloads/, no van al repo
+app/clients/

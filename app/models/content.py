@@ -98,6 +98,7 @@ class EventItem:
     hour: int
     minute: int
     duration: str
+    daily: bool = False
 
 
 @dataclass(frozen=True)

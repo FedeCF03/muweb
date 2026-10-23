@@ -26,6 +26,7 @@ def index():
         downloads=s.downloads.catalog(),
         faq_preview=s.faq.list()[:4],
         classes=s.classes.list(),
+        class_points=s.gameplay.get().get("class_points", {}),
         gallery=s.gallery.get(),
         events=events,
         events_note=s.events.timezone_note(),
@@ -38,6 +39,17 @@ def index():
 @bp.get("/descargas")
 def downloads():
     return render_template("downloads.html", title="Descargas", downloads=services().downloads.catalog())
+
+
+@bp.get("/jugabilidad")
+def gameplay():
+    s = services()
+    return render_template(
+        "gameplay.html",
+        title="Jugabilidad",
+        gameplay=s.gameplay.get(),
+        classes=s.classes.list(),
+    )
 
 
 @bp.get("/faq")

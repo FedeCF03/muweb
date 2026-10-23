@@ -18,7 +18,7 @@
   <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-edge-soft px-5 py-4 last:border-0">
     <div class="min-w-0">
       <p class="text-sm font-bold text-lum">{{ item.name }}</p>
-      <p class="mt-1 text-sm tabular-nums text-faint">{{ item.version }}{% if item.size %} · {{ item.size }}{% endif %}</p>
+      <p class="mt-1 text-sm tabular-nums text-faint">{{ [item.version, item.size] | select | join(" · ") }}</p>
     </div>
     {% if item.available and item.file %}
       <a class="btn btn-secondary !min-h-0 !px-3 !py-2 !text-[0.7rem]" href="/downloads/{{ item.file }}" download>
@@ -37,7 +37,7 @@
       {{ download_status(item) }}
     </div>
     <p class="mt-2 text-sm tabular-nums text-faint">
-      {{ item.kind }} · {{ item.version }}{% if item.size %} · {{ item.size }}{% endif %}
+      {{ [item.kind, item.version, item.size] | select | join(" · ") }}
     </p>
 
     {% if item.note %}

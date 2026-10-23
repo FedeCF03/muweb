@@ -28,13 +28,29 @@
 - **Un personaje conectado por cuenta.** No se juega con dos personajes a la
   vez desde la misma cuenta.
 
-## 3. Chat
+## 3. Límites del server
+
+- **Hasta 5 conexiones por PC o por IP.**
+- **Blood Castle y Devil Square: hasta 3 entradas por día cada uno**, por personaje.
+- **El auto-ataque F8 está deshabilitado.** El MU Helper y el OFF Helper
+  (`/offline`) sí están permitidos.
+- **Defensa propia: 30 segundos.** Si te atacan, tenés ese tiempo para
+  responder sin quedar PK.
+- **Matar jugadores tiene costo.** Limpiar el PK sale 5.000.000 de Zen, más
+  5.000.000 por cada kill extra. En los eventos el PK está activado.
+- **Guilds:** se crean desde nivel 150, con hasta 40 miembros y sin alianzas.
+  Para anotarse en Castle Siege hacen falta 30 miembros.
+
+El resto de la configuración (experiencia, resets, mapas, drops) está en la
+página de [Jugabilidad](/jugabilidad).
+
+## 4. Chat
 
 - Sin spam, sin flood y sin publicidad de otros servers.
 - El chat del juego es en español. El soporte y la comunidad están en Discord.
 - Las discusiones con el staff se resuelven por ticket, no en el chat.
 
-## 4. Tickets de soporte
+## 5. Tickets de soporte
 
 Los tickets se abren en Discord y se usan **solo para**:
 
@@ -53,14 +69,14 @@ Los tickets se abren en Discord y se usan **solo para**:
 Usar mal los tickets o hacer spam con ellos se sanciona, y puede terminar en
 ban del Discord.
 
-## 5. Sanciones
+## 6. Sanciones
 
 - Pueden ser temporales o permanentes y se aplican sin aviso previo, según la
   gravedad de la falta.
 - Las faltas graves o repetidas pueden pasar directo a ban permanente.
 - Un ban se puede apelar una sola vez, dentro de los 7 días, por ticket.
 
-## 6. Importante
+## 7. Importante
 
 - La administración tiene la última palabra en sanciones y conflictos.
 - El respeto y el buen ambiente están por encima de todo.

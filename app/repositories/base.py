@@ -56,6 +56,11 @@ class GalleryRepository(Protocol):
     def get(self) -> Gallery: ...
 
 
+class GameplayRepository(Protocol):
+    def get(self) -> dict[str, Any]:
+        """Configuración de juego: EXP, resets, clases, PvP, mapas, Chaos Mix."""
+
+
 class EventRepository(Protocol):
     def list(self) -> list[EventItem]:
         """Agenda ordenada por día y hora."""

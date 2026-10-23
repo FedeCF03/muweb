@@ -82,3 +82,15 @@ def test_robots_and_sitemap(client):
     sitemap = client.get("/sitemap.xml")
     assert sitemap.status_code == 200
     assert b"<urlset" in sitemap.data
+
+
+def test_gameplay_page(client):
+    resp = client.get("/jugabilidad")
+    assert resp.status_code == 200
+    assert "Sistema de reset" in resp.text
+    assert "500" in resp.text
+
+
+def test_download_route_rejects_traversal(client):
+    assert client.get("/downloads/../app/config.py").status_code == 404
+    assert client.get("/downloads/no-existe.zip").status_code == 404
