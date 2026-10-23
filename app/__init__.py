@@ -51,7 +51,7 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
     register_views(app)
 
     # Endpoints sin formularios: no necesitan token CSRF
-    for endpoint in ("system.healthz", "system.robots", "system.sitemap"):
+    for endpoint in ("system.healthz", "system.robots", "system.sitemap", "system.service_worker_kill_switch"):
         csrf.exempt(app.view_functions[endpoint])
 
     @app.cli.command("check-content")

@@ -94,3 +94,10 @@ def test_gameplay_page(client):
 def test_download_route_rejects_traversal(client):
     assert client.get("/downloads/../app/config.py").status_code == 404
     assert client.get("/downloads/no-existe.zip").status_code == 404
+
+
+def test_old_service_worker_is_replaced(client):
+    resp = client.get("/service-worker.js")
+    assert resp.status_code == 200
+    assert "unregister" in resp.text
+    assert resp.headers["Cache-Control"] == "no-store"
